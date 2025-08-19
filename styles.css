@@ -1,0 +1,238 @@
+/* ============== INICIO: Contenido para: styles.css (Paleta "Aurora Dorada") ============== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
+/* Paleta "Aurora Dorada": Elegancia y Tecnología */
+:root {
+    --primary-dark: #0D1117;       /* Negro GitHub - Sofisticado y profundo */
+    --secondary-dark: #161B22;     /* Gris oscuro GitHub - Para secciones */
+    --tertiary-dark: #21262D;      /* Gris medio - Para elementos internos */
+    --primary-text: #E6EDF3;       /* Blanco suave - Texto principal */
+    --secondary-text: #B0BAC6;     /* Gris claro - Texto secundario */
+    --tertiary-text: #89929B;      /* Gris muted - Texto menos importante */
+    --accent-gold: #FFC777;        /* Dorado vibrante y elegante */
+    --accent-gold-hover: #E0A84C;  /* Dorado para hover */
+    --accent-blue: #58A6FF;        /* Azul eléctrico (GitHub) */
+    --accent-blue-hover: #388BFD;  /* Azul para hover */
+    --border-color: #30363D;       /* Color de borde sutil */
+    --disabled-bg: #4B5563;        /* Fondo para botones deshabilitados */
+    --disabled-text: #A0AEC0;      /* Texto para botones deshabilitados */
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--primary-dark);
+    color: var(--primary-text);
+}
+
+/* Clases de Tailwind modificadas */
+.bg-primary-dark { background-color: var(--primary-dark); }
+.bg-secondary-dark { background-color: var(--secondary-dark); }
+.bg-tertiary-dark { background-color: var(--tertiary-dark); }
+.text-primary-text { color: var(--primary-text); }
+.text-secondary-text { color: var(--secondary-text); }
+.text-accent-magenta { color: var(--accent-gold); } /* Reemplazado Magenta por Dorado */
+.text-accent-cyan { color: var(--accent-blue); }  /* Reemplazado Cyan por Azul */
+
+/* Navegación y botones de CTA */
+.nav-button.active {
+    background-color: var(--tertiary-dark);
+    color: var(--accent-gold);
+}
+.nav-button:not(.active):hover {
+    background-color: var(--tertiary-dark);
+    color: var(--accent-gold-hover);
+}
+
+.cta-button {
+    background-color: var(--accent-blue);
+    color: var(--primary-dark);
+}
+.cta-button:hover {
+    background-color: var(--accent-blue-hover);
+    box-shadow: 0 4px 14px rgba(88, 166, 255, 0.25);
+}
+
+.cta-button-secondary {
+    border-color: var(--accent-gold);
+    color: var(--accent-gold);
+}
+.cta-button-secondary:hover {
+    background-color: rgba(255, 199, 119, 0.1);
+    color: var(--accent-gold-hover);
+    box-shadow: 0 4px 14px rgba(255, 199, 119, 0.15);
+}
+
+.gemini-button {
+    background-color: var(--accent-blue);
+    color: var(--primary-dark);
+}
+.gemini-button:hover:not(:disabled) {
+    background-color: var(--accent-blue-hover);
+    box-shadow: 0 4px 14px rgba(88, 166, 255, 0.25);
+}
+.gemini-button:disabled {
+    background-color: var(--disabled-bg);
+    color: var(--disabled-text);
+}
+
+/* --- SOLUCIÓN PARA TRANSICIÓN SUAVE --- */
+.content-section {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+.content-section.active {
+    display: block;
+    animation: fadeIn 0.4s ease-in-out forwards;
+}
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Gráficos y tablas */
+.chart-container { background-color: var(--tertiary-dark); height: 450px; }
+thead { background-color: var(--tertiary-dark); }
+thead th { color: var(--accent-gold); }
+tbody { background-color: var(--secondary-dark); color: var(--secondary-text); }
+
+/* Scrollbar */
+::-webkit-scrollbar-thumb { background: var(--accent-gold); }
+::-webkit-scrollbar-thumb:hover { background: var(--accent-gold-hover); }
+
+/* Carga y estados de la UI */
+.loading-spinner { border-top: 3px solid var(--accent-gold); }
+
+/* --- SOLUCIÓN PARA TARJETAS DE INFLUENCERS --- */
+.influencer-card {
+    background-color: var(--tertiary-dark);
+    color: var(--secondary-text);
+    border: 2px solid transparent;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+}
+.influencer-card:hover {
+    background-color: var(--secondary-dark);
+    border-color: var(--accent-blue);
+    transform: translateY(-4px);
+}
+.influencer-card.selected {
+    background-color: var(--secondary-dark);
+    border-color: var(--accent-gold);
+    box-shadow: 0 0 15px rgba(255, 199, 119, 0.2);
+}
+.influencer-card h4 {
+    color: var(--primary-text);
+    transition: color 0.2s ease;
+}
+.influencer-card.selected h4 {
+    color: var(--accent-gold);
+}
+.influencer-card p {
+    color: var(--tertiary-text);
+}
+
+.audio-summary-trigger { color: var(--accent-blue); }
+.audio-summary-trigger:hover { color: var(--accent-blue-hover); }
+
+.audio-summary-text-container, .gemini-output {
+    background-color: var(--tertiary-dark);
+    border: 1px solid var(--border-color);
+    color: var(--secondary-text);
+}
+
+.audio-player-container audio { width: 100%; height: 40px; }
+
+/* Otros ajustes de paleta */
+#platformChart { background-color: var(--tertiary-dark); }
+.chart-container canvas {
+    background-color: var(--tertiary-dark);
+}
+
+/* === Estilos para la Nueva Rejilla de Plataformas Interactivas === */
+.platform-card {
+    background-color: var(--tertiary-dark);
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    text-align: center;
+    transition: all 0.3s ease-in-out;
+    position: relative; /* Para el tooltip */
+}
+.platform-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    border-color: var(--accent-blue);
+}
+.platform-card .icon-container {
+    height: 40px;
+    margin: 0 auto 0.75rem auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.platform-card .icon-container svg {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    filter: grayscale(50%);
+    transition: filter 0.3s ease;
+}
+.platform-card:hover .icon-container svg {
+    filter: grayscale(0%);
+}
+.platform-card h5 {
+    font-weight: 600;
+    color: var(--primary-text);
+}
+.platform-card .count {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--accent-gold);
+}
+.platform-card .popularity-bar-bg {
+    background-color: var(--primary-dark);
+    border-radius: 999px;
+    height: 6px;
+    width: 100%;
+    margin-top: 0.75rem;
+    overflow: hidden;
+}
+.platform-card .popularity-bar-fg {
+    background: linear-gradient(90deg, var(--accent-blue), var(--accent-gold));
+    height: 100%;
+    border-radius: 999px;
+    transition: width 0.5s ease-out;
+}
+.platform-card .influencer-tooltip {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--secondary-dark);
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    z-index: 10;
+    width: max-content;
+    max-width: 200px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.platform-card:hover .influencer-tooltip {
+    display: flex;
+    opacity: 1;
+}
+.influencer-tooltip .influencer-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid var(--primary-dark);
+    object-fit: cover;
+    margin: 2px;
+}

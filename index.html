@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title data-lang-es="Proyecto Génesis: La Investigación detrás de Maia Kode" data-lang-en="Project Genesis: The Research Behind Maia Kode"></title>
+    
+    <meta name="description" data-lang-es="Explora el informe de investigación interactivo que analiza 16 influencers para definir la personalidad de Maia Kode, un futuro proyecto de IA educativa." data-lang-en="Explore the interactive research report that analyzes 16 influencers to define the personality of Maia Kode, an upcoming educational AI project.">
+    
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png"> <meta property="og:title" data-lang-es="Proyecto Génesis: La Investigación detrás de Maia Kode" data-lang-en="Project Genesis: The Research Behind Maia Kode">
+    <meta property="og:description" data-lang-es="Un estudio interactivo sobre la creación de una persona de IA, analizando 16 referentes de la divulgación científica y tecnológica." data-lang-en="An interactive study on the creation of an AI persona, analyzing 16 leaders in science and technology communication.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.tudominio.com"> <meta property="og:image" content="https://www.tudominio.com/maia-preview.jpg"> <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" data-lang-es="Proyecto Génesis: La Investigación detrás de Maia Kode" data-lang-en="Project Genesis: The Research Behind Maia Kode">
+    <meta name="twitter:description" data-lang-es="Un estudio interactivo sobre la creación de una persona de IA, analizando 16 referentes de la divulgación científica y tecnológica." data-lang-en="An interactive study on the creation of an AI persona, analyzing 16 leaders in science and technology communication.">
+    <meta name="twitter:image" content="https://www.tudominio.com/maia-preview.jpg"> <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/2.1.0/showdown.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .lang-button {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s, border-color 0.2s;
+            border: 2px solid transparent;
+        }
+        .lang-button:hover {
+            border-color: #F6E05E; /* accent-gold */
+        }
+        .active-lang {
+            background-color: #F6E05E; /* accent-gold */
+            color: #1A202C; /* primary-dark */
+            border-color: #F6E05E; /* accent-gold */
+        }
+    </style>
+</head>
+<body class="bg-primary-dark text-primary-text">
+
+    <header class="bg-secondary-dark text-white py-12 shadow-md">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-4xl sm:text-5xl font-extrabold leading-tight text-accent-gold">
+                <span class="lang-es">Proyecto Génesis de Maia Kode</span>
+                <span class="lang-en hidden">Maia Kode's Project Genesis</span>
+            </h1>
+            <p class="text-lg text-accent-blue mt-2 sm:mt-4">
+                <span class="lang-es">El informe interactivo sobre la investigación para crear una IA educativa.</span>
+                <span class="lang-en hidden">The interactive report on the research to create an educational AI.</span>
+            </p>
+        </div>
+    </header>
+
+    <nav class="bg-secondary-dark shadow-sm sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-wrap justify-center space-x-2 sm:space-x-4 py-3">
+                <button data-lang="es" class="lang-button active-lang bg-tertiary-dark text-tertiary-text">ES</button>
+                <button data-lang="en" class="lang-button bg-tertiary-dark text-tertiary-text">EN</button>
+                <button data-target="mision" class="nav-button active text-sm sm:text-base px-3 py-2 sm:px-4 rounded-md text-primary-text">
+                    <span class="lang-es">El Objetivo</span>
+                    <span class="lang-en hidden">The Objective</span>
+                </button>
+                <button data-target="historia" class="nav-button text-sm sm:text-base px-3 py-2 sm:px-4 rounded-md text-primary-text">
+                    <span class="lang-es">La Visión</span>
+                    <span class="lang-en hidden">The Vision</span>
+                </button>
+                <button data-target="inspiracion" class="nav-button text-sm sm:text-base px-3 py-2 sm:px-4 rounded-md text-primary-text">
+                    <span class="lang-es">La Inspiración</span>
+                    <span class="lang-en hidden">The Inspiration</span>
+                </button>
+                <button data-target="futuro" class="nav-button text-sm sm:text-base px-3 py-2 sm:px-4 rounded-md text-primary-text">
+                    <span class="lang-es">Conclusiones</span>
+                    <span class="lang-en hidden">Conclusions</span>
+                </button>
+                <button data-target="recursos" class="nav-button text-sm sm:text-base px-3 py-2 sm:px-4 rounded-md text-primary-text">
+                    <span class="lang-es">Datos y Recursos</span>
+                    <span class="lang-en hidden">Data & Resources</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-6xl mx-auto p-4 sm:p-6 lg:p-8">
+
+        <section id="mision" class="content-section active bg-secondary-dark p-6 rounded-lg shadow-lg">
+            <h2 class="text-2xl font-bold text-accent-gold mb-4">
+                <span class="lang-es">El Objetivo de esta Investigación</span>
+                <span class="lang-en hidden">The Objective of this Research</span>
+            </h2>
+            <div class="space-y-3 text-secondary-text leading-relaxed">
+                <p>
+                    <span class="lang-es">Este sitio es la culminación de la fase inicial para crear a Maia Kode, un futuro proyecto de IA educativa. El objetivo de esta investigación fue analizar a 16 figuras líderes en la divulgación de ciencia y tecnología para responder una pregunta clave: ¿Qué rasgos definen a un comunicador digital que no solo informa, sino que también inspira y empodera?</span>
+                    <span class="lang-en hidden">This site is the culmination of the initial phase to create Maia Kode, an upcoming educational AI project. The objective of this research was to analyze 16 leading figures in science and technology communication to answer a key question: What traits define a digital communicator who not only informs but also inspires and empowers?</span>
+                </p>
+                <p>
+                    <span class="lang-es">A través de esta plataforma interactiva, exploramos la personalidad, estética y tipo de contenido de estos referentes para sentar las bases de una IA que sea didáctica, empática y verdaderamente revolucionaria en el campo de la educación digital.</span>
+                    <span class="lang-en hidden">Through this interactive platform, we explore the personality, aesthetics, and content style of these references to lay the foundation for an AI that is didactic, empathetic, and truly revolutionary in the field of digital education.</span>
+                </p>
+            </div>
+            <div class="text-center mt-8">
+                 <a href="https://aprendehabilidadesdigitales.com" target="_blank" class="cta-button bg-accent-blue hover:bg-accent-blue-hover text-primary-dark font-semibold py-3 px-8 rounded-full shadow-lg transition-transform transform hover:scale-105">
+                    <span class="lang-es">Conoce más sobre el proyecto principal</span>
+                    <span class="lang-en hidden">Learn more about the main project</span>
+                </a>
+            </div>
+        </section>
+
+        <section id="historia" class="content-section bg-secondary-dark p-6 rounded-lg shadow-lg">
+            <h2 class="text-2xl font-bold text-accent-gold mb-4">
+                <span class="lang-es">La Visión Detrás del Informe</span>
+                <span class="lang-en hidden">The Vision Behind the Report</span>
+            </h2>
+            <div class="flex flex-col md:flex-row items-center space-y-6 md:space-y-0 md:space-x-8">
+                <div class="w-40 h-40 rounded-full overflow-hidden border-4 border-accent-blue flex-shrink-0">
+                    <img src="https://via.placeholder.com/160x160.png?text=Jon+Efe" alt="Jon Efe" class="w-full h-full object-cover">
+                </div>
+                <div class="text-secondary-text leading-relaxed">
+                    <p class="font-bold">
+                        <span class="lang-es">Soy Jon Efe.</span>
+                        <span class="lang-en hidden">I'm Jon Efe.</span>
+                    </p>
+                    <p class="mt-2">
+                        <span class="lang-es">Este informe interactivo nace de mi propia travesía de recuperación, un periodo en el que encontré en la tecnología un nuevo camino. Como parte del proyecto global "Maia Kode" que desarrollo junto a mi socio José Aluz, asumí la tarea de realizar la investigación fundamental para definir el "alma" de nuestra futura IA.</span>
+                        <span class="lang-en hidden">This interactive report was born from my own journey of recovery, a period in which I found a new path in technology. As part of the global "Maia Kode" project that I'm developing with my partner José Aluz, I took on the task of conducting the fundamental research to define the "soul" of our future AI.</span>
+                    </p>
+                    <p class="mt-2">
+                        <span class="lang-es">Este sitio es el resultado de ese trabajo personal: un análisis profundo de las figuras que nos inspiran y la primera piedra en la construcción de una IA con un corazón, inspirada en la resiliencia y la perseverancia.</span>
+                        <span class="lang-en hidden">This site is the result of that personal work: an in-depth analysis of the figures who inspire us and the first building block in creating an AI with a heart, inspired by resilience and perseverance.</span>
+                    </p>
+                </div>
+            </div>
+            <div class="text-center mt-8">
+                <a href="https://aprendehabilidadesdigitales.com" target="_blank" class="cta-button-secondary border border-accent-gold text-accent-gold font-semibold py-3 px-8 rounded-full transition-colors hover:bg-accent-gold-hover hover:text-primary-dark">
+                    <span class="lang-es">Conoce más sobre mi trabajo</span>
+                    <span class="lang-en hidden">Learn more about my work</span>
+                </a>
+            </div>
+        </section>
+
+        <section id="inspiracion" class="content-section bg-secondary-dark p-6 rounded-lg shadow-lg">
+            <h2 class="text-2xl font-bold text-accent-gold mb-4">
+                <span class="lang-es">Análisis de los 16 Perfiles de Inspiración</span>
+                <span class="lang-en hidden">Analysis of the 16 Inspiration Profiles</span>
+            </h2>
+            <p class="mb-6 text-secondary-text leading-relaxed">
+                <span class="lang-es">Para definir los pilares de Maia, estudiamos a las mentes más brillantes de la divulgación. Haz clic en cada perfil para ver un análisis detallado de los rasgos que inspiraron su futura personalidad, estética y contenido.</span>
+                <span class="lang-en hidden">To define Maia's pillars, we studied the brightest minds in communication. Click on each profile to see a detailed analysis of the traits that inspired her future personality, aesthetics, and content.</span>
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div id="hispanas-container" class="bg-tertiary-dark p-6 rounded-lg shadow-inner">
+                    <h3 class="text-xl font-bold text-accent-gold mb-4">
+                        <span class="lang-es">Modelos Hispanos</span>
+                        <span class="lang-en hidden">Hispanic Models</span>
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8" id="influencerSelectorHispanas"></div>
+                    <div id="influencerDetailHispanas" class="mt-4 p-4 border border-border-color rounded-lg bg-secondary-dark min-h-[200px]">
+                        <p class="text-center text-tertiary-text">
+                            <span class="lang-es">Selecciona un modelo para ver sus detalles.</span>
+                            <span class="lang-en hidden">Select a model to see their details.</span>
+                        </p>
+                    </div>
+                </div>
+                <div id="inglesas-container" class="bg-tertiary-dark p-6 rounded-lg shadow-inner">
+                    <h3 class="text-xl font-bold text-accent-gold mb-4">
+                        <span class="lang-es">Modelos Ingleses</span>
+                        <span class="lang-en hidden">English-speaking Models</span>
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8" id="influencerSelectorInglesas"></div>
+                    <div id="influencerDetailInglesas" class="mt-4 p-4 border border-border-color rounded-lg bg-secondary-dark min-h-[200px]">
+                        <p class="text-center text-tertiary-text">
+                            <span class="lang-es">Selecciona un modelo para ver sus detalles.</span>
+                            <span class="lang-en hidden">Select a model to see their details.</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="futuro" class="content-section bg-secondary-dark p-6 rounded-lg shadow-lg">
+            <h2 class="text-2xl font-bold text-accent-gold mb-4">
+                <span class="lang-es">Conclusiones y Próximos Pasos</span>
+                <span class="lang-en hidden">Conclusions and Next Steps</span>
+            </h2>
+            <p class="text-secondary-text leading-relaxed">
+                <span class="lang-es">El estudio de estos 16 referentes nos ha permitido definir un arquetipo de IA que no solo educa, sino que también inspira. Un perfil geek-didáctico, con un toque humano y una voz auténtica que resuena con una comunidad que busca el crecimiento. Aquí puedes usar la IA para sintetizar estos hallazgos.</span>
+                <span class="lang-en hidden">The study of these 16 references has allowed us to define an AI archetype that not only educates but also inspires. A didactic-geek profile, with a human touch and an authentic voice that resonates with a community seeking growth. Here you can use the AI to synthesize these findings.</span>
+            </p>
+
+            <div class="mt-8 space-y-6">
+                <div>
+                    <h3 class="text-xl font-semibold text-accent-gold mb-2">
+                        <span class="lang-es">Creando la Mente de Maia</span>
+                        <span class="lang-en hidden">Creating Maia's Mind</span>
+                    </h3>
+                    <button id="generateIdealAIProfileButton" class="gemini-button bg-accent-blue hover:bg-accent-blue-hover text-primary-dark disabled:bg-disabled-bg">
+                        <span class="lang-es">✨ Generar el Perfil de IA Ideal</span>
+                        <span class="lang-en hidden">✨ Generate the Ideal AI Profile</span>
+                    </button>
+                    <div id="idealAIProfileLoading" class="loading-spinner" style="display: none;"></div>
+                    <div id="idealAIProfileOutput" class="gemini-output" style="display: none;"></div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold text-accent-gold mb-2">
+                        <span class="lang-es">Una Voz que se Recordará</span>
+                        <span class="lang-en hidden">A Voice to Remember</span>
+                    </h3>
+                    <button id="generateTitleSloganButton" class="gemini-button bg-accent-blue hover:bg-accent-blue-hover text-primary-dark disabled:bg-disabled-bg" disabled>
+                        <span class="lang-es">✨ Proponer Título y Eslogan</span>
+                        <span class="lang-en hidden">✨ Propose Title and Slogan</span>
+                    </button>
+                    <div id="titleSloganLoading" class="loading-spinner" style="display: none;"></div>
+                    <div id="titleSloganOutput" class="gemini-output" style="display: none;"></div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="recursos" class="content-section bg-secondary-dark p-6 rounded-lg shadow-lg">
+            <h2 class="text-2xl font-bold text-accent-gold mb-4">
+                <span class="lang-es">Datos y Recursos del Informe</span>
+                <span class="lang-en hidden">Report Data and Resources</span>
+            </h2>
+            <p class="mb-6 text-secondary-text leading-relaxed">
+                <span class="lang-es">Explora los datos clave de cada influencer. Usa el botón para que la IA identifique patrones y los aplique al perfil de Maia Kode.</span>
+                <span class="lang-en hidden">Explore the key data of each influencer. Use the button for the AI to identify patterns and apply them to Maia Kode's profile.</span>
+            </p>
+
+            <h3 class="text-xl font-semibold text-accent-gold mb-4">
+                <span class="lang-es">Popularidad de Plataformas</span>
+                <span class="lang-en hidden">Platform Popularity</span>
+            </h3>
+            <div id="platformGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
+                </div>
+
+            <h3 class="text-xl font-semibold text-accent-gold mt-6 mb-3">
+                <span class="lang-es">Tabla Comparativa de Atributos Clave</span>
+                <span class="lang-en hidden">Key Attributes Comparison Table</span>
+            </h3>
+            <div class="table-responsive rounded-lg shadow-sm border border-border-color">
+                <table class="min-w-full divide-y divide-border-color">
+                    <thead class="bg-tertiary-dark">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-accent-gold uppercase tracking-wider">
+                                <span class="lang-es">Influencer</span>
+                                <span class="lang-en hidden">Influencer</span>
+                            </th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-accent-gold uppercase tracking-wider">
+                                <span class="lang-es">Idioma</span>
+                                <span class="lang-en hidden">Language</span>
+                            </th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-accent-gold uppercase tracking-wider">
+                                <span class="lang-es">Personalidad</span>
+                                <span class="lang-en hidden">Personality</span>
+                            </th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-accent-gold uppercase tracking-wider">
+                                <span class="lang-es">Estética</span>
+                                <span class="lang-en hidden">Aesthetics</span>
+                            </th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-accent-gold uppercase tracking-wider">
+                                <span class="lang-es">Contenido</span>
+                                <span class="lang-en hidden">Content</span>
+                            </th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-accent-gold uppercase tracking-wider">
+                                <span class="lang-es">Factor Inspirador</span>
+                                <span class="lang-en hidden">Inspirational Factor</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-secondary-dark divide-y divide-border-color text-sm text-secondary-text" id="comparisonTableBody"></tbody>
+                </table>
+            </div>
+            
+            <div class="mt-8">
+                <button id="summarizePatternsButton" class="gemini-button bg-accent-blue hover:bg-accent-blue-hover text-primary-dark disabled:bg-disabled-bg">
+                    <span class="lang-es">✨ Resumir Patrones Clave</span>
+                    <span class="lang-en hidden">✨ Summarize Key Patterns</span>
+                </button>
+                <div id="summarizePatternsLoading" class="loading-spinner" style="display: none;"></div>
+                <div id="summarizePatternsOutput" class="gemini-output" style="display: none;"></div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-secondary-dark text-tertiary-text py-8 mt-12">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p class="text-sm">
+                <span class="lang-es">Un proyecto de Jon Efe. | Funciones de IA por Gemini.</span>
+                <span class="lang-en hidden">A project by Jon Efe. | AI functions by Gemini.</span>
+            </p>
+        </div>
+    </footer>
+
+    <script defer src="app.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const langButtons = document.querySelectorAll('.lang-button');
+            const langElements = document.querySelectorAll('[data-lang-es], [data-lang-en]');
+            const body = document.body;
+
+            // Function to update the displayed language and active state
+            function updateLang(lang) {
+                const isEs = lang === 'es';
+                document.querySelectorAll('.lang-es').forEach(el => el.classList.toggle('hidden', !isEs));
+                document.querySelectorAll('.lang-en').forEach(el => el.classList.toggle('hidden', isEs));
+                body.lang = lang;
+
+                // Update meta tags and title for SEO
+                langElements.forEach(el => {
+                    const content = el.dataset[`lang${lang}`];
+                    if (el.tagName === 'TITLE') {
+                        el.textContent = content;
+                    } else if (el.tagName === 'META') {
+                        el.setAttribute('content', content);
+                    }
+                });
+
+                // Update active button state
+                langButtons.forEach(btn => {
+                    if (btn.dataset.lang === lang) {
+                        btn.classList.add('active-lang');
+                        btn.classList.remove('bg-tertiary-dark', 'text-tertiary-text');
+                    } else {
+                        btn.classList.remove('active-lang');
+                        btn.classList.add('bg-tertiary-dark', 'text-tertiary-text');
+                    }
+                });
+            }
+
+            // Handle language selection
+            langButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const selectedLang = button.dataset.lang;
+                    updateLang(selectedLang);
+                });
+            });
+
+            // Initial language setup (default to Spanish)
+            updateLang('es');
+        });
+    </script>
+</body>
+</html>
