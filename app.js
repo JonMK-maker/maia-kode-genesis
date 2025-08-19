@@ -57,9 +57,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const generateIdealAIProfileButton = document.getElementById('generateIdealAIProfileButton');
     const generateTitleSloganButton = document.getElementById('generateTitleSloganButton');
 
-    // ## CAMBIO DE ARQUITECTURA: La API Key se ha eliminado del frontend. ##
-    // Esta URL ahora debe apuntar a tu propia función serverless (backend).
-    const apiUrl = '/api/generate-content';
+    // ## MODIFICADO: La URL apunta ahora a la función de Netlify para la API. ##
+    const apiUrl = '/.netlify/functions/gemini';
 
     async function callGeminiAPI(prompt, buttonElement, loadingDiv, outputDiv) {
         if (buttonElement) buttonElement.disabled = true;
@@ -67,7 +66,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (outputDiv) outputDiv.innerHTML = ''; 
 
         // El payload ahora solo contiene el prompt. La API Key se gestionará en el backend.
-        const payload = { contents: [{ role: "user", parts: [{ text: prompt }] }] };
+        const payload = { prompt: prompt };
 
         try {
             // La llamada fetch ahora va a tu propio backend.
@@ -162,12 +161,18 @@ document.addEventListener('DOMContentLoaded', async () => {
         audioPlayer.src = ''; 
 
         try {
-            const encodedText = encodeURIComponent(summaryText);
-            // ## CAMBIO DE ARQUITECTURA: La URL ya no apunta a localhost. ##
-            // Esta URL ahora debe apuntar a tu propia función serverless (backend).
-            const backendUrl = `/api/generate-audio?text=${encodedText}&lang=es&id=${influencerId}`;
+            const payload = { 
+                text: summaryText, 
+                lang: 'es' 
+            };
+            // ## MODIFICADO: La URL ahora apunta a una función de Netlify para generar audio. ##
+            const backendUrl = `/.netlify/functions/generate-audio`; 
             
-            const response = await fetch(backendUrl);
+            const response = await fetch(backendUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({ error: {message: "Error desconocido del backend al generar audio."} }));
                 audioTextContainer.innerHTML += `<p class='text-red-600 mt-2'>Error audio: ${errorData.error?.message || response.statusText}</p>`;
@@ -211,7 +216,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             return `
                 <${tagType} href="${linkHref}" target="${linkTarget}" rel="${linkRel}" 
-                           class="platform-link-button px-3 py-1.5 text-xs font-medium rounded-md shadow-sm mr-2 mb-2 inline-flex items-center transition-opacity ${styleClasses} ${cursorClass}">
+                               class="platform-link-button px-3 py-1.5 text-xs font-medium rounded-md shadow-sm mr-2 mb-2 inline-flex items-center transition-opacity ${styleClasses} ${cursorClass}">
                     <span class="mr-1.5 flex-shrink-0">${svgIcon}</span>
                     <span class="truncate">${platformObj.name}</span> 
                 </${tagType}>`;
@@ -225,16 +230,16 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <h3 class="text-xl font-bold text-accent-gold">${influencer.name}</h3>
                 <span id="audioSummaryTrigger_${influencer.id}" class="audio-summary-trigger text-accent-blue hover:text-accent-blue-hover" title="Generar resumen clave">🔊<div id="audioSummaryLoading_${influencer.id}" class="loading-spinner" style="display: none; width:16px; height:16px; border-width:2px;"></div></span>
             </div>
-             <div id="audioSummaryTextContainer_${influencer.id}" class="audio-summary-text-container bg-tertiary-dark border-border-color text-secondary-text" style="display:none;">Clic 🔊 para resumen.</div>
+              <div id="audioSummaryTextContainer_${influencer.id}" class="audio-summary-text-container bg-tertiary-dark border-border-color text-secondary-text" style="display:none;">Clic 🔊 para resumen.</div>
             <div class="audio-player-container"><audio id="audioPlayer_${influencer.id}" controls style="display:none;"></audio></div>
             <div class="space-y-3 text-secondary-text mb-6 mt-4">
-                 <div><strong class="text-accent-gold block mb-1">Plataformas Principales:</strong> <div class="flex flex-wrap items-center">${platformHTML}</div></div>
+                  <div><strong class="text-accent-gold block mb-1">Plataformas Principales:</strong> <div class="flex flex-wrap items-center">${platformHTML}</div></div>
                 <div><strong class="text-accent-gold block mb-1">Personalidad:</strong> <p class="leading-relaxed">${influencer.description.personality}</p></div>
                 <div><strong class="text-accent-gold block mb-1">Estética:</strong> <p class="leading-relaxed">${influencer.description.esthetics}</p></div>
                 <div><strong class="text-accent-gold block mb-1">Tipo de Contenido:</strong> <p class="leading-relaxed">${influencer.contentType}</p></div>
                 <div><strong class="text-accent-gold block mb-1">Razón "Top-Level":</strong> <p class="leading-relaxed">${influencer.topLevelReason}</p></div>
             </div>
-             <div class="mt-6 space-y-4">
+              <div class="mt-6 space-y-4">
                 <div>
                     <button id="contentStrategiesBtn_${influencer.id}" class="gemini-button bg-accent-blue hover:bg-accent-blue-hover text-primary-dark disabled:bg-disabled-bg w-full sm:w-auto">✨ Sugerir Estrategias <div id="contentStrategiesLoading_${influencer.id}" class="loading-spinner" style="display: none;"></div></button>
                     <div id="contentStrategiesOutput_${influencer.id}" class="gemini-output bg-tertiary-dark border-border-color" style="display: none;"></div>
@@ -293,7 +298,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             card.className = 'influencer-card p-4 rounded-lg shadow';
             const platformNames = influencer.platforms.map(p => p.name).slice(0, 2).join(', ');
             card.innerHTML = `<h4 class="font-semibold text-center">${influencer.name.split('(')[0].trim()}</h4>
-                              <p class="text-xs text-center mt-1">${platformNames}</p>`;
+                                 <p class="text-xs text-center mt-1">${platformNames}</p>`;
             card.addEventListener('click', () => {
                 const previouslySelected = selectorElement.querySelector('.selected');
                 if(previouslySelected) {
@@ -400,3 +405,5 @@ document.addEventListener('DOMContentLoaded', async () => {
     initializeApp();
 
 });
+
+// ============== FIN: Contenido para: app.js ==============
