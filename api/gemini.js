@@ -1,6 +1,6 @@
-// netlify/functions/gemini.js
+// api/gemini.js
 
-const axios = require('axios');
+const fetch = require('node-fetch');
 
 exports.handler = async (event) => {
     if (event.httpMethod !== 'POST') {
@@ -13,6 +13,9 @@ exports.handler = async (event) => {
     try {
         const { prompt } = JSON.parse(event.body);
         const geminiApiKey = process.env.GEMINI_API_KEY;
+
+        // Log para debuggear: Te mostrará si la variable se está cargando.
+        console.log('API key is:', geminiApiKey ? 'configured' : 'not configured');
 
         if (!geminiApiKey) {
             return {
@@ -31,11 +34,19 @@ exports.handler = async (event) => {
             }],
         };
 
-        const response = await axios.post(geminiApiUrl, geminiBody);
-        
+        const response = await fetch(geminiApiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(geminiBody),
+        });
+
+        const data = await response.json();
+
         return {
             statusCode: 200,
-            body: JSON.stringify(response.data),
+            body: JSON.stringify(data),
         };
 
     } catch (error) {
