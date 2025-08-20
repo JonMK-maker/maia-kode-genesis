@@ -284,3 +284,22 @@ tbody { background-color: var(--secondary-dark); color: var(--secondary-text); }
     font-family: 'Inter', sans-serif;
     color: var(--primary-text); /* Un poco más de énfasis que el texto normal */
 }
+/* ============ REFUERZO DE ESTILOS PARA SECCIÓN CONCLUSIONES ============ */
+
+/* Esta regla usa los IDs específicos de los contenedores para tener 
+  máxima prioridad y fuerza la herencia de la fuente.
+*/
+#idealAIProfileOutput, 
+#titleSloganOutput {
+    font-family: 'Inter', sans-serif;
+    color: var(--secondary-text);
+}
+
+/* Esta regla obliga a CUALQUIER elemento (*) dentro de esos contenedores
+  a heredar la fuente y el color de su padre, anulando los estilos del navegador.
+*/
+#idealAIProfileOutput *, 
+#titleSloganOutput * {
+    font-family: inherit;
+    color: inherit;
+}
