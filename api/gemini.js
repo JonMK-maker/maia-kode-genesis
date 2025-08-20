@@ -1,9 +1,8 @@
-// api/gemini.js
+// netlify/functions/gemini.js
 
 const fetch = require('node-fetch');
 
 exports.handler = async (event) => {
-    // 1. Manejo de errores y método de petición
     if (event.httpMethod !== 'POST') {
         return {
             statusCode: 405,
@@ -12,10 +11,7 @@ exports.handler = async (event) => {
     }
 
     try {
-        // 2. Obtiene el prompt del cuerpo de la petición.
         const { prompt } = JSON.parse(event.body);
-
-        // 3. Verifica la clave de la API.
         const geminiApiKey = process.env.GEMINI_API_KEY;
 
         if (!geminiApiKey) {
@@ -25,10 +21,8 @@ exports.handler = async (event) => {
             };
         }
 
-        // 4. Construye la URL de la API de Gemini con la clave
         const geminiApiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${geminiApiKey}`;
 
-        // 5. Adapta la petición al formato que espera la API de Gemini
         const geminiBody = {
             contents: [{
                 parts: [{
@@ -37,7 +31,6 @@ exports.handler = async (event) => {
             }],
         };
 
-        // 6. Realiza la petición a la API de Gemini
         const response = await fetch(geminiApiUrl, {
             method: 'POST',
             headers: {
@@ -46,7 +39,6 @@ exports.handler = async (event) => {
             body: JSON.stringify(geminiBody),
         });
 
-        // 7. Envía la respuesta de la API de Gemini de vuelta al frontend
         const data = await response.json();
         
         return {
