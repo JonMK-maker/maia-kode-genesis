@@ -32,12 +32,12 @@
             border: 2px solid transparent;
         }
         .lang-button:hover {
-            border-color: #FFC777; /* accent-gold */
+            border-color: #FFC777;
         }
         .active-lang {
-            background-color: #FFC777; /* accent-gold */
-            color: #0D1117; /* primary-dark */
-            border-color: #FFC777; /* accent-gold */
+            background-color: #FFC777;
+            color: #0D1117;
+            border-color: #FFC777;
         }
     </style>
 </head>
@@ -303,14 +303,12 @@
             const langElements = document.querySelectorAll('[data-lang-es], [data-lang-en]');
             const body = document.body;
 
-            // Function to update the displayed language and active state
             function updateLang(lang) {
                 const isEs = lang === 'es';
                 document.querySelectorAll('.lang-es').forEach(el => el.classList.toggle('hidden', !isEs));
                 document.querySelectorAll('.lang-en').forEach(el => el.classList.toggle('hidden', isEs));
                 body.lang = lang;
 
-                // Update meta tags and title for SEO
                 langElements.forEach(el => {
                     const content = el.dataset[`lang${lang}`];
                     if (el.tagName === 'TITLE') {
@@ -320,7 +318,6 @@
                     }
                 });
 
-                // Update active button state
                 langButtons.forEach(btn => {
                     if (btn.dataset.lang === lang) {
                         btn.classList.add('active-lang');
@@ -332,7 +329,6 @@
                 });
             }
 
-            // Handle language selection
             langButtons.forEach(button => {
                 button.addEventListener('click', () => {
                     const selectedLang = button.dataset.lang;
@@ -340,7 +336,6 @@
                 });
             });
 
-            // Initial language setup (default to Spanish)
             updateLang('es');
         });
     </script>

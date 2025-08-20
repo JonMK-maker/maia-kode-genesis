@@ -3,19 +3,19 @@
 
 /* Paleta "Aurora Dorada": Elegancia y Tecnología */
 :root {
-    --primary-dark: #0D1117;       /* Negro GitHub - Sofisticado y profundo */
-    --secondary-dark: #161B22;     /* Gris oscuro GitHub - Para secciones */
-    --tertiary-dark: #21262D;      /* Gris medio - Para elementos internos */
-    --primary-text: #E6EDF3;       /* Blanco suave - Texto principal */
-    --secondary-text: #B0BAC6;     /* Gris claro - Texto secundario */
-    --tertiary-text: #89929B;      /* Gris muted - Texto menos importante */
-    --accent-gold: #FFC777;        /* Dorado vibrante y elegante */
-    --accent-gold-hover: #E0A84C;  /* Dorado para hover */
-    --accent-blue: #58A6FF;        /* Azul eléctrico (GitHub) */
-    --accent-blue-hover: #388BFD;  /* Azul para hover */
-    --border-color: #30363D;       /* Color de borde sutil */
-    --disabled-bg: #4B5563;        /* Fondo para botones deshabilitados */
-    --disabled-text: #A0AEC0;      /* Texto para botones deshabilitados */
+    --primary-dark: #0D1117;
+    --secondary-dark: #161B22;
+    --tertiary-dark: #21262D;
+    --primary-text: #E6EDF3;
+    --secondary-text: #B0BAC6;
+    --tertiary-text: #89929B;
+    --accent-gold: #FFC777;
+    --accent-gold-hover: #E0A84C;
+    --accent-blue: #58A6FF;
+    --accent-blue-hover: #388BFD;
+    --border-color: #30363D;
+    --disabled-bg: #4B5563;
+    --disabled-text: #A0AEC0;
 }
 
 body {
@@ -24,14 +24,20 @@ body {
     color: var(--primary-text);
 }
 
-/* Clases de Tailwind modificadas */
-.bg-primary-dark { background-color: var(--primary-dark); }
-.bg-secondary-dark { background-color: var(--secondary-dark); }
-.bg-tertiary-dark { background-color: var(--tertiary-dark); }
-.text-primary-text { color: var(--primary-text); }
-.text-secondary-text { color: var(--secondary-text); }
-.text-accent-magenta { color: var(--accent-gold); } /* Reemplazado Magenta por Dorado */
-.text-accent-cyan { color: var(--accent-blue); }  /* Reemplazado Cyan por Azul */
+/* --- SOLUCIÓN PARA TRANSICIÓN SUAVE --- */
+.content-section {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+.content-section.active {
+    display: block;
+    animation: fadeIn 0.4s ease-in-out forwards;
+}
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
 
 /* Navegación y botones de CTA */
 .nav-button.active {
@@ -65,6 +71,7 @@ body {
 .api-button {
     background-color: var(--accent-blue);
     color: var(--primary-dark);
+    /* Se quitan estilos de api-button de aquí para unificar en la sección de abajo */
 }
 .api-button:hover:not(:disabled) {
     background-color: var(--accent-blue-hover);
@@ -74,34 +81,6 @@ body {
     background-color: var(--disabled-bg);
     color: var(--disabled-text);
 }
-
-/* --- SOLUCIÓN PARA TRANSICIÓN SUAVE --- */
-.content-section {
-    display: none;
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
-}
-.content-section.active {
-    display: block;
-    animation: fadeIn 0.4s ease-in-out forwards;
-}
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-/* Gráficos y tablas */
-.chart-container { background-color: var(--tertiary-dark); height: 450px; }
-thead { background-color: var(--tertiary-dark); }
-thead th { color: var(--accent-gold); }
-tbody { background-color: var(--secondary-dark); color: var(--secondary-text); }
-
-/* Scrollbar */
-::-webkit-scrollbar-thumb { background: var(--accent-gold); }
-::-webkit-scrollbar-thumb:hover { background: var(--accent-gold-hover); }
-
-/* Carga y estados de la UI */
-.loading-spinner { border-top: 3px solid var(--accent-gold); }
 
 /* --- SOLUCIÓN PARA TARJETAS DE INFLUENCERS --- */
 .influencer-card {
@@ -132,31 +111,7 @@ tbody { background-color: var(--secondary-dark); color: var(--secondary-text); }
     color: var(--tertiary-text);
 }
 
-.audio-summary-trigger { color: var(--accent-blue); }
-.audio-summary-trigger:hover { color: var(--accent-blue-hover); }
-
-.audio-summary-text-container, .api-output {
-    background-color: var(--tertiary-dark);
-    border: 1px solid var(--border-color);
-    padding: 1rem;
-    margin-top: 0.75rem;
-    border-radius: 0.5rem;
-
-    /* ---- LÍNEAS CLAVE AÑADIDAS ---- */
-    font-family: 'Inter', sans-serif; /* Define la fuente base para TODO el contenido */
-    color: var(--secondary-text);     /* Define el color de texto base */
-    line-height: 1.65;                /* Define la altura de línea base */
-}
-
-.audio-player-container audio { width: 100%; height: 40px; }
-
-/* Otros ajustes de paleta */
-#platformChart { background-color: var(--tertiary-dark); }
-.chart-container canvas {
-    background-color: var(--tertiary-dark);
-}
-
-/* === Estilos para la Nueva Rejilla de Plataformas Interactivas === */
+/* === Estilos para la Rejilla de Plataformas === */
 .platform-card {
     background-color: var(--tertiary-dark);
     border: 1px solid var(--border-color);
@@ -164,7 +119,7 @@ tbody { background-color: var(--secondary-dark); color: var(--secondary-text); }
     padding: 1rem;
     text-align: center;
     transition: all 0.3s ease-in-out;
-    position: relative; /* Para el tooltip */
+    position: relative;
 }
 .platform-card:hover {
     transform: translateY(-5px);
@@ -243,63 +198,50 @@ tbody { background-color: var(--secondary-dark); color: var(--secondary-text); }
     object-fit: cover;
     margin: 2px;
 }
-/* ============ CORRECCIÓN PARA CONTENIDO DE IA GENERADO ============ */
 
-/* 1. Asegura que el contenedor principal maneje el texto largo */
+/* ============ ESTILO DEFINITIVO PARA CONTENEDORES DE RESPUESTA DE IA ============ */
+.audio-summary-text-container,
 .api-output {
-    overflow-wrap: break-word; /* Estándar actual para forzar el ajuste de línea */
-    word-wrap: break-word;     /* Compatibilidad con navegadores más antiguos */
-}
+    /* Estilos del contenedor */
+    background-color: var(--tertiary-dark);
+    border: 1px solid var(--border-color);
+    padding: 1rem;
+    margin-top: 0.75rem;
+    border-radius: 0.5rem;
 
-/* 2. Aplica los estilos base a todos los elementos generados dentro del contenedor */
-.api-output p,
-.api-output li,
-.api-output ol,
-.api-output ul {
-    font-family: 'Inter', sans-serif; /* Asigna la fuente correcta del proyecto */
-    color: var(--secondary-text);     /* Mantiene el color de texto consistente */
-    line-height: 1.65;                /* Aumenta la legibilidad del párrafo */
-    margin-bottom: 0.75rem;           /* Añade espacio entre párrafos o elementos de lista */
-}
-
-/* 3. Estilos específicos para los encabezados generados */
-.api-output h1,
-.api-output h2,
-.api-output h3,
-.api-output h4 {
-    font-family: 'Inter', sans-serif;
-    color: var(--accent-gold); /* Usa el color de acento para los títulos */
-    margin-top: 1.25rem;
-    margin-bottom: 0.5rem;
-}
-
-/* 4. Estilos para las listas, para que no se peguen al borde */
-.api-output ul,
-.api-output ol {
-    padding-left: 1.5rem; /* Añade sangría a las listas */
-}
-
-/* 5. Asegura que el texto en negrita también use la fuente correcta */
-.api-output strong {
-    font-family: 'Inter', sans-serif;
-    color: var(--primary-text); /* Un poco más de énfasis que el texto normal */
-}
-/* ============ REFUERZO DE ESTILOS PARA SECCIÓN CONCLUSIONES ============ */
-
-/* Esta regla usa los IDs específicos de los contenedores para tener 
-  máxima prioridad y fuerza la herencia de la fuente.
-*/
-#idealAIProfileOutput, 
-#titleSloganOutput {
+    /* Estilos del TEXTO BASE (heredables) */
     font-family: 'Inter', sans-serif;
     color: var(--secondary-text);
+    line-height: 1.65;
+
+    /* --- SOLUCIÓN AL DESBORDAMIENTO --- */
+    overflow-wrap: break-word;
+    word-wrap: break-word; /* Compatibilidad */
 }
 
-/* Esta regla obliga a CUALQUIER elemento (*) dentro de esos contenedores
-  a heredar la fuente y el color de su padre, anulando los estilos del navegador.
-*/
-#idealAIProfileOutput *, 
-#titleSloganOutput * {
-    font-family: inherit;
-    color: inherit;
+/* Reglas para elementos HIJOS dentro de los contenedores */
+.api-output *,
+.audio-summary-text-container * {
+    font-family: inherit; /* Fuerza la herencia de la fuente 'Inter' */
+    color: inherit;       /* Fuerza la herencia del color de texto */
+    line-height: inherit; /* Fuerza la herencia de la altura de línea */
+}
+
+/* Estilos específicos para encabezados, negritas y listas */
+.api-output h1, .api-output h2, .api-output h3, .api-output h4,
+.audio-summary-text-container h1, .audio-summary-text-container h2, .audio-summary-text-container h3, .audio-summary-text-container h4 {
+    color: var(--accent-gold);
+    margin-bottom: 0.5rem;
+    margin-top: 1rem;
+}
+
+.api-output strong,
+.audio-summary-text-container strong {
+    color: var(--primary-text);
+    font-weight: 600;
+}
+
+.api-output ul, .api-output ol {
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
 }

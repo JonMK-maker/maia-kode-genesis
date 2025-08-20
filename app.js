@@ -251,15 +251,15 @@ document.addEventListener('DOMContentLoaded', async () => {
               <div class="mt-6 space-y-4">
                   <div>
                       <button id="contentStrategiesBtn_${influencer.id}" class="api-button bg-accent-blue hover:bg-accent-blue-hover text-primary-dark disabled:bg-disabled-bg w-full sm:w-auto">✨ Sugerir Estrategias <div id="contentStrategiesLoading_${influencer.id}" class="loading-spinner" style="display: none;"></div></button>
-                      <div id="contentStrategiesOutput_${influencer.id}" class="api-output bg-tertiary-dark border-border-color" style="display: none;"></div>
+                      <div id="contentStrategiesOutput_${influencer.id}" class="api-output" style="display: none;"></div>
                   </div>
                   <div>
                       <button id="communityQuestionsBtn_${influencer.id}" class="api-button bg-accent-blue hover:bg-accent-blue-hover text-primary-dark disabled:bg-disabled-bg w-full sm:w-auto">✨ Generar Preguntas <div id="communityQuestionsLoading_${influencer.id}" class="loading-spinner" style="display: none;"></div></button>
-                      <div id="communityQuestionsOutput_${influencer.id}" class="api-output bg-tertiary-dark border-border-color" style="display: none;"></div>
+                      <div id="communityQuestionsOutput_${influencer.id}" class="api-output" style="display: none;"></div>
                   </div>
                   <div>
                       <button id="aestheticAnalysisBtn_${influencer.id}" class="api-button bg-accent-blue hover:bg-accent-blue-hover text-primary-dark disabled:bg-disabled-bg w-full sm:w-auto">✨ Analizar Estética <div id="aestheticAnalysisLoading_${influencer.id}" class="loading-spinner" style="display: none;"></div></button>
-                      <div id="aestheticAnalysisOutput_${influencer.id}" class="api-output bg-tertiary-dark border-border-color" style="display: none;"></div>
+                      <div id="aestheticAnalysisOutput_${influencer.id}" class="api-output" style="display: none;"></div>
                   </div>
               </div>
         `;
@@ -499,19 +499,23 @@ El objetivo es deconstruir la descripción estética de un influencer en 3 conce
     ### Metodología MAPAX+ ###
 
     **M - Meta Clara:**
-    El objetivo es traducir una conclusión estratégica en un manifiesto de personalidad fundacional para la IA "Maia Kode". La respuesta será exitosa si crea un perfil de marca claro, inspirador y práctico que pueda guiar la creación de todo el contenido futuro.
+    El objetivo es traducir una conclusión estratégica en un manifiesto de personalidad fundacional para la IA "Maia Kode".
 
     **A - Adaptación:**
     - **Rol:** Eres un Arquitecto de Personalidad de IA, experto en branding y storytelling.
     - **Tono:** Inspirador, fundacional y claro.
     - **Estilo:** Manifiesto de marca.
-    - **Extensión:** Un perfil organizado en 5 secciones clave.
 
     **P - Pasos Estructurados:**
     1.  **Internalizar Conclusión:** La conclusión del análisis previo es: "${conclusionText}".
     2.  **Construir Manifiesto:** A partir de esa conclusión, desarrolla la personalidad de Maia Kode.
-    3.  **Formatear:** Estructura la respuesta en Markdown con los siguientes 5 encabezados en negrita: **Arquetipo Principal**, **Voz y Tono**, **Misión**, **Pilares de Contenido**, y **Promesa a la Comunidad**.
-    `;
+    3.  **Formatear:** Tu respuesta debe ser solo en formato Markdown. Estructura la respuesta usando OBLIGATORIAMENTE el siguiente formato para cada sección, asegurándote de cerrar las negritas:
+        - **Arquetipo Principal:** [Aquí va el texto del arquetipo]
+        - **Voz y Tono:** [Aquí va el texto de la voz y tono]
+        - **Misión:** [Aquí va el texto de la misión]
+        - **Pilares de Contenido:** [Aquí va una lista numerada de los pilares]
+        - **Promesa a la Comunidad:** [Aquí va el texto de la promesa]
+`;
         callGenerativeAPI(prompt, e.target, document.getElementById('idealAIProfileLoading'), document.getElementById('idealAIProfileOutput')).then(() => {
             document.getElementById('generateTitleSloganButton').disabled = false;
         });
@@ -553,5 +557,3 @@ El objetivo es deconstruir la descripción estética de un influencer en 3 conce
     initializeApp();
 
 });
-
-// ============== FIN: Contenido completo para: app.js ==============
