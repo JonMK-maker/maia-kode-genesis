@@ -138,10 +138,14 @@ tbody { background-color: var(--secondary-dark); color: var(--secondary-text); }
 .audio-summary-text-container, .api-output {
     background-color: var(--tertiary-dark);
     border: 1px solid var(--border-color);
-    color: var(--secondary-text);
-    margin-top: 0.75rem;
     padding: 1rem;
+    margin-top: 0.75rem;
     border-radius: 0.5rem;
+
+    /* ---- LÍNEAS CLAVE AÑADIDAS ---- */
+    font-family: 'Inter', sans-serif; /* Define la fuente base para TODO el contenido */
+    color: var(--secondary-text);     /* Define el color de texto base */
+    line-height: 1.65;                /* Define la altura de línea base */
 }
 
 .audio-player-container audio { width: 100%; height: 40px; }
