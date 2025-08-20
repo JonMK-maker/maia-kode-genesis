@@ -239,3 +239,44 @@ tbody { background-color: var(--secondary-dark); color: var(--secondary-text); }
     object-fit: cover;
     margin: 2px;
 }
+/* ============ CORRECCIÓN PARA CONTENIDO DE IA GENERADO ============ */
+
+/* 1. Asegura que el contenedor principal maneje el texto largo */
+.api-output {
+    overflow-wrap: break-word; /* Estándar actual para forzar el ajuste de línea */
+    word-wrap: break-word;     /* Compatibilidad con navegadores más antiguos */
+}
+
+/* 2. Aplica los estilos base a todos los elementos generados dentro del contenedor */
+.api-output p,
+.api-output li,
+.api-output ol,
+.api-output ul {
+    font-family: 'Inter', sans-serif; /* Asigna la fuente correcta del proyecto */
+    color: var(--secondary-text);     /* Mantiene el color de texto consistente */
+    line-height: 1.65;                /* Aumenta la legibilidad del párrafo */
+    margin-bottom: 0.75rem;           /* Añade espacio entre párrafos o elementos de lista */
+}
+
+/* 3. Estilos específicos para los encabezados generados */
+.api-output h1,
+.api-output h2,
+.api-output h3,
+.api-output h4 {
+    font-family: 'Inter', sans-serif;
+    color: var(--accent-gold); /* Usa el color de acento para los títulos */
+    margin-top: 1.25rem;
+    margin-bottom: 0.5rem;
+}
+
+/* 4. Estilos para las listas, para que no se peguen al borde */
+.api-output ul,
+.api-output ol {
+    padding-left: 1.5rem; /* Añade sangría a las listas */
+}
+
+/* 5. Asegura que el texto en negrita también use la fuente correcta */
+.api-output strong {
+    font-family: 'Inter', sans-serif;
+    color: var(--primary-text); /* Un poco más de énfasis que el texto normal */
+}
