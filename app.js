@@ -1,4 +1,4 @@
-// ============== INICIO: Contenido para: app.js (Versión de Producción Segura) ==============
+// ============== INICIO: Contenido para: app.js (Versión Corregida para OpenAI) ==============
 
 document.addEventListener('DOMContentLoaded', async () => {
 
@@ -57,60 +57,58 @@ document.addEventListener('DOMContentLoaded', async () => {
     const generateIdealAIProfileButton = document.getElementById('generateIdealAIProfileButton');
     const generateTitleSloganButton = document.getElementById('generateTitleSloganButton');
 
-    // ## MODIFICADO: La URL apunta ahora a la función de Netlify para la API. ##
-    const apiUrl = '/.netlify/functions/gemini';
+    // ## MODIFICADO: La URL ahora apunta a la función de Netlify para OpenAI. ##
+    // Asegúrate de que tu archivo de función se llame 'openai.js' (o similar).
+    const apiUrl = '/.netlify/functions/openai';
 
-    async function callGeminiAPI(prompt, buttonElement, loadingDiv, outputDiv) {
+    // ## MODIFICADO: Función renombrada y reescrita para manejar la API de OpenAI. ##
+    async function callGenerativeAPI(prompt, buttonElement, loadingDiv, outputDiv) {
         if (buttonElement) buttonElement.disabled = true;
         if (loadingDiv) loadingDiv.style.display = 'inline-block';
         if (outputDiv) outputDiv.innerHTML = ''; 
 
-        // El payload ahora solo contiene el prompt. La API Key se gestionará en el backend.
         const payload = { prompt: prompt };
 
         try {
-            // La llamada fetch ahora va a tu propio backend.
             const response = await fetch(apiUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             });
+
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({ error: { message: "Respuesta de error no es JSON o está vacía."} }));
                 console.error("API Error desde el backend:", response.status, errorData);
                 if (outputDiv) outputDiv.innerHTML = `<p class='text-red-700'>Error de API: ${response.statusText}. ${errorData.error?.message || 'Error desconocido del backend.'}</p>`;
                 return;
             }
+
             const result = await response.json();
             
-            // La lógica para procesar la respuesta de Gemini se mantiene igual
-            if (result.candidates && result.candidates.length > 0 &&
-                result.candidates[0].content && result.candidates[0].content.parts &&
-                result.candidates[0].content.parts.length > 0) {
+            // Lógica corregida para procesar la respuesta de OpenAI
+            if (result.choices && result.choices.length > 0 && result.choices[0].message && result.choices[0].message.content) {
                 
-                const geminiText = result.candidates[0].content.parts[0].text;
+                const aiResponseText = result.choices[0].message.content;
+                
                 if (typeof showdown !== 'undefined') { 
                     const converter = new showdown.Converter({
                         simplifiedAutoLink: true,
                         simpleLineBreaks: true, 
-                        strikethrough: true,   
-                        tables: true          
+                        strikethrough: true, 
+                        tables: true         
                     });
-                    const htmlOutput = converter.makeHtml(geminiText);
+                    const htmlOutput = converter.makeHtml(aiResponseText);
                     if (outputDiv) outputDiv.innerHTML = htmlOutput; 
                 } else {
                     console.error("Showdown no está definido.");
-                    if (outputDiv) outputDiv.textContent = geminiText; 
+                    if (outputDiv) outputDiv.textContent = aiResponseText; 
                 }
 
-            } else if (result.promptFeedback && result.promptFeedback.blockReason) {
-                console.error("API Error - Prompt Bloqueado:", result.promptFeedback);
-                let errorMessage = `<p class='text-red-700'>Solicitud bloqueada por la API: ${result.promptFeedback.blockReason}.</p>`;
-                if (outputDiv) outputDiv.innerHTML = errorMessage;
             } else {
                 console.error("Estructura de respuesta de API inesperada:", result);
                 if (outputDiv) outputDiv.innerHTML = "<p class='text-red-700'>No se pudo obtener una respuesta válida de la IA.</p>";
             }
+
         } catch (error) {
             console.error("Error en el Fetch:", error);
             if (outputDiv) outputDiv.innerHTML = "<p class='text-red-700'>Error al contactar el servicio de IA. Revisa la consola y el estado de tu backend.</p>";
@@ -165,7 +163,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 text: summaryText, 
                 lang: 'es' 
             };
-            // ## MODIFICADO: La URL ahora apunta a una función de Netlify para generar audio. ##
             const backendUrl = `/.netlify/functions/generate-audio`; 
             
             const response = await fetch(backendUrl, {
@@ -200,7 +197,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     
     function displayInfluencerDetail(influencer, detailElement) {
-        // Esta función no requiere cambios, ya que su lógica es de presentación.
         const platformHTML = influencer.platforms.map(platformObj => {
             let finalUrl = platformObj.url;
             const isActualLink = finalUrl && finalUrl !== "#" && (finalUrl.startsWith('http://') || finalUrl.startsWith('https://'));
@@ -216,7 +212,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             return `
                 <${tagType} href="${linkHref}" target="${linkTarget}" rel="${linkRel}" 
-                               class="platform-link-button px-3 py-1.5 text-xs font-medium rounded-md shadow-sm mr-2 mb-2 inline-flex items-center transition-opacity ${styleClasses} ${cursorClass}">
+                                class="platform-link-button px-3 py-1.5 text-xs font-medium rounded-md shadow-sm mr-2 mb-2 inline-flex items-center transition-opacity ${styleClasses} ${cursorClass}">
                     <span class="mr-1.5 flex-shrink-0">${svgIcon}</span>
                     <span class="truncate">${platformObj.name}</span> 
                 </${tagType}>`;
@@ -240,19 +236,19 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <div><strong class="text-accent-gold block mb-1">Razón "Top-Level":</strong> <p class="leading-relaxed">${influencer.topLevelReason}</p></div>
             </div>
               <div class="mt-6 space-y-4">
-                <div>
-                    <button id="contentStrategiesBtn_${influencer.id}" class="gemini-button bg-accent-blue hover:bg-accent-blue-hover text-primary-dark disabled:bg-disabled-bg w-full sm:w-auto">✨ Sugerir Estrategias <div id="contentStrategiesLoading_${influencer.id}" class="loading-spinner" style="display: none;"></div></button>
-                    <div id="contentStrategiesOutput_${influencer.id}" class="gemini-output bg-tertiary-dark border-border-color" style="display: none;"></div>
-                </div>
-                <div>
-                    <button id="communityQuestionsBtn_${influencer.id}" class="gemini-button bg-accent-blue hover:bg-accent-blue-hover text-primary-dark disabled:bg-disabled-bg w-full sm:w-auto">✨ Generar Preguntas <div id="communityQuestionsLoading_${influencer.id}" class="loading-spinner" style="display: none;"></div></button>
-                    <div id="communityQuestionsOutput_${influencer.id}" class="gemini-output bg-tertiary-dark border-border-color" style="display: none;"></div>
-                </div>
-                <div>
-                    <button id="aestheticAnalysisBtn_${influencer.id}" class="gemini-button bg-accent-blue hover:bg-accent-blue-hover text-primary-dark disabled:bg-disabled-bg w-full sm:w-auto">✨ Analizar Estética <div id="aestheticAnalysisLoading_${influencer.id}" class="loading-spinner" style="display: none;"></div></button>
-                    <div id="aestheticAnalysisOutput_${influencer.id}" class="gemini-output bg-tertiary-dark border-border-color" style="display: none;"></div>
-                </div>
-            </div>
+                  <div>
+                      <button id="contentStrategiesBtn_${influencer.id}" class="api-button bg-accent-blue hover:bg-accent-blue-hover text-primary-dark disabled:bg-disabled-bg w-full sm:w-auto">✨ Sugerir Estrategias <div id="contentStrategiesLoading_${influencer.id}" class="loading-spinner" style="display: none;"></div></button>
+                      <div id="contentStrategiesOutput_${influencer.id}" class="api-output bg-tertiary-dark border-border-color" style="display: none;"></div>
+                  </div>
+                  <div>
+                      <button id="communityQuestionsBtn_${influencer.id}" class="api-button bg-accent-blue hover:bg-accent-blue-hover text-primary-dark disabled:bg-disabled-bg w-full sm:w-auto">✨ Generar Preguntas <div id="communityQuestionsLoading_${influencer.id}" class="loading-spinner" style="display: none;"></div></button>
+                      <div id="communityQuestionsOutput_${influencer.id}" class="api-output bg-tertiary-dark border-border-color" style="display: none;"></div>
+                  </div>
+                  <div>
+                      <button id="aestheticAnalysisBtn_${influencer.id}" class="api-button bg-accent-blue hover:bg-accent-blue-hover text-primary-dark disabled:bg-disabled-bg w-full sm:w-auto">✨ Analizar Estética <div id="aestheticAnalysisLoading_${influencer.id}" class="loading-spinner" style="display: none;"></div></button>
+                      <div id="aestheticAnalysisOutput_${influencer.id}" class="api-output bg-tertiary-dark border-border-color" style="display: none;"></div>
+                  </div>
+              </div>
         `;
         const audioTrigger = document.getElementById(`audioSummaryTrigger_${influencer.id}`);
         const audioTextContainer = document.getElementById(`audioSummaryTextContainer_${influencer.id}`);
@@ -273,7 +269,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 audioPlayer.style.display = 'none'; 
                 const prompt = `Rol: Redactor de guiones... (el prompt largo se mantiene igual)`;
 
-                await callGeminiAPI(prompt, null, audioLoading, audioTextContainer); 
+                // ## MODIFICADO: Llamada a la función renombrada ##
+                await callGenerativeAPI(prompt, null, audioLoading, audioTextContainer); 
 
                 if (audioTextContainer.innerHTML && !audioTextContainer.innerHTML.includes("Error")) { 
                     isAudioSummaryGenerated = true;
@@ -283,13 +280,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             });
         }
-        document.getElementById(`contentStrategiesBtn_${influencer.id}`).addEventListener('click', (e) => callGeminiAPI(`Basándote en...`, e.target, document.getElementById(`contentStrategiesLoading_${influencer.id}`), document.getElementById(`contentStrategiesOutput_${influencer.id}`)));
-        document.getElementById(`communityQuestionsBtn_${influencer.id}`).addEventListener('click', (e) => callGeminiAPI(`Para una IA educativa...`, e.target, document.getElementById(`communityQuestionsLoading_${influencer.id}`), document.getElementById(`communityQuestionsOutput_${influencer.id}`)));
-        document.getElementById(`aestheticAnalysisBtn_${influencer.id}`).addEventListener('click', (e) => callGeminiAPI(`Basándote en la descripción estética...`, e.target, document.getElementById(`aestheticAnalysisLoading_${influencer.id}`), document.getElementById(`aestheticAnalysisOutput_${influencer.id}`)));
+        // ## MODIFICADO: Llamadas a la función renombrada ##
+        document.getElementById(`contentStrategiesBtn_${influencer.id}`).addEventListener('click', (e) => callGenerativeAPI(`Basándote en...`, e.target, document.getElementById(`contentStrategiesLoading_${influencer.id}`), document.getElementById(`contentStrategiesOutput_${influencer.id}`)));
+        document.getElementById(`communityQuestionsBtn_${influencer.id}`).addEventListener('click', (e) => callGenerativeAPI(`Para una IA educativa...`, e.target, document.getElementById(`communityQuestionsLoading_${influencer.id}`), document.getElementById(`communityQuestionsOutput_${influencer.id}`)));
+        document.getElementById(`aestheticAnalysisBtn_${influencer.id}`).addEventListener('click', (e) => callGenerativeAPI(`Basándote en la descripción estética...`, e.target, document.getElementById(`aestheticAnalysisLoading_${influencer.id}`), document.getElementById(`aestheticAnalysisOutput_${influencer.id}`)));
     }
     
     function populateInfluencerSection(lang, selectorElement, detailElement) {
-        // Esta función no requiere cambios.
         const filteredInfluencers = influencers.filter(inf => inf.language === lang);
         if (!selectorElement) return;
         selectorElement.innerHTML = '';
@@ -298,7 +295,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             card.className = 'influencer-card p-4 rounded-lg shadow';
             const platformNames = influencer.platforms.map(p => p.name).slice(0, 2).join(', ');
             card.innerHTML = `<h4 class="font-semibold text-center">${influencer.name.split('(')[0].trim()}</h4>
-                                 <p class="text-xs text-center mt-1">${platformNames}</p>`;
+                                    <p class="text-xs text-center mt-1">${platformNames}</p>`;
             card.addEventListener('click', () => {
                 const previouslySelected = selectorElement.querySelector('.selected');
                 if(previouslySelected) {
@@ -318,7 +315,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function renderPlatformGrid() {
-        // Esta función no requiere cambios.
         if (influencers.length === 0 || !platformGrid) return;
         const platformData = {};
         influencers.forEach(inf => {
@@ -370,18 +366,18 @@ document.addEventListener('DOMContentLoaded', async () => {
         showSection('mision');
     }
     
-    // Los event listeners finales no requieren cambios.
+    // ## MODIFICADO: Llamadas a la función renombrada ##
     if(summarizePatternsButton) summarizePatternsButton.addEventListener('click', (e) => {
         if (influencers.length === 0) { alert("No hay datos para analizar."); return; }
         const tableDataSummary = influencers.map(inf => `${inf.name}(${inf.language}):P-${inf.description.personality.substring(0,50)} E-${inf.description.esthetics.substring(0,50)} C-${inf.contentType.substring(0,50)}`).join("||");
         const prompt = `Tabla:\n${tableDataSummary}\n\nIdentifica 2-3 patrones generales...`;
-        callGeminiAPI(prompt, e.target, document.getElementById('summarizePatternsLoading'), document.getElementById('summarizePatternsOutput'));
+        callGenerativeAPI(prompt, e.target, document.getElementById('summarizePatternsLoading'), document.getElementById('summarizePatternsOutput'));
     });
 
     if(generateIdealAIProfileButton) generateIdealAIProfileButton.addEventListener('click', (e) => {
         const conclusionText = "El estudio de estos referentes...";
         const prompt = `Conclusión: "${conclusionText}"...`;
-        callGeminiAPI(prompt, e.target, document.getElementById('idealAIProfileLoading'), document.getElementById('idealAIProfileOutput')).then(() => {
+        callGenerativeAPI(prompt, e.target, document.getElementById('idealAIProfileLoading'), document.getElementById('idealAIProfileOutput')).then(() => {
             document.getElementById('generateTitleSloganButton').disabled = false;
         });
     });
@@ -399,7 +395,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const contextPrompt = `Perfil IA Ideal:\n"${idealProfileText.substring(0,300)}..."...`;
         const prompt = `${contextPrompt}\nPropón 2-3 títulos creativos...`;
-        callGeminiAPI(prompt, e.target, document.getElementById('titleSloganLoading'), document.getElementById('titleSloganOutput'));
+        callGenerativeAPI(prompt, e.target, document.getElementById('titleSloganLoading'), document.getElementById('titleSloganOutput'));
     });
     
     initializeApp();

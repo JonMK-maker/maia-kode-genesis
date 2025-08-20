@@ -32,12 +32,12 @@
             border: 2px solid transparent;
         }
         .lang-button:hover {
-            border-color: #F6E05E; /* accent-gold */
+            border-color: #FFC777; /* accent-gold */
         }
         .active-lang {
-            background-color: #F6E05E; /* accent-gold */
-            color: #1A202C; /* primary-dark */
-            border-color: #F6E05E; /* accent-gold */
+            background-color: #FFC777; /* accent-gold */
+            color: #0D1117; /* primary-dark */
+            border-color: #FFC777; /* accent-gold */
         }
     </style>
 </head>
@@ -198,24 +198,24 @@
                         <span class="lang-es">Creando la Mente de Maia</span>
                         <span class="lang-en hidden">Creating Maia's Mind</span>
                     </h3>
-                    <button id="generateIdealAIProfileButton" class="gemini-button bg-accent-blue hover:bg-accent-blue-hover text-primary-dark disabled:bg-disabled-bg">
+                    <button id="generateIdealAIProfileButton" class="api-button bg-accent-blue hover:bg-accent-blue-hover text-primary-dark disabled:bg-disabled-bg">
                         <span class="lang-es">✨ Generar el Perfil de IA Ideal</span>
                         <span class="lang-en hidden">✨ Generate the Ideal AI Profile</span>
                     </button>
                     <div id="idealAIProfileLoading" class="loading-spinner" style="display: none;"></div>
-                    <div id="idealAIProfileOutput" class="gemini-output" style="display: none;"></div>
+                    <div id="idealAIProfileOutput" class="api-output" style="display: none;"></div>
                 </div>
                 <div>
                     <h3 class="text-xl font-semibold text-accent-gold mb-2">
                         <span class="lang-es">Una Voz que se Recordará</span>
                         <span class="lang-en hidden">A Voice to Remember</span>
                     </h3>
-                    <button id="generateTitleSloganButton" class="gemini-button bg-accent-blue hover:bg-accent-blue-hover text-primary-dark disabled:bg-disabled-bg" disabled>
+                    <button id="generateTitleSloganButton" class="api-button bg-accent-blue hover:bg-accent-blue-hover text-primary-dark disabled:bg-disabled-bg" disabled>
                         <span class="lang-es">✨ Proponer Título y Eslogan</span>
                         <span class="lang-en hidden">✨ Propose Title and Slogan</span>
                     </button>
                     <div id="titleSloganLoading" class="loading-spinner" style="display: none;"></div>
-                    <div id="titleSloganOutput" class="gemini-output" style="display: none;"></div>
+                    <div id="titleSloganOutput" class="api-output" style="display: none;"></div>
                 </div>
             </div>
         </section>
@@ -276,12 +276,12 @@
             </div>
             
             <div class="mt-8">
-                <button id="summarizePatternsButton" class="gemini-button bg-accent-blue hover:bg-accent-blue-hover text-primary-dark disabled:bg-disabled-bg">
+                <button id="summarizePatternsButton" class="api-button bg-accent-blue hover:bg-accent-blue-hover text-primary-dark disabled:bg-disabled-bg">
                     <span class="lang-es">✨ Resumir Patrones Clave</span>
                     <span class="lang-en hidden">✨ Summarize Key Patterns</span>
                 </button>
                 <div id="summarizePatternsLoading" class="loading-spinner" style="display: none;"></div>
-                <div id="summarizePatternsOutput" class="gemini-output" style="display: none;"></div>
+                <div id="summarizePatternsOutput" class="api-output" style="display: none;"></div>
             </div>
         </section>
     </main>
@@ -289,8 +289,8 @@
     <footer class="bg-secondary-dark text-tertiary-text py-8 mt-12">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <p class="text-sm">
-                <span class="lang-es">Un proyecto de Jon Efe. | Funciones de IA por Gemini.</span>
-                <span class="lang-en hidden">A project by Jon Efe. | AI functions by Gemini.</span>
+                <span class="lang-es">Un proyecto de Jon Efe. | Funciones de IA por OpenAI.</span>
+                <span class="lang-en hidden">A project by Jon Efe. | AI functions by OpenAI.</span>
             </p>
         </div>
     </footer>

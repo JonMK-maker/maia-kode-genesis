@@ -62,15 +62,15 @@ body {
     box-shadow: 0 4px 14px rgba(255, 199, 119, 0.15);
 }
 
-.gemini-button {
+.api-button {
     background-color: var(--accent-blue);
     color: var(--primary-dark);
 }
-.gemini-button:hover:not(:disabled) {
+.api-button:hover:not(:disabled) {
     background-color: var(--accent-blue-hover);
     box-shadow: 0 4px 14px rgba(88, 166, 255, 0.25);
 }
-.gemini-button:disabled {
+.api-button:disabled {
     background-color: var(--disabled-bg);
     color: var(--disabled-text);
 }
@@ -135,10 +135,13 @@ tbody { background-color: var(--secondary-dark); color: var(--secondary-text); }
 .audio-summary-trigger { color: var(--accent-blue); }
 .audio-summary-trigger:hover { color: var(--accent-blue-hover); }
 
-.audio-summary-text-container, .gemini-output {
+.audio-summary-text-container, .api-output {
     background-color: var(--tertiary-dark);
     border: 1px solid var(--border-color);
     color: var(--secondary-text);
+    margin-top: 0.75rem;
+    padding: 1rem;
+    border-radius: 0.5rem;
 }
 
 .audio-player-container audio { width: 100%; height: 40px; }
