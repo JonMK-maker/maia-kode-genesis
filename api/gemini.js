@@ -1,6 +1,6 @@
 // netlify/functions/gemini.js
 
-const fetch = require('node-fetch');
+const axios = require('axios');
 
 exports.handler = async (event) => {
     if (event.httpMethod !== 'POST') {
@@ -31,19 +31,11 @@ exports.handler = async (event) => {
             }],
         };
 
-        const response = await fetch(geminiApiUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(geminiBody),
-        });
-
-        const data = await response.json();
+        const response = await axios.post(geminiApiUrl, geminiBody);
         
         return {
             statusCode: 200,
-            body: JSON.stringify(data),
+            body: JSON.stringify(response.data),
         };
 
     } catch (error) {
