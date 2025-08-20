@@ -1,6 +1,6 @@
 // api/gemini.js
 
-import fetch from 'node-fetch';
+const fetch = require('node-fetch');
 
 exports.handler = async (event) => {
     // 1. Manejo de errores y método de petición
@@ -15,7 +15,7 @@ exports.handler = async (event) => {
         // 2. Obtiene el prompt del cuerpo de la petición.
         const { prompt } = JSON.parse(event.body);
 
-        // 3. Verifica la clave de la API. Esta se obtiene de las variables de entorno de Netlify.
+        // 3. Verifica la clave de la API.
         const geminiApiKey = process.env.GEMINI_API_KEY;
 
         if (!geminiApiKey) {
