@@ -252,3 +252,10 @@ body {
        de la posición del scroll, sin afectar el diseño general. */
     scroll-margin-top: 5rem; /* 80px, ajusta este valor si tu menú es más alto o bajo */
 }
+/* ============ CORRECCIÓN DEFINITIVA PARA MENÚ FIJO Y ESPACIADO ============ */
+
+main {
+    /* Esto empuja todo el contenido principal hacia abajo, 
+       dejando un espacio libre en la parte superior para el menú fijo. */
+    padding-top: 5rem; /* 80px, ajusta este valor si la altura de tu menú cambia */
+}
