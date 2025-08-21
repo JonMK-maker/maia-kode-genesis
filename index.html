@@ -17,6 +17,7 @@
     <meta name="twitter:description" data-lang-es="Un estudio interactivo sobre la creación de una persona de IA, analizando 16 referentes de la divulgación científica y tecnológica." data-lang-en="An interactive study on the creation of an AI persona, analyzing 16 leaders in science and technology communication.">
     <meta name="twitter:image" content="https://www.tudominio.com/maia-preview.jpg"> <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/2.1.0/showdown.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.5/dist/purify.min.js"></script>
     <link rel="stylesheet" href="styles.css">
     <style>
         .lang-button {
@@ -117,7 +118,7 @@
             </h2>
             <div class="flex flex-col md:flex-row items-center space-y-6 md:space-y-0 md:space-x-8">
                 <div class="w-40 h-40 rounded-full overflow-hidden border-4 border-accent-blue flex-shrink-0">
-                    <img src="https://via.placeholder.com/160x160.png?text=Jon+Efe" alt="Jon Efe" class="w-full h-full object-cover">
+                    <img src="https://via.placeholder.com/160x160.png?text=Jon+Efe" alt="Jon Efe" class="w-full h-full object-cover" loading="lazy">
                 </div>
                 <div class="text-secondary-text leading-relaxed">
                     <p class="font-bold">
@@ -203,7 +204,7 @@
                         <span class="lang-en hidden">✨ Generate the Ideal AI Profile</span>
                     </button>
                     <div id="idealAIProfileLoading" class="loading-spinner" style="display: none;"></div>
-                    <div id="idealAIProfileOutput" class="api-output" style="display: none;"></div>
+                    <div id="idealAIProfileOutput" class="api-output" style="display: none;" aria-live="polite"></div>
                 </div>
                 <div>
                     <h3 class="text-xl font-semibold text-accent-gold mb-2">
@@ -215,7 +216,7 @@
                         <span class="lang-en hidden">✨ Propose Title and Slogan</span>
                     </button>
                     <div id="titleSloganLoading" class="loading-spinner" style="display: none;"></div>
-                    <div id="titleSloganOutput" class="api-output" style="display: none;"></div>
+                    <div id="titleSloganOutput" class="api-output" style="display: none;" aria-live="polite"></div>
                 </div>
             </div>
         </section>
@@ -241,7 +242,7 @@
                 <span class="lang-es">Tabla Comparativa de Atributos Clave</span>
                 <span class="lang-en hidden">Key Attributes Comparison Table</span>
             </h3>
-            <div class="table-responsive rounded-lg shadow-sm border border-border-color">
+            <div class="table-responsive rounded-lg shadow-sm border border-border-color overflow-x-auto">
                 <table class="min-w-full divide-y divide-border-color">
                     <thead class="bg-tertiary-dark">
                         <tr>
@@ -281,7 +282,7 @@
                     <span class="lang-en hidden">✨ Summarize Key Patterns</span>
                 </button>
                 <div id="summarizePatternsLoading" class="loading-spinner" style="display: none;"></div>
-                <div id="summarizePatternsOutput" class="api-output" style="display: none;"></div>
+                <div id="summarizePatternsOutput" class="api-output" style="display: none;" aria-live="polite"></div>
             </div>
         </section>
     </main>
@@ -312,7 +313,7 @@
 
                 // Update meta tags and title for SEO
                 langElements.forEach(el => {
-                    const content = el.dataset[`lang${lang}`];
+                    const content = el.dataset[`lang-${lang}`];
                     if (el.tagName === 'TITLE') {
                         el.textContent = content;
                     } else if (el.tagName === 'META') {

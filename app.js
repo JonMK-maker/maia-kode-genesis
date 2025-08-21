@@ -102,7 +102,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                         tables: true
                     });
                     const htmlOutput = converter.makeHtml(aiResponseText);
-                    if (outputDiv) outputDiv.innerHTML = htmlOutput;
+                    // Sanitize HTML to prevent XSS attacks
+                    const sanitizedHTML = typeof DOMPurify !== 'undefined' ? DOMPurify.sanitize(htmlOutput) : htmlOutput;
+                    if (outputDiv) outputDiv.innerHTML = sanitizedHTML;
                 } else {
                     console.error("Showdown no está definido.");
                     if (outputDiv) outputDiv.textContent = aiResponseText;
@@ -233,13 +235,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         detailElement.innerHTML = `
             <div class="w-40 h-40 rounded-full mx-auto mb-3 border-2 border-accent-gold bg-tertiary-dark flex items-center justify-center overflow-hidden">
-                <img src="${influencer.image || 'https://placehold.co/100x100/37374A/FFC777?text=N/A'}" alt="Imagen de ${influencer.name.split('(')[0].trim()}" class="w-full h-full object-cover">
+                <img src="${influencer.image || 'https://placehold.co/100x100/37374A/FFC777?text=N/A'}" alt="Imagen de ${influencer.name.split('(')[0].trim()}" class="w-full h-full object-cover" loading="lazy">
             </div>
             <div class="flex items-center justify-center mb-1">
                 <h3 class="text-xl font-bold text-accent-gold">${influencer.name}</h3>
-                <span id="audioSummaryTrigger_${influencer.id}" class="audio-summary-trigger text-accent-blue hover:text-accent-blue-hover" title="Generar resumen clave">🔊<div id="audioSummaryLoading_${influencer.id}" class="loading-spinner" style="display: none; width:16px; height:16px; border-width:2px;"></div></span>
+                <button id="audioSummaryTrigger_${influencer.id}" class="audio-summary-trigger text-accent-blue hover:text-accent-blue-hover ml-2 p-1 rounded" title="Generar resumen clave" aria-expanded="false" aria-controls="audioSummaryTextContainer_${influencer.id}" aria-label="Generar resumen de audio para ${influencer.name}">🔊<div id="audioSummaryLoading_${influencer.id}" class="loading-spinner" style="display: none; width:16px; height:16px; border-width:2px;" role="status" aria-label="Cargando resumen"></div></button>
             </div>
-              <div id="audioSummaryTextContainer_${influencer.id}" class="audio-summary-text-container bg-tertiary-dark border-border-color text-secondary-text" style="display:none;">Clic 🔊 para resumen.</div>
+              <div id="audioSummaryTextContainer_${influencer.id}" class="audio-summary-text-container bg-tertiary-dark border-border-color text-secondary-text" style="display:none;" aria-live="polite">Clic 🔊 para resumen.</div>
             <div class="audio-player-container"><audio id="audioPlayer_${influencer.id}" controls style="display:none;"></audio></div>
             <div class="space-y-3 text-secondary-text mb-6 mt-4">
                   <div><strong class="text-accent-gold block mb-1">Plataformas Principales:</strong> <div class="flex flex-wrap items-center">${platformHTML}</div></div>
@@ -251,15 +253,15 @@ document.addEventListener('DOMContentLoaded', async () => {
               <div class="mt-6 space-y-4">
                   <div>
                       <button id="contentStrategiesBtn_${influencer.id}" class="api-button bg-accent-blue hover:bg-accent-blue-hover text-primary-dark disabled:bg-disabled-bg w-full sm:w-auto">✨ Sugerir Estrategias <div id="contentStrategiesLoading_${influencer.id}" class="loading-spinner" style="display: none;"></div></button>
-                      <div id="contentStrategiesOutput_${influencer.id}" class="api-output bg-tertiary-dark border-border-color" style="display: none;"></div>
+                      <div id="contentStrategiesOutput_${influencer.id}" class="api-output bg-tertiary-dark border-border-color" style="display: none;" aria-live="polite"></div>
                   </div>
                   <div>
                       <button id="communityQuestionsBtn_${influencer.id}" class="api-button bg-accent-blue hover:bg-accent-blue-hover text-primary-dark disabled:bg-disabled-bg w-full sm:w-auto">✨ Generar Preguntas <div id="communityQuestionsLoading_${influencer.id}" class="loading-spinner" style="display: none;"></div></button>
-                      <div id="communityQuestionsOutput_${influencer.id}" class="api-output bg-tertiary-dark border-border-color" style="display: none;"></div>
+                      <div id="communityQuestionsOutput_${influencer.id}" class="api-output bg-tertiary-dark border-border-color" style="display: none;" aria-live="polite"></div>
                   </div>
                   <div>
                       <button id="aestheticAnalysisBtn_${influencer.id}" class="api-button bg-accent-blue hover:bg-accent-blue-hover text-primary-dark disabled:bg-disabled-bg w-full sm:w-auto">✨ Analizar Estética <div id="aestheticAnalysisLoading_${influencer.id}" class="loading-spinner" style="display: none;"></div></button>
-                      <div id="aestheticAnalysisOutput_${influencer.id}" class="api-output bg-tertiary-dark border-border-color" style="display: none;"></div>
+                      <div id="aestheticAnalysisOutput_${influencer.id}" class="api-output bg-tertiary-dark border-border-color" style="display: none;" aria-live="polite"></div>
                   </div>
               </div>
         `;
@@ -277,8 +279,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                     audioPlayer.style.display = 'none';
                     audioPlayer.pause();
                     audioPlayer.currentTime = 0;
+                    audioTrigger.setAttribute('aria-expanded', 'false');
                     return;
                 }
+                audioTrigger.setAttribute('aria-expanded', 'true');
                 audioTextContainer.innerHTML = '';
                 isAudioSummaryGenerated = false;
                 audioPlayer.style.display = 'none';
@@ -382,16 +386,22 @@ El objetivo es deconstruir la descripción estética de un influencer en 3 conce
         filteredInfluencers.forEach(influencer => {
             const card = document.createElement('div');
             card.className = 'influencer-card p-4 rounded-lg shadow';
+            card.setAttribute('role', 'button');
+            card.setAttribute('tabindex', '0');
+            card.setAttribute('aria-label', `Seleccionar influencer ${influencer.name.split('(')[0].trim()}`);
             const platformNames = influencer.platforms.map(p => p.name).slice(0, 2).join(', ');
             card.innerHTML = `<h4 class="font-semibold text-center">${influencer.name.split('(')[0].trim()}</h4>
                                     <p class="text-xs text-center mt-1">${platformNames}</p>`;
-            card.addEventListener('click', () => {
+            
+            const selectInfluencer = () => {
                 const previouslySelected = selectorElement.querySelector('.selected');
                 if (previouslySelected) {
                     previouslySelected.classList.remove('selected');
+                    previouslySelected.setAttribute('aria-selected', 'false');
                 }
                 displayInfluencerDetail(influencer, detailElement);
                 card.classList.add('selected');
+                card.setAttribute('aria-selected', 'true');
                 if (detailElement) {
                     const navElement = document.querySelector('nav.sticky');
                     let navHeight = navElement ? navElement.offsetHeight : 0;
@@ -401,9 +411,34 @@ El objetivo es deconstruir la descripción estética de un influencer en 3 conce
                         behavior: 'smooth'
                     });
                 }
+            };
+            
+            card.addEventListener('click', selectInfluencer);
+            card.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    selectInfluencer();
+                }
             });
             selectorElement.appendChild(card);
         });
+    }
+
+    function normalizePlatformName(platformName, iconName) {
+        // Create a mapping for consistent platform names
+        const nameMapping = {
+            'Youtube': 'YouTube',
+            'Youtube 1/2': 'YouTube', 
+            'Youtube 2/2': 'YouTube',
+            'X': 'X (Twitter)',
+            'Twitter': 'X (Twitter)',
+            'Linkedin': 'LinkedIn',
+            'Tiktok': 'TikTok'
+        };
+        
+        // First try the exact name, then try removing parenthetical content
+        const cleanName = platformName.split('(')[0].trim();
+        return nameMapping[platformName] || nameMapping[cleanName] || cleanName;
     }
 
     function renderPlatformGrid() {
@@ -411,7 +446,7 @@ El objetivo es deconstruir la descripción estética de un influencer en 3 conce
         const platformData = {};
         influencers.forEach(inf => {
             inf.platforms.forEach(p => {
-                const name = p.name.split('(')[0].trim();
+                const name = normalizePlatformName(p.name, p.iconName);
                 if (!platformData[name]) {
                     platformData[name] = {
                         count: 0,
@@ -432,12 +467,15 @@ El objetivo es deconstruir la descripción estética de un influencer en 3 conce
         sortedPlatforms.forEach(([name, data]) => {
             const card = document.createElement('div');
             card.className = 'platform-card';
+            card.setAttribute('role', 'button');
+            card.setAttribute('tabindex', '0');
+            card.setAttribute('aria-label', `Plataforma ${name} con ${data.count} influencer${data.count > 1 ? 's' : ''}`);
             const popularityPercent = maxCount > 0 ? (data.count / maxCount) * 100 : 0;
             const influencerAvatarsHTML = data.influencers.map(inf =>
-                `<img src="${inf.image || 'https://placehold.co/40x40/37374A/FFC777?text=N/A'}" alt="${inf.name}" class="influencer-avatar" title="${inf.name}">`
+                `<img src="${inf.image || 'https://placehold.co/40x40/37374A/FFC777?text=N/A'}" alt="${inf.name}" class="influencer-avatar" title="${inf.name}" loading="lazy">`
             ).join('');
             card.innerHTML = `
-                <div class="influencer-tooltip">${influencerAvatarsHTML}</div>
+                <div class="influencer-tooltip" role="tooltip" id="tooltip-${name.replace(/[^a-zA-Z0-9]/g, '')}">${influencerAvatarsHTML}</div>
                 <div class="icon-container">${data.icon}</div>
                 <h5>${name}</h5>
                 <p class="count">${data.count}</p>
@@ -445,6 +483,18 @@ El objetivo es deconstruir la descripción estética de un influencer en 3 conce
                     <div class="popularity-bar-fg" style="width: ${popularityPercent}%;"></div>
                 </div>
             `;
+            
+            // Add keyboard navigation
+            card.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    // Toggle tooltip visibility on keyboard interaction
+                    const tooltip = card.querySelector('.influencer-tooltip');
+                    tooltip.style.display = tooltip.style.display === 'flex' ? 'none' : 'flex';
+                    tooltip.style.opacity = tooltip.style.display === 'flex' ? '1' : '0';
+                }
+            });
+            
             platformGrid.appendChild(card);
         });
     }
