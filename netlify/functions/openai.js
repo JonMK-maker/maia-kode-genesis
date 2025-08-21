@@ -1,3 +1,5 @@
+const fetch = require('node-fetch');
+
 exports.handler = async function(event, context) {
     console.log('🔧 Función Netlify ejecutándose');
     console.log('Método:', event.httpMethod);

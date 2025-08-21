@@ -800,8 +800,6 @@ El objetivo es deconstruir la descripción estética de un influencer en 3 conce
         console.log('Grid de plataformas renderizado con', sortedPlatforms.length, 'plataformas');
     }
 
-    // Función de inicialización principal
-    async function initializeApp() {
     // Función de inicialización principal - VERSIÓN CORREGIDA
     async function initializeApp() {
         try {
