@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     let influencers = [];
 
+    // Iconos SVG para plataformas
     const platformSVGIcons = {
         "YouTube": `<svg class="w-5 h-5" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 490 490" xml:space="preserve"><g><g><path style="fill:#FF0000;" d="M480,180v130c0,55.195-44.805,100-100,100H110c-55.195,0-100-44.805-100-100V180 c0-55.199,44.805-100,100-100h270C435.195,80,480,124.801,480,180z"/></g><g><polygon style="fill:#FFFFFF;" points="320,245 200,295 200,195"/></g></g></svg>`,
         "X (Twitter)": `<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 512 512"><g><rect fill="#000000" width="512" height="512" x="0" y="0" ry="105.09948" rx="105.16711" /><path d="m 339.20866,125.98402 h 44.11006 l -96.36741,110.14194 113.36867,149.87853 h -88.76683 l -69.52535,-90.90068 -79.55277,90.90068 h -44.1367 L 221.41293,268.19503 112.65788,125.98402 h 91.02037 l 62.8448,83.08653 z m -15.4812,233.61817 h 24.4419 L 190.39724,150.99939 H 164.1685 Z" fill="#ffffff" /></g></svg>`,
@@ -14,33 +15,66 @@ document.addEventListener('DOMContentLoaded', async () => {
         "Sitio Web": '🌐',
         "Buscar en Google": '🔍',
         "Blog (Workday)": '📝',
+        "Youtube 1": `<svg class="w-5 h-5" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 490 490" xml:space="preserve"><g><g><path style="fill:#FF0000;" d="M480,180v130c0,55.195-44.805,100-100,100H110c-55.195,0-100-44.805-100-100V180 c0-55.199,44.805-100,100-100h270C435.195,80,480,124.801,480,180z"/></g><g><polygon style="fill:#FFFFFF;" points="320,245 200,295 200,195"/></g></g></svg>`,
+        "Youtube 2": `<svg class="w-5 h-5" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 490 490" xml:space="preserve"><g><g><path style="fill:#FF0000;" d="M480,180v130c0,55.195-44.805,100-100,100H110c-55.195,0-100-44.805-100-100V180 c0-55.199,44.805-100,100-100h270C435.195,80,480,124.801,480,180z"/></g><g><polygon style="fill:#FFFFFF;" points="320,245 200,295 200,195"/></g></g></svg>`,
         "Default": '🔗'
     };
 
+    // Estilos para las plataformas
     const platformStyles = {
         "Default": "bg-gray-700 text-secondary-text hover:bg-tertiary-dark",
         "YouTube": "bg-red-600 text-white hover:bg-red-700",
+        "Youtube 1": "bg-red-600 text-white hover:bg-red-700",
+        "Youtube 2": "bg-red-600 text-white hover:bg-red-700",
         "Instagram": "bg-gradient-to-br from-pink-500 via-red-500 to-yellow-500 text-white hover:opacity-90",
         "TikTok": "bg-black text-white hover:bg-gray-800",
         "X (Twitter)": "bg-black text-white hover:bg-gray-800",
-        "LinkedIn": "bg-sky-700 text-white hover:bg-sky-800",
-        "Sitio Web": "bg-accent-blue text-primary-dark hover:bg-accent-blue-hover",
-        "Blog personal": "bg-accent-blue text-primary-dark hover:bg-accent-blue-hover",
-        "Blog (Workday)": "bg-sky-700 text-white hover:bg-sky-800",
+        "LinkedIn": "bg-blue-700 text-white hover:bg-blue-800",
+        "Sitio Web": "bg-blue-600 text-white hover:bg-blue-700",
+        "Blog personal": "bg-green-600 text-white hover:bg-green-700",
+        "Blog (Workday)": "bg-blue-700 text-white hover:bg-blue-800",
         "Buscar en Google": "bg-gray-500 text-white hover:bg-gray-600"
     };
 
+    // Función para cargar datos de influencers
     async function loadInfluencerData() {
         try {
             const response = await fetch('influencers_data.json');
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-            return await response.json();
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            console.log('Datos de influencers cargados:', data.length, 'influencers');
+            return data;
         } catch (error) {
             console.error("No se pudieron cargar los datos de influencers:", error);
+            showErrorMessage('No se pudieron cargar los datos de influencers. Por favor, recarga la página.');
             return [];
         }
     }
 
+    // Función para mostrar mensajes de error
+    function showErrorMessage(message) {
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'fixed top-4 right-4 bg-red-600 text-white p-4 rounded-lg shadow-lg z-50';
+        errorDiv.innerHTML = `
+            <div class="flex items-center">
+                <span class="mr-2">⚠️</span>
+                <span>${message}</span>
+                <button class="ml-4 text-white hover:text-gray-200" onclick="this.parentElement.parentElement.remove()">✕</button>
+            </div>
+        `;
+        document.body.appendChild(errorDiv);
+        
+        // Auto-remove after 5 seconds
+        setTimeout(() => {
+            if (errorDiv.parentElement) {
+                errorDiv.remove();
+            }
+        }, 5000);
+    }
+
+    // Elementos del DOM
     const navButtons = document.querySelectorAll('.nav-button');
     const contentSections = document.querySelectorAll('.content-section');
 
@@ -57,18 +91,39 @@ document.addEventListener('DOMContentLoaded', async () => {
     const generateIdealAIProfileButton = document.getElementById('generateIdealAIProfileButton');
     const generateTitleSloganButton = document.getElementById('generateTitleSloganButton');
 
+    // URL de la API (Netlify Functions)
     const apiUrl = '/.netlify/functions/openai';
+    const audioApiUrl = '/.netlify/functions/generate-audio';
 
+    // Función principal para llamadas a la API generativa
     async function callGenerativeAPI(prompt, buttonElement, loadingDiv, outputDiv) {
-        if (buttonElement) buttonElement.disabled = true;
-        if (loadingDiv) loadingDiv.style.display = 'inline-block';
-        if (outputDiv) outputDiv.innerHTML = '';
+        if (!prompt || prompt.trim().length === 0) {
+            console.error('Prompt vacío proporcionado');
+            if (outputDiv) outputDiv.innerHTML = '<p class="text-red-700">Error: No se proporcionó un prompt válido.</p>';
+            return;
+        }
+
+        // Estado de carga
+        if (buttonElement) {
+            buttonElement.disabled = true;
+            buttonElement.style.opacity = '0.6';
+        }
+        if (loadingDiv) {
+            loadingDiv.style.display = 'inline-block';
+        }
+        if (outputDiv) {
+            outputDiv.innerHTML = '';
+            outputDiv.style.display = 'none';
+        }
 
         const payload = {
-            prompt: prompt
+            prompt: prompt.trim()
         };
 
         try {
+            console.log('Enviando solicitud a:', apiUrl);
+            console.log('Payload:', payload);
+
             const response = await fetch(apiUrl, {
                 method: 'POST',
                 headers: {
@@ -77,62 +132,94 @@ document.addEventListener('DOMContentLoaded', async () => {
                 body: JSON.stringify(payload)
             });
 
+            console.log('Respuesta recibida:', response.status, response.statusText);
+
             if (!response.ok) {
-                const errorData = await response.json().catch(() => ({
-                    error: {
-                        message: "Respuesta de error no es JSON o está vacía."
-                    }
-                }));
-                console.error("API Error desde el backend:", response.status, errorData);
-                if (outputDiv) outputDiv.innerHTML = `<p class='text-red-700'>Error de API: ${response.statusText}. ${errorData.error?.message || 'Error desconocido del backend.'}</p>`;
+                let errorData;
+                try {
+                    errorData = await response.json();
+                } catch (e) {
+                    errorData = {
+                        error: {
+                            message: `Error ${response.status}: ${response.statusText}`
+                        }
+                    };
+                }
+                
+                console.error("API Error:", response.status, errorData);
+                
+                if (outputDiv) {
+                    outputDiv.innerHTML = `<p class='text-red-700'>Error de API (${response.status}): ${errorData.error?.message || 'Error desconocido del servidor.'}</p>`;
+                    outputDiv.style.display = 'block';
+                }
                 return;
             }
 
             const result = await response.json();
+            console.log('Resultado parseado:', result);
 
             if (result.choices && result.choices.length > 0 && result.choices[0].message && result.choices[0].message.content) {
-
                 const aiResponseText = result.choices[0].message.content;
+                console.log('Respuesta de IA recibida:', aiResponseText.length, 'caracteres');
 
-                if (typeof showdown !== 'undefined') {
-                    const converter = new showdown.Converter({
-                        simplifiedAutoLink: true,
-                        simpleLineBreaks: true,
-                        strikethrough: true,
-                        tables: true
-                    });
-                    const htmlOutput = converter.makeHtml(aiResponseText);
-                    if (outputDiv) outputDiv.innerHTML = htmlOutput;
-                } else {
-                    console.error("Showdown no está definido.");
-                    if (outputDiv) outputDiv.textContent = aiResponseText;
+                if (outputDiv) {
+                    if (typeof showdown !== 'undefined') {
+                        const converter = new showdown.Converter({
+                            simplifiedAutoLink: true,
+                            simpleLineBreaks: true,
+                            strikethrough: true,
+                            tables: true,
+                            tasklists: true
+                        });
+                        const htmlOutput = converter.makeHtml(aiResponseText);
+                        outputDiv.innerHTML = htmlOutput;
+                    } else {
+                        console.warn("Showdown no está disponible, mostrando texto plano");
+                        outputDiv.innerHTML = `<pre class="whitespace-pre-wrap">${aiResponseText}</pre>`;
+                    }
+                    outputDiv.style.display = 'block';
                 }
 
             } else {
-                console.error("Estructura de respuesta de API inesperada:", result);
-                if (outputDiv) outputDiv.innerHTML = "<p class='text-red-700'>No se pudo obtener una respuesta válida de la IA.</p>";
+                console.error("Estructura de respuesta inesperada:", result);
+                if (outputDiv) {
+                    outputDiv.innerHTML = "<p class='text-red-700'>La IA no devolvió una respuesta válida. Inténtalo de nuevo.</p>";
+                    outputDiv.style.display = 'block';
+                }
             }
 
         } catch (error) {
-            console.error("Error en el Fetch:", error);
-            if (outputDiv) outputDiv.innerHTML = "<p class='text-red-700'>Error al contactar el servicio de IA. Revisa la consola y el estado de tu backend.</p>";
+            console.error("Error en fetch:", error);
+            if (outputDiv) {
+                outputDiv.innerHTML = `<p class='text-red-700'>Error de conexión: ${error.message}. Verifica tu conexión a internet e inténtalo de nuevo.</p>`;
+                outputDiv.style.display = 'block';
+            }
         } finally {
-            if (buttonElement) buttonElement.disabled = false;
-            if (loadingDiv) loadingDiv.style.display = 'none';
-            if (outputDiv) outputDiv.style.display = 'block';
+            // Restaurar estado de botón
+            if (buttonElement) {
+                buttonElement.disabled = false;
+                buttonElement.style.opacity = '1';
+            }
+            if (loadingDiv) {
+                loadingDiv.style.display = 'none';
+            }
         }
     }
 
+    // Función para navegación entre secciones
     function showSection(targetId) {
+        // Ocultar todas las secciones
         contentSections.forEach(section => {
             section.classList.remove('active');
         });
 
+        // Mostrar la sección objetivo
         const targetSection = document.getElementById(targetId);
         if (targetSection) {
             targetSection.classList.add('active');
         }
 
+        // Actualizar botones de navegación
         navButtons.forEach(button => {
             button.classList.remove('active');
         });
@@ -141,78 +228,114 @@ document.addEventListener('DOMContentLoaded', async () => {
             activeButton.classList.add('active');
         }
 
+        // Scroll suave al inicio
         window.scrollTo({
             top: 0,
             behavior: 'smooth'
         });
 
+        // Renderizar grid de plataformas cuando sea necesario
         if (targetId === 'recursos' && !platformGridRendered && influencers.length > 0) {
             renderPlatformGrid();
             platformGridRendered = true;
         }
     }
 
-    navButtons.forEach(button => button.addEventListener('click', () => showSection(button.dataset.target)));
+    // Event listeners para navegación
+    navButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const target = button.dataset.target;
+            if (target) {
+                showSection(target);
+            }
+        });
+    });
 
+    // Función para reproducir resumen de audio
     async function playAudioSummary(influencerId, summaryText, audioPlayerId) {
         const audioPlayer = document.getElementById(audioPlayerId);
         const audioTextContainer = document.getElementById(`audioSummaryTextContainer_${influencerId}`);
         const audioLoading = document.getElementById(`audioSummaryLoading_${influencerId}`);
 
-        if (!audioPlayer || !audioTextContainer || !audioLoading) return;
+        if (!audioPlayer || !audioTextContainer || !audioLoading) {
+            console.error('Elementos de audio no encontrados para influencer:', influencerId);
+            return;
+        }
 
+        // Estado de carga
         audioLoading.style.display = 'inline-block';
         audioPlayer.style.display = 'none';
         audioPlayer.src = '';
 
         try {
             const payload = {
-                text: summaryText,
+                text: summaryText.trim(),
                 lang: 'es'
             };
-            const backendUrl = `/.netlify/functions/generate-audio`;
 
-            const response = await fetch(backendUrl, {
+            console.log('Generando audio para:', influencerId);
+
+            const response = await fetch(audioApiUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(payload)
             });
+
             if (!response.ok) {
-                const errorData = await response.json().catch(() => ({
-                    error: {
-                        message: "Error desconocido del backend al generar audio."
-                    }
-                }));
-                audioTextContainer.innerHTML += `<p class='text-red-600 mt-2'>Error audio: ${errorData.error?.message || response.statusText}</p>`;
-                audioLoading.style.display = 'none';
+                let errorData;
+                try {
+                    errorData = await response.json();
+                } catch (e) {
+                    errorData = { error: { message: `Error ${response.status}` } };
+                }
+                
+                console.error('Error al generar audio:', errorData);
+                audioTextContainer.innerHTML += `<p class='text-red-600 mt-2'>Error de audio: ${errorData.error?.message || response.statusText}</p>`;
                 return;
             }
+
             const audioBlob = await response.blob();
-            audioPlayer.src = URL.createObjectURL(audioBlob);
+            const audioUrl = URL.createObjectURL(audioBlob);
+            
+            audioPlayer.src = audioUrl;
             audioPlayer.style.display = 'block';
-            audioPlayer.oncanplaythrough = () => audioPlayer.play().catch(e => {
-                console.error("Error al reproducir audio:", e);
-                audioPlayer.style.display = 'none';
-                audioTextContainer.innerHTML += "<p class='text-red-600 mt-2'>Error de reproducción.</p>";
-            });
-            audioPlayer.onerror = () => {
-                audioPlayer.style.display = 'none';
-                audioTextContainer.innerHTML += "<p class='text-red-600 mt-2'>Error al cargar audio.</p>";
+            
+            // Reproducir automáticamente
+            audioPlayer.oncanplaythrough = () => {
+                audioPlayer.play().catch(e => {
+                    console.error("Error al reproducir audio:", e);
+                    audioTextContainer.innerHTML += "<p class='text-yellow-600 mt-2'>Audio generado. Haz clic en play para escuchar.</p>";
+                });
             };
+            
+            audioPlayer.onerror = () => {
+                console.error("Error al cargar audio");
+                audioPlayer.style.display = 'none';
+                audioTextContainer.innerHTML += "<p class='text-red-600 mt-2'>Error al cargar el audio generado.</p>";
+            };
+
         } catch (error) {
+            console.error('Error en generación de audio:', error);
             audioPlayer.style.display = 'none';
-            audioTextContainer.innerHTML += "<p class='text-red-600 mt-2'>No se conectó al servicio de audio.</p>";
+            audioTextContainer.innerHTML += `<p class='text-red-600 mt-2'>Error de conexión al servicio de audio: ${error.message}</p>`;
         } finally {
             audioLoading.style.display = 'none';
         }
     }
 
+    // Función para mostrar detalles de influencer
     function displayInfluencerDetail(influencer, detailElement) {
+        if (!influencer || !detailElement) {
+            console.error('Datos de influencer o elemento de detalle no válidos');
+            return;
+        }
+
+        // Generar HTML de plataformas
         const platformHTML = influencer.platforms.map(platformObj => {
-            let finalUrl = platformObj.url;
-            const isActualLink = finalUrl && finalUrl !== "#" && (finalUrl.startsWith('http://') || finalUrl.startsWith('https://'));
+            const finalUrl = platformObj.url || '#';
+            const isActualLink = finalUrl !== "#" && (finalUrl.startsWith('http://') || finalUrl.startsWith('https://'));
             const linkHref = isActualLink ? finalUrl : '#';
             const linkRel = isActualLink ? 'noopener noreferrer' : '';
             const linkTarget = isActualLink ? '_blank' : '';
@@ -225,66 +348,121 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             return `
                 <${tagType} href="${linkHref}" target="${linkTarget}" rel="${linkRel}"
-                                class="platform-link-button px-3 py-1.5 text-xs font-medium rounded-md shadow-sm mr-2 mb-2 inline-flex items-center transition-opacity ${styleClasses} ${cursorClass}">
+                    class="platform-link-button px-3 py-1.5 text-xs font-medium rounded-md shadow-sm mr-2 mb-2 inline-flex items-center transition-all duration-200 ${styleClasses} ${cursorClass}"
+                    ${!isActualLink ? 'title="Enlace no disponible"' : ''}>
                     <span class="mr-1.5 flex-shrink-0">${svgIcon}</span>
                     <span class="truncate">${platformObj.name}</span>
                 </${tagType}>`;
         }).join('');
 
+        // Renderizar contenido del influencer
         detailElement.innerHTML = `
             <div class="w-40 h-40 rounded-full mx-auto mb-3 border-2 border-accent-gold bg-tertiary-dark flex items-center justify-center overflow-hidden">
-                <img src="${influencer.image || 'https://placehold.co/100x100/37374A/FFC777?text=N/A'}" alt="Imagen de ${influencer.name.split('(')[0].trim()}" class="w-full h-full object-cover">
+                <img src="${influencer.image || 'https://via.placeholder.com/160x160/21262D/FFC777?text=N/A'}" 
+                     alt="Imagen de ${influencer.name.split('(')[0].trim()}" 
+                     class="w-full h-full object-cover"
+                     onerror="this.src='https://via.placeholder.com/160x160/21262D/FFC777?text=N/A'">
             </div>
             <div class="flex items-center justify-center mb-1">
                 <h3 class="text-xl font-bold text-accent-gold">${influencer.name}</h3>
-                <span id="audioSummaryTrigger_${influencer.id}" class="audio-summary-trigger text-accent-blue hover:text-accent-blue-hover" title="Generar resumen clave">🔊<div id="audioSummaryLoading_${influencer.id}" class="loading-spinner" style="display: none; width:16px; height:16px; border-width:2px;"></div></span>
+                <span id="audioSummaryTrigger_${influencer.id}" class="audio-summary-trigger text-accent-blue hover:text-accent-blue-hover cursor-pointer ml-2" title="Generar resumen de audio">
+                    🔊
+                    <div id="audioSummaryLoading_${influencer.id}" class="loading-spinner" style="display: none;"></div>
+                </span>
             </div>
-              <div id="audioSummaryTextContainer_${influencer.id}" class="audio-summary-text-container bg-tertiary-dark border-border-color text-secondary-text" style="display:none;">Clic 🔊 para resumen.</div>
-            <div class="audio-player-container"><audio id="audioPlayer_${influencer.id}" controls style="display:none;"></audio></div>
+            <div id="audioSummaryTextContainer_${influencer.id}" class="audio-summary-text-container bg-tertiary-dark border-border-color text-secondary-text rounded p-2 mt-2" style="display:none;">
+                <p class="text-sm">Clic en 🔊 para generar resumen de audio.</p>
+            </div>
+            <div class="audio-player-container mt-2">
+                <audio id="audioPlayer_${influencer.id}" controls style="display:none;" class="w-full max-w-sm mx-auto"></audio>
+            </div>
             <div class="space-y-3 text-secondary-text mb-6 mt-4">
-                  <div><strong class="text-accent-gold block mb-1">Plataformas Principales:</strong> <div class="flex flex-wrap items-center">${platformHTML}</div></div>
-                <div><strong class="text-accent-gold block mb-1">Personalidad:</strong> <p class="leading-relaxed">${influencer.description.personality}</p></div>
-                <div><strong class="text-accent-gold block mb-1">Estética:</strong> <p class="leading-relaxed">${influencer.description.esthetics}</p></div>
-                <div><strong class="text-accent-gold block mb-1">Tipo de Contenido:</strong> <p class="leading-relaxed">${influencer.contentType}</p></div>
-                <div><strong class="text-accent-gold block mb-1">Razón "Top-Level":</strong> <p class="leading-relaxed">${influencer.topLevelReason}</p></div>
+                <div>
+                    <strong class="text-accent-gold block mb-1">Plataformas Principales:</strong> 
+                    <div class="flex flex-wrap items-center">${platformHTML}</div>
+                </div>
+                <div>
+                    <strong class="text-accent-gold block mb-1">Personalidad:</strong> 
+                    <p class="leading-relaxed">${influencer.description.personality}</p>
+                </div>
+                <div>
+                    <strong class="text-accent-gold block mb-1">Estética:</strong> 
+                    <p class="leading-relaxed">${influencer.description.esthetics}</p>
+                </div>
+                <div>
+                    <strong class="text-accent-gold block mb-1">Tipo de Contenido:</strong> 
+                    <p class="leading-relaxed">${influencer.contentType}</p>
+                </div>
+                <div>
+                    <strong class="text-accent-gold block mb-1">Razón "Top-Level":</strong> 
+                    <p class="leading-relaxed">${influencer.topLevelReason}</p>
+                </div>
             </div>
-              <div class="mt-6 space-y-4">
-                  <div>
-                      <button id="contentStrategiesBtn_${influencer.id}" class="api-button bg-accent-blue hover:bg-accent-blue-hover text-primary-dark disabled:bg-disabled-bg w-full sm:w-auto">✨ Sugerir Estrategias <div id="contentStrategiesLoading_${influencer.id}" class="loading-spinner" style="display: none;"></div></button>
-                      <div id="contentStrategiesOutput_${influencer.id}" class="api-output" style="display: none;"></div>
-                  </div>
-                  <div>
-                      <button id="communityQuestionsBtn_${influencer.id}" class="api-button bg-accent-blue hover:bg-accent-blue-hover text-primary-dark disabled:bg-disabled-bg w-full sm:w-auto">✨ Generar Preguntas <div id="communityQuestionsLoading_${influencer.id}" class="loading-spinner" style="display: none;"></div></button>
-                      <div id="communityQuestionsOutput_${influencer.id}" class="api-output" style="display: none;"></div>
-                  </div>
-                  <div>
-                      <button id="aestheticAnalysisBtn_${influencer.id}" class="api-button bg-accent-blue hover:bg-accent-blue-hover text-primary-dark disabled:bg-disabled-bg w-full sm:w-auto">✨ Analizar Estética <div id="aestheticAnalysisLoading_${influencer.id}" class="loading-spinner" style="display: none;"></div></button>
-                      <div id="aestheticAnalysisOutput_${influencer.id}" class="api-output" style="display: none;"></div>
-                  </div>
-              </div>
+            <div class="mt-6 space-y-4">
+                <div>
+                    <button id="contentStrategiesBtn_${influencer.id}" class="api-button bg-accent-blue hover:bg-accent-blue-hover text-primary-dark disabled:bg-disabled-bg w-full sm:w-auto">
+                        ✨ Sugerir Estrategias
+                        <div id="contentStrategiesLoading_${influencer.id}" class="loading-spinner" style="display: none;"></div>
+                    </button>
+                    <div id="contentStrategiesOutput_${influencer.id}" class="api-output" style="display: none;"></div>
+                </div>
+                <div>
+                    <button id="communityQuestionsBtn_${influencer.id}" class="api-button bg-accent-blue hover:bg-accent-blue-hover text-primary-dark disabled:bg-disabled-bg w-full sm:w-auto">
+                        ✨ Generar Preguntas
+                        <div id="communityQuestionsLoading_${influencer.id}" class="loading-spinner" style="display: none;"></div>
+                    </button>
+                    <div id="communityQuestionsOutput_${influencer.id}" class="api-output" style="display: none;"></div>
+                </div>
+                <div>
+                    <button id="aestheticAnalysisBtn_${influencer.id}" class="api-button bg-accent-blue hover:bg-accent-blue-hover text-primary-dark disabled:bg-disabled-bg w-full sm:w-auto">
+                        ✨ Analizar Estética
+                        <div id="aestheticAnalysisLoading_${influencer.id}" class="loading-spinner" style="display: none;"></div>
+                    </button>
+                    <div id="aestheticAnalysisOutput_${influencer.id}" class="api-output" style="display: none;"></div>
+                </div>
+            </div>
         `;
 
+        // Configurar funcionalidad de audio
+        setupAudioSummary(influencer);
+
+        // Configurar botones de análisis
+        setupAnalysisButtons(influencer);
+    }
+
+    // Función para configurar resumen de audio
+    function setupAudioSummary(influencer) {
         const audioTrigger = document.getElementById(`audioSummaryTrigger_${influencer.id}`);
         const audioTextContainer = document.getElementById(`audioSummaryTextContainer_${influencer.id}`);
         const audioLoading = document.getElementById(`audioSummaryLoading_${influencer.id}`);
         const audioPlayer = document.getElementById(`audioPlayer_${influencer.id}`);
 
-        if (audioTrigger && audioTextContainer && audioLoading && audioPlayer) {
-            let isAudioSummaryGenerated = false;
-            audioTrigger.addEventListener('click', async () => {
-                if (audioTextContainer.style.display === 'block' && isAudioSummaryGenerated) {
-                    audioTextContainer.style.display = 'none';
-                    audioPlayer.style.display = 'none';
-                    audioPlayer.pause();
-                    audioPlayer.currentTime = 0;
-                    return;
-                }
-                audioTextContainer.innerHTML = '';
-                isAudioSummaryGenerated = false;
-                audioPlayer.style.display = 'none';
+        if (!audioTrigger || !audioTextContainer || !audioLoading || !audioPlayer) {
+            console.error('Elementos de audio no encontrados para:', influencer.id);
+            return;
+        }
 
-                const influencerDataForAudio = `Nombre: ${influencer.name}. Personalidad: ${influencer.description.personality}. Razón "Top-Level": ${influencer.topLevelReason}.`;
-                const prompt = `
+        let isAudioSummaryGenerated = false;
+
+        audioTrigger.addEventListener('click', async () => {
+            // Toggle visibility si ya fue generado
+            if (isAudioSummaryGenerated && audioTextContainer.style.display === 'block') {
+                audioTextContainer.style.display = 'none';
+                audioPlayer.style.display = 'none';
+                audioPlayer.pause();
+                audioPlayer.currentTime = 0;
+                return;
+            }
+
+            // Generar nuevo resumen
+            audioTextContainer.innerHTML = '';
+            audioTextContainer.style.display = 'block';
+            isAudioSummaryGenerated = false;
+            audioPlayer.style.display = 'none';
+
+            const influencerDataForAudio = `Nombre: ${influencer.name}. Personalidad: ${influencer.description.personality}. Razón "Top-Level": ${influencer.topLevelReason}.`;
+            
+            const prompt = `
 ### Metodología MAPAX+ ###
 
 **M - Meta Clara:**
@@ -303,17 +481,21 @@ El objetivo es generar un guion de audio, muy breve y potente (máximo 45 palabr
 3.  **Entregar:** Devuelve ÚNICAMENTE el texto final del guion, sin añadir encabezados, introducciones ni la palabra "Respuesta".
 `;
 
-                await callGenerativeAPI(prompt, null, audioLoading, audioTextContainer);
+            await callGenerativeAPI(prompt, null, audioLoading, audioTextContainer);
 
-                if (audioTextContainer.innerHTML && !audioTextContainer.innerHTML.includes("Error")) {
-                    isAudioSummaryGenerated = true;
-                    playAudioSummary(influencer.id, audioTextContainer.textContent.trim(), `audioPlayer_${influencer.id}`);
-                } else {
-                    if (audioLoading) audioLoading.style.display = 'none';
+            if (audioTextContainer.innerHTML && !audioTextContainer.innerHTML.includes("Error")) {
+                isAudioSummaryGenerated = true;
+                const textContent = audioTextContainer.textContent.trim();
+                if (textContent) {
+                    playAudioSummary(influencer.id, textContent, `audioPlayer_${influencer.id}`);
                 }
-            });
-        }
+            }
+        });
+    }
 
+    // Función para configurar botones de análisis
+    function setupAnalysisButtons(influencer) {
+        // Estrategias de contenido
         const contentStrategiesPrompt = `
 ### Metodología MAPAX+ ###
 
@@ -333,8 +515,18 @@ El objetivo es generar 3 ideas de formatos de contenido originales y accionables
     - Tipo de Contenido del Influencer: ${influencer.contentType}
 3.  **Generar y Formatear:** Crea las 3 ideas de contenido y preséntalas en formato Markdown. Cada idea debe tener un título en negrita.
 `;
-        document.getElementById(`contentStrategiesBtn_${influencer.id}`).addEventListener('click', (e) => callGenerativeAPI(contentStrategiesPrompt, e.target, document.getElementById(`contentStrategiesLoading_${influencer.id}`), document.getElementById(`contentStrategiesOutput_${influencer.id}`)));
 
+        const contentStrategiesBtn = document.getElementById(`contentStrategiesBtn_${influencer.id}`);
+        const contentStrategiesLoading = document.getElementById(`contentStrategiesLoading_${influencer.id}`);
+        const contentStrategiesOutput = document.getElementById(`contentStrategiesOutput_${influencer.id}`);
+
+        if (contentStrategiesBtn) {
+            contentStrategiesBtn.addEventListener('click', () => {
+                callGenerativeAPI(contentStrategiesPrompt, contentStrategiesBtn, contentStrategiesLoading, contentStrategiesOutput);
+            });
+        }
+
+        // Preguntas de comunidad
         const communityQuestionsPrompt = `
 ### Metodología MAPAX+ ###
 
@@ -352,8 +544,18 @@ El objetivo es generar 3 preguntas abiertas y provocadoras para fomentar la inte
 2.  **Idear:** Crea 3 preguntas que inviten a la reflexión, conectando el campo de "${influencer.contentType}" con las experiencias o aspiraciones personales de la audiencia.
 3.  **Formatear:** Entrega el resultado como una lista numerada en Markdown.
 `;
-        document.getElementById(`communityQuestionsBtn_${influencer.id}`).addEventListener('click', (e) => callGenerativeAPI(communityQuestionsPrompt, e.target, document.getElementById(`communityQuestionsLoading_${influencer.id}`), document.getElementById(`communityQuestionsOutput_${influencer.id}`)));
 
+        const communityQuestionsBtn = document.getElementById(`communityQuestionsBtn_${influencer.id}`);
+        const communityQuestionsLoading = document.getElementById(`communityQuestionsLoading_${influencer.id}`);
+        const communityQuestionsOutput = document.getElementById(`communityQuestionsOutput_${influencer.id}`);
+
+        if (communityQuestionsBtn) {
+            communityQuestionsBtn.addEventListener('click', () => {
+                callGenerativeAPI(communityQuestionsPrompt, communityQuestionsBtn, communityQuestionsLoading, communityQuestionsOutput);
+            });
+        }
+
+        // Análisis estético
         const aestheticAnalysisPrompt = `
 ### Metodología MAPAX+ ###
 
@@ -372,46 +574,89 @@ El objetivo es deconstruir la descripción estética de un influencer en 3 conce
 2.  **Extraer y Justificar:** Identifica 3 conceptos o principios de branding fundamentales. Para cada uno, justifica su efectividad en una frase.
 3.  **Formatear:** Usa viñetas en Markdown con la estructura: "**Concepto:** [Nombre del concepto]. **Justificación:** [Explicación]".
 `;
-        document.getElementById(`aestheticAnalysisBtn_${influencer.id}`).addEventListener('click', (e) => callGenerativeAPI(aestheticAnalysisPrompt, e.target, document.getElementById(`aestheticAnalysisLoading_${influencer.id}`), document.getElementById(`aestheticAnalysisOutput_${influencer.id}`)));
+
+        const aestheticAnalysisBtn = document.getElementById(`aestheticAnalysisBtn_${influencer.id}`);
+        const aestheticAnalysisLoading = document.getElementById(`aestheticAnalysisLoading_${influencer.id}`);
+        const aestheticAnalysisOutput = document.getElementById(`aestheticAnalysisOutput_${influencer.id}`);
+
+        if (aestheticAnalysisBtn) {
+            aestheticAnalysisBtn.addEventListener('click', () => {
+                callGenerativeAPI(aestheticAnalysisPrompt, aestheticAnalysisBtn, aestheticAnalysisLoading, aestheticAnalysisOutput);
+            });
+        }
     }
 
+    // Función para poblar sección de influencers
     function populateInfluencerSection(lang, selectorElement, detailElement) {
+        if (!selectorElement) {
+            console.error('Elemento selector no encontrado para idioma:', lang);
+            return;
+        }
+
         const filteredInfluencers = influencers.filter(inf => inf.language === lang);
-        if (!selectorElement) return;
+        console.log(`Influencers filtrados para ${lang}:`, filteredInfluencers.length);
+
         selectorElement.innerHTML = '';
+
         filteredInfluencers.forEach(influencer => {
             const card = document.createElement('div');
-            card.className = 'influencer-card p-4 rounded-lg shadow';
+            card.className = 'influencer-card p-4 rounded-lg shadow cursor-pointer transition-all duration-200';
+            
             const platformNames = influencer.platforms.map(p => p.name).slice(0, 2).join(', ');
-            card.innerHTML = `<h4 class="font-semibold text-center">${influencer.name.split('(')[0].trim()}</h4>
-                                    <p class="text-xs text-center mt-1">${platformNames}</p>`;
+            const truncatedPlatforms = platformNames.length > 30 ? platformNames.substring(0, 30) + '...' : platformNames;
+            
+            card.innerHTML = `
+                <h4 class="font-semibold text-center mb-1">${influencer.name.split('(')[0].trim()}</h4>
+                <p class="text-xs text-center mt-1 text-tertiary-text">${truncatedPlatforms}</p>
+            `;
+
             card.addEventListener('click', () => {
+                // Remover selección previa
                 const previouslySelected = selectorElement.querySelector('.selected');
                 if (previouslySelected) {
                     previouslySelected.classList.remove('selected');
                 }
+
+                // Mostrar detalles
                 displayInfluencerDetail(influencer, detailElement);
                 card.classList.add('selected');
+
+                // Scroll suave a los detalles
                 if (detailElement) {
                     const navElement = document.querySelector('nav.sticky');
-                    let navHeight = navElement ? navElement.offsetHeight : 0;
+                    const navHeight = navElement ? navElement.offsetHeight : 0;
                     const offsetPosition = detailElement.getBoundingClientRect().top + window.pageYOffset - navHeight - 20;
+                    
                     window.scrollTo({
                         top: offsetPosition,
                         behavior: 'smooth'
                     });
                 }
             });
+
             selectorElement.appendChild(card);
         });
     }
 
+    // Función para renderizar grid de plataformas
     function renderPlatformGrid() {
-        if (influencers.length === 0 || !platformGrid) return;
+        if (influencers.length === 0 || !platformGrid) {
+            console.error('No hay datos de influencers o elemento platformGrid no encontrado');
+            return;
+        }
+
         const platformData = {};
+
+        // Procesar datos de plataformas
         influencers.forEach(inf => {
             inf.platforms.forEach(p => {
-                const name = p.name.split('(')[0].trim();
+                let name = p.name.split('(')[0].trim();
+                
+                // Normalizar nombres de YouTube
+                if (name.startsWith('Youtube') || name === 'YouTube') {
+                    name = 'YouTube';
+                }
+
                 if (!platformData[name]) {
                     platformData[name] = {
                         count: 0,
@@ -426,134 +671,204 @@ El objetivo es deconstruir la descripción estética de un influencer en 3 conce
                 });
             });
         });
+
+        // Ordenar por popularidad
         const sortedPlatforms = Object.entries(platformData).sort(([, a], [, b]) => b.count - a.count);
         const maxCount = sortedPlatforms.length > 0 ? sortedPlatforms[0][1].count : 0;
+
         platformGrid.innerHTML = '';
+
         sortedPlatforms.forEach(([name, data]) => {
             const card = document.createElement('div');
-            card.className = 'platform-card';
+            card.className = 'platform-card bg-tertiary-dark border border-border-color rounded-lg p-4 text-center transition-all duration-300 hover:transform hover:-translate-y-1 hover:shadow-xl';
+            
             const popularityPercent = maxCount > 0 ? (data.count / maxCount) * 100 : 0;
-            const influencerAvatarsHTML = data.influencers.map(inf =>
-                `<img src="${inf.image || 'https://placehold.co/40x40/37374A/FFC777?text=N/A'}" alt="${inf.name}" class="influencer-avatar" title="${inf.name}">`
+
+            const influencerAvatarsHTML = data.influencers.slice(0, 6).map(inf =>
+                `<img src="${inf.image || 'https://via.placeholder.com/40x40/21262D/FFC777?text=N/A'}" 
+                     alt="${inf.name}" 
+                     class="influencer-avatar w-8 h-8 rounded-full border-2 border-primary-dark object-cover m-1" 
+                     title="${inf.name}"
+                     onerror="this.src='https://via.placeholder.com/40x40/21262D/FFC777?text=N/A'">`
             ).join('');
+
             card.innerHTML = `
-                <div class="influencer-tooltip">${influencerAvatarsHTML}</div>
-                <div class="icon-container">${data.icon}</div>
-                <h5>${name}</h5>
-                <p class="count">${data.count}</p>
-                <div class="popularity-bar-bg">
-                    <div class="popularity-bar-fg" style="width: ${popularityPercent}%;"></div>
+                <div class="influencer-tooltip absolute bottom-full left-1/2 transform -translate-x-1/2 bg-secondary-dark p-2 rounded shadow-lg z-10 opacity-0 pointer-events-none transition-opacity duration-200 mb-2 flex flex-wrap justify-center max-w-48">
+                    ${influencerAvatarsHTML}
+                </div>
+                <div class="icon-container h-10 flex items-center justify-center mb-3">
+                    ${data.icon}
+                </div>
+                <h5 class="font-semibold text-primary-text mb-1">${name}</h5>
+                <p class="count text-2xl font-bold text-accent-gold mb-3">${data.count}</p>
+                <div class="popularity-bar-bg bg-primary-dark rounded-full h-1.5 w-full overflow-hidden">
+                    <div class="popularity-bar-fg h-full rounded-full bg-gradient-to-r from-accent-blue to-accent-gold transition-all duration-500 ease-out" style="width: ${popularityPercent}%;"></div>
                 </div>
             `;
+
             platformGrid.appendChild(card);
         });
+
+        console.log('Grid de plataformas renderizado con', sortedPlatforms.length, 'plataformas');
     }
 
+    // Función de inicialización principal
     async function initializeApp() {
-        influencers = await loadInfluencerData();
-        if (!Array.isArray(influencers) || influencers.length === 0) return;
-        populateInfluencerSection("Español", influencerSelectorHispanas, influencerDetailHispanas);
-        populateInfluencerSection("Ingles", influencerSelectorInglesas, influencerDetailInglesas);
+        try {
+            console.log('Iniciando aplicación...');
+            
+            // Cargar datos de influencers
+            influencers = await loadInfluencerData();
+            
+            if (!Array.isArray(influencers) || influencers.length === 0) {
+                console.error('No se pudieron cargar los datos de influencers');
+                showErrorMessage('No se pudieron cargar los datos. La aplicación funcionará con funcionalidad limitada.');
+                return;
+            }
 
-        if (comparisonTableBody) {
-            comparisonTableBody.innerHTML = '';
-            influencers.forEach(inf => {
-                const tr = comparisonTableBody.insertRow();
-                tr.innerHTML = `<td class="py-2 px-3">${inf.name.split('(')[0].trim()}</td><td class="py-2 px-3">${inf.language}</td><td class="py-2 px-3">${inf.description.personality.split('.')[0]}.</td><td class="py-2 px-3">${inf.description.esthetics.split('.')[0]}.</td><td class="py-2 px-3">${inf.contentType.split('.')[0]}.</td><td class="py-2 px-3">${inf.topLevelReason.split('.')[0]}.</td>`;
-            });
+            console.log('Datos cargados exitosamente:', influencers.length, 'influencers');
+
+            // Poblar secciones de influencers
+            populateInfluencerSection("Español", influencerSelectorHispanas, influencerDetailHispanas);
+            populateInfluencerSection("Ingles", influencerSelectorInglesas, influencerDetailInglesas);
+
+            // Poblar tabla de comparación
+            if (comparisonTableBody) {
+                comparisonTableBody.innerHTML = '';
+                influencers.forEach(inf => {
+                    const tr = comparisonTableBody.insertRow();
+                    tr.innerHTML = `
+                        <td class="py-2 px-3 border-b border-border-color">${inf.name.split('(')[0].trim()}</td>
+                        <td class="py-2 px-3 border-b border-border-color">${inf.language}</td>
+                        <td class="py-2 px-3 border-b border-border-color">${inf.description.personality.split('.')[0]}.</td>
+                        <td class="py-2 px-3 border-b border-border-color">${inf.description.esthetics.split('.')[0]}.</td>
+                        <td class="py-2 px-3 border-b border-border-color">${inf.contentType.split('.')[0]}.</td>
+                        <td class="py-2 px-3 border-b border-border-color">${inf.topLevelReason.split('.')[0]}.</td>
+                    `;
+                });
+                console.log('Tabla de comparación poblada');
+            }
+
+            // Mostrar sección inicial
+            showSection('mision');
+            
+            console.log('Aplicación inicializada exitosamente');
+
+        } catch (error) {
+            console.error('Error durante la inicialización:', error);
+            showErrorMessage('Error al inicializar la aplicación. Por favor, recarga la página.');
         }
-        showSection('mision');
     }
 
-    if (summarizePatternsButton) summarizePatternsButton.addEventListener('click', (e) => {
-        if (influencers.length === 0) {
-            alert("No hay datos para analizar.");
-            return;
-        }
-        const tableDataSummary = influencers.map(inf => `${inf.name}(${inf.language}):P-${inf.description.personality.substring(0,50)} E-${inf.description.esthetics.substring(0,50)} C-${inf.contentType.substring(0,50)}`).join("||");
-        const prompt = `
-    ### Metodología MAPAX+ ###
+    // Configurar botones principales de análisis
+    if (summarizePatternsButton) {
+        summarizePatternsButton.addEventListener('click', (e) => {
+            if (influencers.length === 0) {
+                showErrorMessage("No hay datos para analizar.");
+                return;
+            }
 
-    **M - Meta Clara:**
-    El objetivo es analizar un resumen de datos de 16 influencers para identificar los 3 patrones estratégicos más relevantes y su implicación para una nueva IA educativa, Maia Kode. Una respuesta exitosa debe ofrecer insights estratégicos, no solo un resumen de datos.
+            const tableDataSummary = influencers.map(inf => 
+                `${inf.name}(${inf.language}):P-${inf.description.personality.substring(0,50)} E-${inf.description.esthetics.substring(0,50)} C-${inf.contentType.substring(0,50)}`
+            ).join("||");
 
-    **A - Adaptación:**
-    - **Rol:** Eres un analista de mercado y estratega de marca.
-    - **Tono:** Analítico, estratégico y conclusivo.
-    - **Estilo:** Informe ejecutivo.
-    - **Extensión:** 3 patrones, cada uno con su implicación.
+            const prompt = `
+### Metodología MAPAX+ ###
 
-    **P - Pasos Estructurados:**
-    1.  **Analizar Datos:** A continuación se presentan los datos de 16 influencers:
-        ${tableDataSummary}
-    2.  **Identificar Patrones:** Extrae las 3 tendencias más significativas en personalidad, estética o contenido.
-    3.  **Deducir Implicaciones:** Para cada patrón, explica cómo Maia Kode podría aplicar ese aprendizaje en su estrategia.
-    4.  **Formatear:** Usa un encabezado de nivel 3 (###) para cada patrón y negrita para "Implicación para Maia".
-    `;
-        callGenerativeAPI(prompt, e.target, document.getElementById('summarizePatternsLoading'), document.getElementById('summarizePatternsOutput'));
-    });
+**M - Meta Clara:**
+El objetivo es analizar un resumen de datos de 16 influencers para identificar los 3 patrones estratégicos más relevantes y su implicación para una nueva IA educativa, Maia Kode. Una respuesta exitosa debe ofrecer insights estratégicos, no solo un resumen de datos.
 
-    if (generateIdealAIProfileButton) generateIdealAIProfileButton.addEventListener('click', (e) => {
-        const conclusionText = "El estudio de estos referentes nos ha permitido definir un arquetipo de IA que no solo educa, sino que también inspira. Un perfil geek-didáctico, con un toque humano y una voz auténtica que resuena con una comunidad que busca el crecimiento.";
-        const prompt = `
-    ### Metodología MAPAX+ ###
+**A - Adaptación:**
+- **Rol:** Eres un analista de mercado y estratega de marca.
+- **Tono:** Analítico, estratégico y conclusivo.
+- **Estilo:** Informe ejecutivo.
+- **Extensión:** 3 patrones, cada uno con su implicación.
 
-    **M - Meta Clara:**
-    El objetivo es traducir una conclusión estratégica en un manifiesto de personalidad fundacional para la IA "Maia Kode".
-
-    **A - Adaptación:**
-    - **Rol:** Eres un Arquitecto de Personalidad de IA, experto en branding y storytelling.
-    - **Tono:** Inspirador, fundacional y claro.
-    - **Estilo:** Manifiesto de marca.
-
-    **P - Pasos Estructurados:**
-    1.  **Internalizar Conclusión:** La conclusión del análisis previo es: "${conclusionText}".
-    2.  **Construir Manifiesto:** A partir de esa conclusión, desarrolla la personalidad de Maia Kode.
-    3.  **Formatear:** Tu respuesta debe ser solo en formato Markdown. Estructura la respuesta usando OBLIGATORIAMENTE el siguiente formato para cada sección, asegurándote de cerrar las negritas:
-        - **Arquetipo Principal:** [Aquí va el texto del arquetipo]
-        - **Voz y Tono:** [Aquí va el texto de la voz y tono]
-        - **Misión:** [Aquí va el texto de la misión]
-        - **Pilares de Contenido:** [Aquí va una lista numerada de los pilares]
-        - **Promesa a la Comunidad:** [Aquí va el texto de la promesa]
+**P - Pasos Estructurados:**
+1.  **Analizar Datos:** A continuación se presentan los datos de 16 influencers:
+    ${tableDataSummary}
+2.  **Identificar Patrones:** Extrae las 3 tendencias más significativas en personalidad, estética o contenido.
+3.  **Deducir Implicaciones:** Para cada patrón, explica cómo Maia Kode podría aplicar ese aprendizaje en su estrategia.
+4.  **Formatear:** Usa un encabezado de nivel 3 (###) para cada patrón y negrita para "Implicación para Maia".
 `;
-        callGenerativeAPI(prompt, e.target, document.getElementById('idealAIProfileLoading'), document.getElementById('idealAIProfileOutput')).then(() => {
-            document.getElementById('generateTitleSloganButton').disabled = false;
+
+            callGenerativeAPI(prompt, e.target, document.getElementById('summarizePatternsLoading'), document.getElementById('summarizePatternsOutput'));
         });
-    });
+    }
 
-    if (generateTitleSloganButton) generateTitleSloganButton.addEventListener('click', (e) => {
-        const idealProfileOutput = document.getElementById('idealAIProfileOutput');
-        let idealProfileText = idealProfileOutput ? idealProfileOutput.textContent : "";
+    if (generateIdealAIProfileButton) {
+        generateIdealAIProfileButton.addEventListener('click', (e) => {
+            const conclusionText = "El estudio de estos referentes nos ha permitido definir un arquetipo de IA que no solo educa, sino que también inspira. Un perfil geek-didáctico, con un toque humano y una voz auténtica que resuena con una comunidad que busca el crecimiento.";
+            
+            const prompt = `
+### Metodología MAPAX+ ###
 
-        if (!idealProfileText || idealProfileText.length < 10 || idealProfileText.startsWith("Error")) {
-            const outputDiv = document.getElementById('titleSloganOutput');
-            outputDiv.innerHTML = "<p class='text-red-700'>Por favor, genera primero el 'Perfil de IA Ideal' para que la IA tenga contexto.</p>";
-            outputDiv.style.display = 'block';
-            return;
-        }
+**M - Meta Clara:**
+El objetivo es traducir una conclusión estratégica en un manifiesto de personalidad fundacional para la IA "Maia Kode".
 
-        const prompt = `
-    ### Metodología MAPAX+ ###
+**A - Adaptación:**
+- **Rol:** Eres un Arquitecto de Personalidad de IA, experto en branding y storytelling.
+- **Tono:** Inspirador, fundacional y claro.
+- **Estilo:** Manifiesto de marca.
 
-    **M - Meta Clara:**
-    El objetivo es generar 3 nombres alternativos y 3 eslóganes creativos para la IA Maia Kode, basándose estrictamente en su manifiesto de personalidad. Una respuesta exitosa ofrecerá opciones de branding relevantes y justificadas.
+**P - Pasos Estructurados:**
+1.  **Internalizar Conclusión:** La conclusión del análisis previo es: "${conclusionText}".
+2.  **Construir Manifiesto:** A partir de esa conclusión, desarrolla la personalidad de Maia Kode.
+3.  **Formatear:** Tu respuesta debe ser solo en formato Markdown. Estructura la respuesta usando OBLIGATORIAMENTE el siguiente formato para cada sección, asegurándote de cerrar las negritas:
+    - **Arquetipo Principal:** [Aquí va el texto del arquetipo]
+    - **Voz y Tono:** [Aquí va el texto de la voz y tono]
+    - **Misión:** [Aquí va el texto de la misión]
+    - **Pilares de Contenido:** [Aquí va una lista numerada de los pilares]
+    - **Promesa a la Comunidad:** [Aquí va el texto de la promesa]
+`;
 
-    **A - Adaptación:**
-    - **Rol:** Eres un experto en Naming y Copywriter creativo para marcas tecnológicas.
-    - **Tono:** Creativo y estratégico.
-    - **Estilo:** Propuesta de branding / Brainstorming.
-    - **Extensión:** 3 nombres, 3 eslóganes, y una breve justificación.
+            callGenerativeAPI(prompt, e.target, document.getElementById('idealAIProfileLoading'), document.getElementById('idealAIProfileOutput')).then(() => {
+                if (generateTitleSloganButton) {
+                    generateTitleSloganButton.disabled = false;
+                }
+            });
+        });
+    }
 
-    **P - Pasos Estructurados:**
-    1.  **Analizar Manifiesto:** Lee el siguiente manifiesto de personalidad de Maia Kode:
-        "${idealProfileText.substring(0, 500)}..."
-    2.  **Generar Opciones:** Crea 3 nombres alternativos y 3 eslóganes que encapsulen la esencia del manifiesto.
-    3.  **Justificar:** Elige tu eslogan favorito y explica su potencial en una frase.
-    4.  **Formatear:** Usa encabezados de nivel 3 (###) para "Nombres Alternativos" y "Eslóganes Propuestos".
-    `;
-        callGenerativeAPI(prompt, e.target, document.getElementById('titleSloganLoading'), document.getElementById('titleSloganOutput'));
-    });
+    if (generateTitleSloganButton) {
+        generateTitleSloganButton.addEventListener('click', (e) => {
+            const idealProfileOutput = document.getElementById('idealAIProfileOutput');
+            let idealProfileText = idealProfileOutput ? idealProfileOutput.textContent : "";
 
+            if (!idealProfileText || idealProfileText.length < 10 || idealProfileText.startsWith("Error")) {
+                const outputDiv = document.getElementById('titleSloganOutput');
+                outputDiv.innerHTML = "<p class='text-red-700'>Por favor, genera primero el 'Perfil de IA Ideal' para que la IA tenga contexto.</p>";
+                outputDiv.style.display = 'block';
+                return;
+            }
+
+            const prompt = `
+### Metodología MAPAX+ ###
+
+**M - Meta Clara:**
+El objetivo es generar 3 nombres alternativos y 3 eslóganes creativos para la IA Maia Kode, basándose estrictamente en su manifiesto de personalidad. Una respuesta exitosa ofrecerá opciones de branding relevantes y justificadas.
+
+**A - Adaptación:**
+- **Rol:** Eres un experto en Naming y Copywriter creativo para marcas tecnológicas.
+- **Tono:** Creativo y estratégico.
+- **Estilo:** Propuesta de branding / Brainstorming.
+- **Extensión:** 3 nombres, 3 eslóganes, y una breve justificación.
+
+**P - Pasos Estructurados:**
+1.  **Analizar Manifiesto:** Lee el siguiente manifiesto de personalidad de Maia Kode:
+    "${idealProfileText.substring(0, 500)}..."
+2.  **Generar Opciones:** Crea 3 nombres alternativos y 3 eslóganes que encapsulen la esencia del manifiesto.
+3.  **Justificar:** Elige tu eslogan favorito y explica su potencial en una frase.
+4.  **Formatear:** Usa encabezados de nivel 3 (###) para "Nombres Alternativos" y "Eslóganes Propuestos".
+`;
+
+            callGenerativeAPI(prompt, e.target, document.getElementById('titleSloganLoading'), document.getElementById('titleSloganOutput'));
+        });
+    }
+
+    // Inicializar la aplicación
     initializeApp();
 
 });
+
+// ============

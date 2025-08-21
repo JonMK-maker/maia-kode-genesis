@@ -4,20 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <title data-lang-es="Proyecto Génesis: La Investigación detrás de Maia Kode" data-lang-en="Project Genesis: The Research Behind Maia Kode"></title>
+    <title data-lang-es="Proyecto Génesis: La Investigación detrás de Maia Kode" data-lang-en="Project Genesis: The Research Behind Maia Kode">Proyecto Génesis: La Investigación detrás de Maia Kode</title>
     
-    <meta name="description" data-lang-es="Explora el informe de investigación interactivo que analiza 16 influencers para definir la personalidad de Maia Kode, un futuro proyecto de IA educativa." data-lang-en="Explore the interactive research report that analyzes 16 influencers to define the personality of Maia Kode, an upcoming educational AI project.">
+    <meta name="description" data-lang-es="Explora el informe de investigación interactivo que analiza 16 influencers para definir la personalidad de Maia Kode, un futuro proyecto de IA educativa." data-lang-en="Explore the interactive research report that analyzes 16 influencers to define the personality of Maia Kode, an upcoming educational AI project." content="Explora el informe de investigación interactivo que analiza 16 influencers para definir la personalidad de Maia Kode, un futuro proyecto de IA educativa.">
     
+    <!-- Favicons -->
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png"> <meta property="og:title" data-lang-es="Proyecto Génesis: La Investigación detrás de Maia Kode" data-lang-en="Project Genesis: The Research Behind Maia Kode">
-    <meta property="og:description" data-lang-es="Un estudio interactivo sobre la creación de una persona de IA, analizando 16 referentes de la divulgación científica y tecnológica." data-lang-en="An interactive study on the creation of an AI persona, analyzing 16 leaders in science and technology communication.">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" data-lang-es="Proyecto Génesis: La Investigación detrás de Maia Kode" data-lang-en="Project Genesis: The Research Behind Maia Kode" content="Proyecto Génesis: La Investigación detrás de Maia Kode">
+    <meta property="og:description" data-lang-es="Un estudio interactivo sobre la creación de una persona de IA, analizando 16 referentes de la divulgación científica y tecnológica." data-lang-en="An interactive study on the creation of an AI persona, analyzing 16 leaders in science and technology communication." content="Un estudio interactivo sobre la creación de una persona de IA, analizando 16 referentes de la divulgación científica y tecnológica.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://www.tudominio.com"> <meta property="og:image" content="https://www.tudominio.com/maia-preview.jpg"> <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" data-lang-es="Proyecto Génesis: La Investigación detrás de Maia Kode" data-lang-en="Project Genesis: The Research Behind Maia Kode">
-    <meta name="twitter:description" data-lang-es="Un estudio interactivo sobre la creación de una persona de IA, analizando 16 referentes de la divulgación científica y tecnológica." data-lang-en="An interactive study on the creation of an AI persona, analyzing 16 leaders in science and technology communication.">
-    <meta name="twitter:image" content="https://www.tudominio.com/maia-preview.jpg"> <script src="https://cdn.tailwindcss.com"></script>
+    <meta property="og:url" content="https://proyecto-genesis-maia.netlify.app">
+    <meta property="og:image" content="https://proyecto-genesis-maia.netlify.app/maia-preview.jpg">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" data-lang-es="Proyecto Génesis: La Investigación detrás de Maia Kode" data-lang-en="Project Genesis: The Research Behind Maia Kode" content="Proyecto Génesis: La Investigación detrás de Maia Kode">
+    <meta name="twitter:description" data-lang-es="Un estudio interactivo sobre la creación de una persona de IA, analizando 16 referentes de la divulgación científica y tecnológica." data-lang-en="An interactive study on the creation of an AI persona, analyzing 16 leaders in science and technology communication." content="Un estudio interactivo sobre la creación de una persona de IA, analizando 16 referentes de la divulgación científica y tecnológica.">
+    <meta name="twitter:image" content="https://proyecto-genesis-maia.netlify.app/maia-preview.jpg">
+    
+    <!-- External Libraries -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/2.1.0/showdown.min.js"></script>
+    
+    <!-- Custom Styles -->
     <link rel="stylesheet" href="styles.css">
+    
+    <!-- Language Button Styles -->
     <style>
         .lang-button {
             width: 40px;
@@ -43,6 +58,7 @@
 </head>
 <body class="bg-primary-dark text-primary-text">
 
+    <!-- Header Section -->
     <header class="bg-secondary-dark text-white py-12 shadow-md">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h1 class="text-4xl sm:text-5xl font-extrabold leading-tight text-accent-gold">
@@ -56,37 +72,47 @@
         </div>
     </header>
 
+    <!-- Navigation -->
     <nav class="bg-secondary-dark shadow-sm sticky top-0 z-50">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-wrap justify-center space-x-2 sm:space-x-4 py-3">
-                <button data-lang="es" class="lang-button active-lang bg-tertiary-dark text-tertiary-text">ES</button>
-                <button data-lang="en" class="lang-button bg-tertiary-dark text-tertiary-text">EN</button>
-                <button data-target="mision" class="nav-button active text-sm sm:text-base px-3 py-2 sm:px-4 rounded-md text-primary-text">
-                    <span class="lang-es">El Objetivo</span>
-                    <span class="lang-en hidden">The Objective</span>
-                </button>
-                <button data-target="historia" class="nav-button text-sm sm:text-base px-3 py-2 sm:px-4 rounded-md text-primary-text">
-                    <span class="lang-es">La Visión</span>
-                    <span class="lang-en hidden">The Vision</span>
-                </button>
-                <button data-target="inspiracion" class="nav-button text-sm sm:text-base px-3 py-2 sm:px-4 rounded-md text-primary-text">
-                    <span class="lang-es">La Inspiración</span>
-                    <span class="lang-en hidden">The Inspiration</span>
-                </button>
-                <button data-target="futuro" class="nav-button text-sm sm:text-base px-3 py-2 sm:px-4 rounded-md text-primary-text">
-                    <span class="lang-es">Conclusiones</span>
-                    <span class="lang-en hidden">Conclusions</span>
-                </button>
-                <button data-target="recursos" class="nav-button text-sm sm:text-base px-3 py-2 sm:px-4 rounded-md text-primary-text">
-                    <span class="lang-es">Datos y Recursos</span>
-                    <span class="lang-en hidden">Data & Resources</span>
-                </button>
+            <div class="flex flex-wrap justify-center items-center space-x-2 sm:space-x-4 py-3">
+                <!-- Language Buttons -->
+                <div class="flex space-x-2 mr-4">
+                    <button data-lang="es" class="lang-button active-lang bg-tertiary-dark text-tertiary-text">ES</button>
+                    <button data-lang="en" class="lang-button bg-tertiary-dark text-tertiary-text">EN</button>
+                </div>
+                
+                <!-- Navigation Buttons -->
+                <div class="flex flex-wrap justify-center space-x-2 sm:space-x-4">
+                    <button data-target="mision" class="nav-button active text-sm sm:text-base px-3 py-2 sm:px-4 rounded-md text-primary-text">
+                        <span class="lang-es">El Objetivo</span>
+                        <span class="lang-en hidden">The Objective</span>
+                    </button>
+                    <button data-target="historia" class="nav-button text-sm sm:text-base px-3 py-2 sm:px-4 rounded-md text-primary-text">
+                        <span class="lang-es">La Visión</span>
+                        <span class="lang-en hidden">The Vision</span>
+                    </button>
+                    <button data-target="inspiracion" class="nav-button text-sm sm:text-base px-3 py-2 sm:px-4 rounded-md text-primary-text">
+                        <span class="lang-es">La Inspiración</span>
+                        <span class="lang-en hidden">The Inspiration</span>
+                    </button>
+                    <button data-target="futuro" class="nav-button text-sm sm:text-base px-3 py-2 sm:px-4 rounded-md text-primary-text">
+                        <span class="lang-es">Conclusiones</span>
+                        <span class="lang-en hidden">Conclusions</span>
+                    </button>
+                    <button data-target="recursos" class="nav-button text-sm sm:text-base px-3 py-2 sm:px-4 rounded-md text-primary-text">
+                        <span class="lang-es">Datos y Recursos</span>
+                        <span class="lang-en hidden">Data & Resources</span>
+                    </button>
+                </div>
             </div>
         </div>
     </nav>
 
+    <!-- Main Content -->
     <main class="max-w-6xl mx-auto p-4 sm:p-6 lg:p-8">
 
+        <!-- Mission Section -->
         <section id="mision" class="content-section active bg-secondary-dark p-6 rounded-lg shadow-lg">
             <h2 class="text-2xl font-bold text-accent-gold mb-4">
                 <span class="lang-es">El Objetivo de esta Investigación</span>
@@ -103,13 +129,14 @@
                 </p>
             </div>
             <div class="text-center mt-8">
-                 <a href="https://aprendehabilidadesdigitales.com" target="_blank" class="cta-button bg-accent-blue hover:bg-accent-blue-hover text-primary-dark font-semibold py-3 px-8 rounded-full shadow-lg transition-transform transform hover:scale-105">
+                <a href="https://aprendehabilidadesdigitales.com" target="_blank" class="cta-button bg-accent-blue hover:bg-accent-blue-hover text-primary-dark font-semibold py-3 px-8 rounded-full shadow-lg transition-transform transform hover:scale-105">
                     <span class="lang-es">Conoce más sobre el proyecto principal</span>
                     <span class="lang-en hidden">Learn more about the main project</span>
                 </a>
             </div>
         </section>
 
+        <!-- Vision Section -->
         <section id="historia" class="content-section bg-secondary-dark p-6 rounded-lg shadow-lg">
             <h2 class="text-2xl font-bold text-accent-gold mb-4">
                 <span class="lang-es">La Visión Detrás del Informe</span>
@@ -142,6 +169,7 @@
             </div>
         </section>
 
+        <!-- Inspiration Section -->
         <section id="inspiracion" class="content-section bg-secondary-dark p-6 rounded-lg shadow-lg">
             <h2 class="text-2xl font-bold text-accent-gold mb-4">
                 <span class="lang-es">Análisis de los 16 Perfiles de Inspiración</span>
@@ -153,6 +181,7 @@
             </p>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Hispanic Models Container -->
                 <div id="hispanas-container" class="bg-tertiary-dark p-6 rounded-lg shadow-inner">
                     <h3 class="text-xl font-bold text-accent-gold mb-4">
                         <span class="lang-es">Modelos Hispanos</span>
@@ -166,6 +195,8 @@
                         </p>
                     </div>
                 </div>
+
+                <!-- English Models Container -->
                 <div id="inglesas-container" class="bg-tertiary-dark p-6 rounded-lg shadow-inner">
                     <h3 class="text-xl font-bold text-accent-gold mb-4">
                         <span class="lang-es">Modelos Ingleses</span>
@@ -182,6 +213,7 @@
             </div>
         </section>
 
+        <!-- Conclusions Section -->
         <section id="futuro" class="content-section bg-secondary-dark p-6 rounded-lg shadow-lg">
             <h2 class="text-2xl font-bold text-accent-gold mb-4">
                 <span class="lang-es">Conclusiones y Próximos Pasos</span>
@@ -193,6 +225,7 @@
             </p>
 
             <div class="mt-8 space-y-6">
+                <!-- Generate AI Profile Section -->
                 <div>
                     <h3 class="text-xl font-semibold text-accent-gold mb-2">
                         <span class="lang-es">Creando la Mente de Maia</span>
@@ -201,10 +234,12 @@
                     <button id="generateIdealAIProfileButton" class="api-button bg-accent-blue hover:bg-accent-blue-hover text-primary-dark disabled:bg-disabled-bg">
                         <span class="lang-es">✨ Generar el Perfil de IA Ideal</span>
                         <span class="lang-en hidden">✨ Generate the Ideal AI Profile</span>
+                        <div id="idealAIProfileLoading" class="loading-spinner" style="display: none;"></div>
                     </button>
-                    <div id="idealAIProfileLoading" class="loading-spinner" style="display: none;"></div>
                     <div id="idealAIProfileOutput" class="api-output" style="display: none;"></div>
                 </div>
+
+                <!-- Generate Title and Slogan Section -->
                 <div>
                     <h3 class="text-xl font-semibold text-accent-gold mb-2">
                         <span class="lang-es">Una Voz que se Recordará</span>
@@ -213,13 +248,14 @@
                     <button id="generateTitleSloganButton" class="api-button bg-accent-blue hover:bg-accent-blue-hover text-primary-dark disabled:bg-disabled-bg" disabled>
                         <span class="lang-es">✨ Proponer Título y Eslogan</span>
                         <span class="lang-en hidden">✨ Propose Title and Slogan</span>
+                        <div id="titleSloganLoading" class="loading-spinner" style="display: none;"></div>
                     </button>
-                    <div id="titleSloganLoading" class="loading-spinner" style="display: none;"></div>
                     <div id="titleSloganOutput" class="api-output" style="display: none;"></div>
                 </div>
             </div>
         </section>
         
+        <!-- Data and Resources Section -->
         <section id="recursos" class="content-section bg-secondary-dark p-6 rounded-lg shadow-lg">
             <h2 class="text-2xl font-bold text-accent-gold mb-4">
                 <span class="lang-es">Datos y Recursos del Informe</span>
@@ -230,13 +266,16 @@
                 <span class="lang-en hidden">Explore the key data of each influencer. Use the button for the AI to identify patterns and apply them to Maia Kode's profile.</span>
             </p>
 
+            <!-- Platform Popularity Section -->
             <h3 class="text-xl font-semibold text-accent-gold mb-4">
                 <span class="lang-es">Popularidad de Plataformas</span>
                 <span class="lang-en hidden">Platform Popularity</span>
             </h3>
             <div id="platformGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
-                </div>
+                <!-- Platform cards will be dynamically generated here -->
+            </div>
 
+            <!-- Comparison Table Section -->
             <h3 class="text-xl font-semibold text-accent-gold mt-6 mb-3">
                 <span class="lang-es">Tabla Comparativa de Atributos Clave</span>
                 <span class="lang-en hidden">Key Attributes Comparison Table</span>
@@ -271,32 +310,42 @@
                             </th>
                         </tr>
                     </thead>
-                    <tbody class="bg-secondary-dark divide-y divide-border-color text-sm text-secondary-text" id="comparisonTableBody"></tbody>
+                    <tbody class="bg-secondary-dark divide-y divide-border-color text-sm text-secondary-text" id="comparisonTableBody">
+                        <!-- Table rows will be dynamically generated here -->
+                    </tbody>
                 </table>
             </div>
             
+            <!-- Pattern Analysis Section -->
             <div class="mt-8">
                 <button id="summarizePatternsButton" class="api-button bg-accent-blue hover:bg-accent-blue-hover text-primary-dark disabled:bg-disabled-bg">
                     <span class="lang-es">✨ Resumir Patrones Clave</span>
                     <span class="lang-en hidden">✨ Summarize Key Patterns</span>
+                    <div id="summarizePatternsLoading" class="loading-spinner" style="display: none;"></div>
                 </button>
-                <div id="summarizePatternsLoading" class="loading-spinner" style="display: none;"></div>
                 <div id="summarizePatternsOutput" class="api-output" style="display: none;"></div>
             </div>
         </section>
     </main>
 
+    <!-- Footer -->
     <footer class="bg-secondary-dark text-tertiary-text py-8 mt-12">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <p class="text-sm">
                 <span class="lang-es">Un proyecto de Jon Efe. | Funciones de IA por OpenAI.</span>
                 <span class="lang-en hidden">A project by Jon Efe. | AI functions by OpenAI.</span>
             </p>
+            <p class="text-xs mt-2 text-tertiary-text">
+                <span class="lang-es">© 2024 Proyecto Génesis - Maia Kode. Todos los derechos reservados.</span>
+                <span class="lang-en hidden">© 2024 Project Genesis - Maia Kode. All rights reserved.</span>
+            </p>
         </div>
     </footer>
 
+    <!-- JavaScript -->
     <script defer src="app.js"></script>
 
+    <!-- Language Switching Script -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const langButtons = document.querySelectorAll('.lang-button');
@@ -305,19 +354,28 @@
 
             function updateLang(lang) {
                 const isEs = lang === 'es';
+                
+                // Update visibility of language-specific elements
                 document.querySelectorAll('.lang-es').forEach(el => el.classList.toggle('hidden', !isEs));
                 document.querySelectorAll('.lang-en').forEach(el => el.classList.toggle('hidden', isEs));
+                
+                // Update HTML lang attribute
                 body.lang = lang;
+                document.documentElement.lang = lang;
 
+                // Update meta tags with data attributes
                 langElements.forEach(el => {
-                    const content = el.dataset[`lang${lang}`];
-                    if (el.tagName === 'TITLE') {
-                        el.textContent = content;
-                    } else if (el.tagName === 'META') {
-                        el.setAttribute('content', content);
+                    const content = el.dataset[`lang${lang.charAt(0).toUpperCase() + lang.slice(1)}`];
+                    if (content) {
+                        if (el.tagName === 'TITLE') {
+                            el.textContent = content;
+                        } else if (el.tagName === 'META') {
+                            el.setAttribute('content', content);
+                        }
                     }
                 });
 
+                // Update button states
                 langButtons.forEach(btn => {
                     if (btn.dataset.lang === lang) {
                         btn.classList.add('active-lang');
@@ -327,8 +385,12 @@
                         btn.classList.add('bg-tertiary-dark', 'text-tertiary-text');
                     }
                 });
+
+                // Store preference in localStorage
+                localStorage.setItem('preferred-language', lang);
             }
 
+            // Add event listeners to language buttons
             langButtons.forEach(button => {
                 button.addEventListener('click', () => {
                     const selectedLang = button.dataset.lang;
@@ -336,7 +398,33 @@
                 });
             });
 
-            updateLang('es');
+            // Initialize with stored preference or default to Spanish
+            const storedLang = localStorage.getItem('preferred-language') || 'es';
+            updateLang(storedLang);
+        });
+    </script>
+
+    <!-- Performance and Analytics (Optional) -->
+    <script>
+        // Performance monitoring
+        if ('performance' in window) {
+            window.addEventListener('load', () => {
+                setTimeout(() => {
+                    const perfData = performance.getEntriesByType('navigation')[0];
+                    if (perfData) {
+                        console.log('Page Load Time:', perfData.loadEventEnd - perfData.loadEventStart, 'ms');
+                    }
+                }, 0);
+            });
+        }
+
+        // Error handling
+        window.addEventListener('error', (e) => {
+            console.error('Global error:', e.error);
+        });
+
+        window.addEventListener('unhandledrejection', (e) => {
+            console.error('Unhandled promise rejection:', e.reason);
         });
     </script>
 </body>
