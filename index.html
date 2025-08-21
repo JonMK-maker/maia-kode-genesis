@@ -313,7 +313,7 @@
 
                 // Update meta tags and title for SEO
                 langElements.forEach(el => {
-                    const content = el.dataset[`lang-${lang}`];
+                    const content = el.getAttribute(`data-lang-${lang}`);
                     if (el.tagName === 'TITLE') {
                         el.textContent = content;
                     } else if (el.tagName === 'META') {
