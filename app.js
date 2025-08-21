@@ -96,10 +96,20 @@ document.addEventListener('DOMContentLoaded', async () => {
     const audioApiUrl = '/.netlify/functions/generate-audio';
 
     // Función principal para llamadas a la API generativa
+    // Función principal para llamadas a la API generativa - VERSIÓN CORREGIDA
     async function callGenerativeAPI(prompt, buttonElement, loadingDiv, outputDiv) {
+        console.log('=== INICIO callGenerativeAPI ===');
+        console.log('Prompt recibido:', prompt ? 'SÍ' : 'NO');
+        console.log('ButtonElement:', buttonElement ? 'SÍ' : 'NO');
+        console.log('LoadingDiv:', loadingDiv ? 'SÍ' : 'NO');
+        console.log('OutputDiv:', outputDiv ? 'SÍ' : 'NO');
+
         if (!prompt || prompt.trim().length === 0) {
-            console.error('Prompt vacío proporcionado');
-            if (outputDiv) outputDiv.innerHTML = '<p class="text-red-700">Error: No se proporcionó un prompt válido.</p>';
+            console.error('❌ Prompt vacío proporcionado');
+            if (outputDiv) {
+                outputDiv.innerHTML = '<p class="text-red-700">Error: No se proporcionó un prompt válido.</p>';
+                outputDiv.style.display = 'block';
+            }
             return;
         }
 
@@ -107,63 +117,117 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (buttonElement) {
             buttonElement.disabled = true;
             buttonElement.style.opacity = '0.6';
+            console.log('✅ Botón deshabilitado');
         }
         if (loadingDiv) {
             loadingDiv.style.display = 'inline-block';
+            console.log('✅ Loading mostrado');
         }
         if (outputDiv) {
             outputDiv.innerHTML = '';
             outputDiv.style.display = 'none';
+            console.log('✅ Output limpiado');
         }
 
         const payload = {
             prompt: prompt.trim()
         };
 
-        try {
-            console.log('Enviando solicitud a:', apiUrl);
-            console.log('Payload:', payload);
+        console.log('📤 Enviando payload:', {
+            promptLength: payload.prompt.length,
+            apiUrl: apiUrl
+        });
 
+        try {
             const response = await fetch(apiUrl, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
                 },
                 body: JSON.stringify(payload)
             });
 
-            console.log('Respuesta recibida:', response.status, response.statusText);
+            console.log('📥 Respuesta recibida:', {
+                status: response.status,
+                statusText: response.statusText,
+                ok: response.ok,
+                contentType: response.headers.get('content-type')
+            });
 
             if (!response.ok) {
                 let errorData;
                 try {
-                    errorData = await response.json();
+                    const responseText = await response.text();
+                    console.log('📄 Texto de respuesta de error:', responseText);
+                    errorData = JSON.parse(responseText);
                 } catch (e) {
+                    console.error('❌ Error parseando respuesta de error:', e);
                     errorData = {
                         error: {
-                            message: `Error ${response.status}: ${response.statusText}`
+                            message: `Error ${response.status}: ${response.statusText}. Verifica que la función Netlify esté correctamente configurada.`
                         }
                     };
                 }
                 
-                console.error("API Error:", response.status, errorData);
+                console.error("❌ API Error:", response.status, errorData);
                 
                 if (outputDiv) {
-                    outputDiv.innerHTML = `<p class='text-red-700'>Error de API (${response.status}): ${errorData.error?.message || 'Error desconocido del servidor.'}</p>`;
+                    outputDiv.innerHTML = `
+                        <div class='text-red-700 p-4 bg-red-50 border border-red-200 rounded'>
+                            <p><strong>Error de API (${response.status}):</strong></p>
+                            <p>${errorData.error?.message || 'Error desconocido del servidor.'}</p>
+                            <p class="text-sm mt-2 text-red-600">Verifica que:</p>
+                            <ul class="text-sm text-red-600 list-disc list-inside">
+                                <li>La función Netlify esté desplegada</li>
+                                <li>La variable OPENAI_API_KEY esté configurada</li>
+                                <li>Tengas créditos disponibles en OpenAI</li>
+                            </ul>
+                        </div>
+                    `;
                     outputDiv.style.display = 'block';
                 }
                 return;
             }
 
-            const result = await response.json();
-            console.log('Resultado parseado:', result);
+            const responseText = await response.text();
+            console.log('📄 Texto de respuesta exitosa:', responseText.length, 'caracteres');
+
+            let result;
+            try {
+                result = JSON.parse(responseText);
+            } catch (e) {
+                console.error('❌ Error parseando JSON de respuesta exitosa:', e);
+                if (outputDiv) {
+                    outputDiv.innerHTML = `
+                        <div class='text-red-700 p-4 bg-red-50 border border-red-200 rounded'>
+                            <p><strong>Error de formato:</strong></p>
+                            <p>La respuesta del servidor no es JSON válido.</p>
+                            <details class="mt-2">
+                                <summary class="cursor-pointer text-sm">Ver respuesta cruda</summary>
+                                <pre class="text-xs mt-1 p-2 bg-gray-100 overflow-auto">${responseText}</pre>
+                            </details>
+                        </div>
+                    `;
+                    outputDiv.style.display = 'block';
+                }
+                return;
+            }
+
+            console.log('✅ Resultado parseado:', {
+                hasChoices: !!result.choices,
+                choicesLength: result.choices?.length || 0,
+                hasMessage: !!(result.choices?.[0]?.message),
+                hasContent: !!(result.choices?.[0]?.message?.content)
+            });
 
             if (result.choices && result.choices.length > 0 && result.choices[0].message && result.choices[0].message.content) {
                 const aiResponseText = result.choices[0].message.content;
-                console.log('Respuesta de IA recibida:', aiResponseText.length, 'caracteres');
+                console.log('🤖 Respuesta de IA recibida:', aiResponseText.length, 'caracteres');
 
                 if (outputDiv) {
                     if (typeof showdown !== 'undefined') {
+                        console.log('✅ Usando Showdown para renderizar Markdown');
                         const converter = new showdown.Converter({
                             simplifiedAutoLink: true,
                             simpleLineBreaks: true,
@@ -174,24 +238,45 @@ document.addEventListener('DOMContentLoaded', async () => {
                         const htmlOutput = converter.makeHtml(aiResponseText);
                         outputDiv.innerHTML = htmlOutput;
                     } else {
-                        console.warn("Showdown no está disponible, mostrando texto plano");
+                        console.warn('⚠️ Showdown no disponible, usando texto plano');
                         outputDiv.innerHTML = `<pre class="whitespace-pre-wrap">${aiResponseText}</pre>`;
                     }
                     outputDiv.style.display = 'block';
+                    console.log('✅ Contenido mostrado en outputDiv');
                 }
 
             } else {
-                console.error("Estructura de respuesta inesperada:", result);
+                console.error("❌ Estructura de respuesta inesperada:", result);
                 if (outputDiv) {
-                    outputDiv.innerHTML = "<p class='text-red-700'>La IA no devolvió una respuesta válida. Inténtalo de nuevo.</p>";
+                    outputDiv.innerHTML = `
+                        <div class='text-red-700 p-4 bg-red-50 border border-red-200 rounded'>
+                            <p><strong>Error de estructura:</strong></p>
+                            <p>La IA no devolvió una respuesta en el formato esperado.</p>
+                            <details class="mt-2">
+                                <summary class="cursor-pointer text-sm">Ver respuesta completa</summary>
+                                <pre class="text-xs mt-1 p-2 bg-gray-100 overflow-auto">${JSON.stringify(result, null, 2)}</pre>
+                            </details>
+                        </div>
+                    `;
                     outputDiv.style.display = 'block';
                 }
             }
 
         } catch (error) {
-            console.error("Error en fetch:", error);
+            console.error("❌ Error en fetch:", error);
             if (outputDiv) {
-                outputDiv.innerHTML = `<p class='text-red-700'>Error de conexión: ${error.message}. Verifica tu conexión a internet e inténtalo de nuevo.</p>`;
+                outputDiv.innerHTML = `
+                    <div class='text-red-700 p-4 bg-red-50 border border-red-200 rounded'>
+                        <p><strong>Error de conexión:</strong></p>
+                        <p>${error.message}</p>
+                        <p class="text-sm mt-2">Posibles causas:</p>
+                        <ul class="text-sm list-disc list-inside">
+                            <li>Problema de conectividad a internet</li>
+                            <li>Función Netlify no disponible</li>
+                            <li>Timeout de la solicitud</li>
+                        </ul>
+                    </div>
+                `;
                 outputDiv.style.display = 'block';
             }
         } finally {
@@ -199,10 +284,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (buttonElement) {
                 buttonElement.disabled = false;
                 buttonElement.style.opacity = '1';
+                console.log('✅ Botón rehabilitado');
             }
             if (loadingDiv) {
                 loadingDiv.style.display = 'none';
+                console.log('✅ Loading ocultado');
             }
+            console.log('=== FIN callGenerativeAPI ===');
         }
     }
 
@@ -714,50 +802,111 @@ El objetivo es deconstruir la descripción estética de un influencer en 3 conce
 
     // Función de inicialización principal
     async function initializeApp() {
+    // Función de inicialización principal - VERSIÓN CORREGIDA
+    async function initializeApp() {
         try {
-            console.log('Iniciando aplicación...');
+            console.log('🚀 Iniciando aplicación...');
             
             // Cargar datos de influencers
             influencers = await loadInfluencerData();
             
             if (!Array.isArray(influencers) || influencers.length === 0) {
-                console.error('No se pudieron cargar los datos de influencers');
+                console.error('❌ No se pudieron cargar los datos de influencers');
                 showErrorMessage('No se pudieron cargar los datos. La aplicación funcionará con funcionalidad limitada.');
                 return;
             }
 
-            console.log('Datos cargados exitosamente:', influencers.length, 'influencers');
+            console.log('✅ Datos cargados exitosamente:', influencers.length, 'influencers');
 
             // Poblar secciones de influencers
             populateInfluencerSection("Español", influencerSelectorHispanas, influencerDetailHispanas);
             populateInfluencerSection("Ingles", influencerSelectorInglesas, influencerDetailInglesas);
 
-            // Poblar tabla de comparación
+            // Poblar tabla de comparación (desktop)
             if (comparisonTableBody) {
                 comparisonTableBody.innerHTML = '';
                 influencers.forEach(inf => {
                     const tr = comparisonTableBody.insertRow();
                     tr.innerHTML = `
-                        <td class="py-2 px-3 border-b border-border-color">${inf.name.split('(')[0].trim()}</td>
-                        <td class="py-2 px-3 border-b border-border-color">${inf.language}</td>
-                        <td class="py-2 px-3 border-b border-border-color">${inf.description.personality.split('.')[0]}.</td>
-                        <td class="py-2 px-3 border-b border-border-color">${inf.description.esthetics.split('.')[0]}.</td>
-                        <td class="py-2 px-3 border-b border-border-color">${inf.contentType.split('.')[0]}.</td>
-                        <td class="py-2 px-3 border-b border-border-color">${inf.topLevelReason.split('.')[0]}.</td>
+                        <td class="py-3 px-4 border-b border-border-color font-medium">${inf.name.split('(')[0].trim()}</td>
+                        <td class="py-3 px-4 border-b border-border-color">${inf.language}</td>
+                        <td class="py-3 px-4 border-b border-border-color">${inf.description.personality.length > 80 ? inf.description.personality.substring(0, 80) + '...' : inf.description.personality}</td>
+                        <td class="py-3 px-4 border-b border-border-color">${inf.description.esthetics.length > 80 ? inf.description.esthetics.substring(0, 80) + '...' : inf.description.esthetics}</td>
+                        <td class="py-3 px-4 border-b border-border-color">${inf.contentType.length > 80 ? inf.contentType.substring(0, 80) + '...' : inf.contentType}</td>
+                        <td class="py-3 px-4 border-b border-border-color">${inf.topLevelReason.length > 80 ? inf.topLevelReason.substring(0, 80) + '...' : inf.topLevelReason}</td>
                     `;
                 });
-                console.log('Tabla de comparación poblada');
+                console.log('✅ Tabla de comparación poblada');
             }
+
+            // Generar tarjetas móviles
+            generateMobileCards();
 
             // Mostrar sección inicial
             showSection('mision');
             
-            console.log('Aplicación inicializada exitosamente');
+            console.log('✅ Aplicación inicializada exitosamente');
 
         } catch (error) {
-            console.error('Error durante la inicialización:', error);
+            console.error('❌ Error durante la inicialización:', error);
             showErrorMessage('Error al inicializar la aplicación. Por favor, recarga la página.');
         }
+    }
+
+    // Función para generar tarjetas móviles
+    function generateMobileCards() {
+        const mobileContainer = document.getElementById('mobileCardsContainer');
+        if (!mobileContainer || influencers.length === 0) return;
+
+        mobileContainer.innerHTML = '';
+
+        influencers.forEach(inf => {
+            const card = document.createElement('div');
+            card.className = 'mobile-influencer-card';
+            
+            card.innerHTML = `
+                <h4>${inf.name.split('(')[0].trim()}</h4>
+                <div class="mobile-attr-row">
+                    <div class="mobile-attr-label">
+                        <span class="lang-es">Idioma</span>
+                        <span class="lang-en hidden">Language</span>
+                    </div>
+                    <div class="mobile-attr-value">${inf.language}</div>
+                </div>
+                <div class="mobile-attr-row">
+                    <div class="mobile-attr-label">
+                        <span class="lang-es">Personalidad</span>
+                        <span class="lang-en hidden">Personality</span>
+                    </div>
+                    <div class="mobile-attr-value">${inf.description.personality.length > 100 ? inf.description.personality.substring(0, 100) + '...' : inf.description.personality}</div>
+                </div>
+                <div class="mobile-attr-row">
+                    <div class="mobile-attr-label">
+                        <span class="lang-es">Estética</span>
+                        <span class="lang-en hidden">Aesthetics</span>
+                    </div>
+                    <div class="mobile-attr-value">${inf.description.esthetics.length > 100 ? inf.description.esthetics.substring(0, 100) + '...' : inf.description.esthetics}</div>
+                </div>
+                <div class="mobile-attr-row">
+                    <div class="mobile-attr-label">
+                        <span class="lang-es">Contenido</span>
+                        <span class="lang-en hidden">Content</span>
+                    </div>
+                    <div class="mobile-attr-value">${inf.contentType.length > 100 ? inf.contentType.substring(0, 100) + '...' : inf.contentType}</div>
+                </div>
+                <div class="mobile-attr-row">
+                    <div class="mobile-attr-label">
+                        <span class="lang-es">Factor Inspirador</span>
+                        <span class="lang-en hidden">Inspirational Factor</span>
+                    </div>
+                    <div class="mobile-attr-value">${inf.topLevelReason.length > 100 ? inf.topLevelReason.substring(0, 100) + '...' : inf.topLevelReason}</div>
+                </div>
+            `;
+            
+            mobileContainer.appendChild(card);
+        });
+        
+        console.log('Tarjetas móviles generadas');
     }
 
     // Configurar botones principales de análisis

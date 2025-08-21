@@ -1,6 +1,8 @@
-const fetch = require('node-fetch');
-
 exports.handler = async function(event, context) {
+    console.log('🔧 Función Netlify ejecutándose');
+    console.log('Método:', event.httpMethod);
+    console.log('Headers:', JSON.stringify(event.headers, null, 2));
+
     // Configurar CORS
     const headers = {
         'Access-Control-Allow-Origin': '*',
@@ -11,6 +13,7 @@ exports.handler = async function(event, context) {
 
     // Manejar requests OPTIONS (preflight)
     if (event.httpMethod === 'OPTIONS') {
+        console.log('✅ Respondiendo a OPTIONS request');
         return {
             statusCode: 200,
             headers,
@@ -20,6 +23,7 @@ exports.handler = async function(event, context) {
 
     // Solo permitir POST
     if (event.httpMethod !== 'POST') {
+        console.log('❌ Método no permitido:', event.httpMethod);
         return {
             statusCode: 405,
             headers,
@@ -30,6 +34,7 @@ exports.handler = async function(event, context) {
     // Verificar API key
     const apiKey = process.env.OPENAI_API_KEY;
     if (!apiKey) {
+        console.log('❌ API Key no configurada');
         return {
             statusCode: 500,
             headers,
@@ -37,17 +42,22 @@ exports.handler = async function(event, context) {
         };
     }
 
+    console.log('✅ API Key encontrada');
+
     try {
         // Parsear body
-        const { prompt } = JSON.parse(event.body);
+        const { prompt } = JSON.parse(event.body || '{}');
         
         if (!prompt) {
+            console.log('❌ Prompt no proporcionado');
             return {
                 statusCode: 400,
                 headers,
                 body: JSON.stringify({ error: 'Prompt is required' })
             };
         }
+
+        console.log('📤 Enviando a OpenAI, prompt length:', prompt.length);
 
         // Llamar a OpenAI
         const response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -67,11 +77,14 @@ exports.handler = async function(event, context) {
         });
 
         const data = await response.json();
+        console.log('📥 Respuesta de OpenAI:', response.status, response.ok);
 
         if (!response.ok) {
+            console.log('❌ Error de OpenAI:', data);
             throw new Error(data.error?.message || 'OpenAI API error');
         }
 
+        console.log('✅ Respuesta exitosa de OpenAI');
         return {
             statusCode: 200,
             headers,
@@ -79,7 +92,7 @@ exports.handler = async function(event, context) {
         };
 
     } catch (error) {
-        console.error('Error:', error);
+        console.error('❌ Error en función:', error);
         return {
             statusCode: 500,
             headers,

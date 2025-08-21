@@ -1,3 +1,81 @@
+/* ============ CORRECCIÓN TABLA MÓVIL ============ */
+
+.table-container {
+    width: 100%;
+}
+
+/* Mobile cards styling */
+.mobile-influencer-card {
+    background-color: var(--tertiary-dark);
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.mobile-influencer-card h4 {
+    color: var(--accent-gold);
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.5rem;
+}
+
+.mobile-attr-row {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(48, 54, 61, 0.3);
+}
+
+.mobile-attr-row:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.mobile-attr-label {
+    color: var(--accent-gold);
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.25rem;
+}
+
+.mobile-attr-value {
+    color: var(--secondary-text);
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+/* Desktop table improvements */
+@media (min-width: 768px) {
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        border-radius: 0.5rem;
+    }
+    
+    .table-responsive table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    
+    .table-responsive th {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        background-color: var(--tertiary-dark);
+    }
+    
+    .table-responsive td {
+        max-width: 200px;
+        word-wrap: break-word;
+        white-space: normal;
+    }
+}
 /* ============== INICIO: Contenido para: styles.css (Paleta "Aurora Dorada") ============== */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
 
