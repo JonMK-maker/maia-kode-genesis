@@ -802,8 +802,6 @@ El objetivo es deconstruir la descripción estética de un influencer en 3 conce
 
     // Función de inicialización principal
     async function initializeApp() {
-    // Función de inicialización principal - VERSIÓN CORREGIDA
-    async function initializeApp() {
         try {
             console.log('🚀 Iniciando aplicación...');
             
