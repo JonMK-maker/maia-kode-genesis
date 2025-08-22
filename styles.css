@@ -101,7 +101,35 @@ tbody { background-color: var(--secondary-dark); color: var(--secondary-text); }
 ::-webkit-scrollbar-thumb:hover { background: var(--accent-gold-hover); }
 
 /* Carga y estados de la UI */
-.loading-spinner { border-top: 3px solid var(--accent-gold); }
+.loading-spinner { 
+    border: 3px solid var(--border-color);
+    border-top: 3px solid var(--accent-gold); 
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite;
+    display: inline-block;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    .loading-spinner {
+        animation: none;
+        border-top-color: var(--accent-gold);
+    }
+    
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
 
 /* --- SOLUCIÓN PARA TARJETAS DE INFLUENCERS --- */
 .influencer-card {
