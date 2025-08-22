@@ -405,6 +405,7 @@ tbody { background-color: var(--secondary-dark); color: var(--secondary-text); }
 }
 
 /* AI Button Voltage Effect - Inspired by Uiverse.io */
+/* This effect should ONLY be applied to AI function buttons */
 .ai-btn-voltage {
     position: relative;
     display: inline-block;
@@ -664,6 +665,20 @@ tbody { background-color: var(--secondary-dark); color: var(--secondary-text); }
     animation: gradientShift 3s ease infinite;
 }
 
+/* ============== CIRCULAR DECORATIVE BUTTON EFFECTS ============== */
+/* Specific classes for circular buttons like language selectors */
+
+.decorative-btn-container-circle {
+    position: relative;
+    display: inline-block;
+    padding: 2px;
+    background: linear-gradient(45deg, #58A6FF, #E441A5, #58A6FF);
+    background-size: 200% 200%;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    animation: gradientShift 3s ease infinite;
+}
+
 @keyframes gradientShift {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
@@ -677,6 +692,17 @@ tbody { background-color: var(--secondary-dark); color: var(--secondary-text); }
 }
 
 .decorative-btn-container:active {
+    transform: scale(0.98);
+    filter: blur(0.8px);
+}
+
+.decorative-btn-container-circle:hover {
+    filter: blur(0.5px);
+    box-shadow: 0 0 20px rgba(88, 166, 255, 0.3), 0 0 40px rgba(228, 65, 165, 0.2);
+    transform: scale(1.02);
+}
+
+.decorative-btn-container-circle:active {
     transform: scale(0.98);
     filter: blur(0.8px);
 }
@@ -699,6 +725,24 @@ tbody { background-color: var(--secondary-dark); color: var(--secondary-text); }
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
+.decorative-btn-circle {
+    position: relative;
+    background-color: var(--tertiary-dark);
+    color: var(--primary-text);
+    border: none;
+    border-radius: 50%;
+    padding: inherit;
+    font-weight: inherit;
+    font-size: inherit;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
 .decorative-btn:hover {
     background-color: var(--secondary-dark);
     color: var(--accent-gold);
@@ -709,6 +753,16 @@ tbody { background-color: var(--secondary-dark); color: var(--secondary-text); }
     background-color: var(--primary-dark);
 }
 
+.decorative-btn-circle:hover {
+    background-color: var(--secondary-dark);
+    color: var(--accent-gold);
+    text-decoration: none;
+}
+
+.decorative-btn-circle:active {
+    background-color: var(--primary-dark);
+}
+
 /* Maintain specific styling for active navigation buttons */
 .decorative-btn-container .decorative-btn.active {
     background-color: var(--tertiary-dark);
@@ -716,5 +770,14 @@ tbody { background-color: var(--secondary-dark); color: var(--secondary-text); }
 }
 
 .decorative-btn-container .decorative-btn.active:hover {
+    color: var(--accent-gold-hover);
+}
+
+.decorative-btn-container-circle .decorative-btn-circle.active {
+    background-color: var(--tertiary-dark);
+    color: var(--accent-gold);
+}
+
+.decorative-btn-container-circle .decorative-btn-circle.active:hover {
     color: var(--accent-gold-hover);
 }
