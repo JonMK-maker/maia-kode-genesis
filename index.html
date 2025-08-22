@@ -331,10 +331,15 @@
     </footer>
 
     <!-- Scroll to Top Button -->
-    <button id="scrollToTopBtn" class="scroll-to-top-btn" aria-label="Volver arriba" title="Volver arriba">
-        <span class="lang-es">Volver arriba</span>
-        <span class="lang-en hidden">Back to Top</span>
-    </button>
+    <div class="decorative-btn-container-circle scroll-to-top-container">
+        <button id="scrollToTopBtn" class="decorative-btn-circle scroll-to-top-btn" aria-label="Volver arriba" title="Volver arriba">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" class="scroll-arrow">
+                <path d="M12 2L7 7l1.41 1.41L11 5.83V22h2V5.83l2.59 2.58L17 7l-5-5z"/>
+            </svg>
+            <span class="lang-es scroll-text">Volver arriba</span>
+            <span class="lang-en scroll-text hidden">Back to Top</span>
+        </button>
+    </div>
 
     <script defer src="app.js"></script>
 
@@ -344,13 +349,14 @@
             const langElements = document.querySelectorAll('[data-lang-es], [data-lang-en]');
             const body = document.body;
             const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+            const scrollToTopContainer = document.querySelector('.scroll-to-top-container');
 
             // Scroll to top functionality
             function handleScroll() {
                 if (window.pageYOffset > 300) {
-                    scrollToTopBtn.classList.add('show');
+                    scrollToTopContainer.classList.add('show');
                 } else {
-                    scrollToTopBtn.classList.remove('show');
+                    scrollToTopContainer.classList.remove('show');
                 }
             }
 
