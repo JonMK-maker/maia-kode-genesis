@@ -327,23 +327,71 @@ The objective is to analyze a summary of data from 16 influencers to identify th
 
     const apiUrl = '/.netlify/functions/openai';
 
+    // Enhanced error handling and user feedback
+    function createUserFriendlyErrorMessage(error, language = 'es') {
+        const messages = {
+            es: {
+                timeout: "⏱️ La solicitud tardó demasiado. Por favor, intenta de nuevo.",
+                network: "🌐 Error de conexión. Verifica tu internet e intenta nuevamente.",
+                server: "🔧 El servidor está temporalmente no disponible. Intenta en unos minutos.",
+                quota: "⚠️ Se ha alcanzado el límite de solicitudes. Intenta más tarde.",
+                invalid: "❌ Solicitud inválida. Por favor, intenta de nuevo.",
+                generic: "💫 Algo inesperado ocurrió. Maia está trabajando en resolverlo."
+            },
+            en: {
+                timeout: "⏱️ Request took too long. Please try again.",
+                network: "🌐 Connection error. Check your internet and try again.",
+                server: "🔧 Server temporarily unavailable. Try again in a few minutes.",
+                quota: "⚠️ Request limit reached. Please try later.",
+                invalid: "❌ Invalid request. Please try again.",
+                generic: "💫 Something unexpected happened. Maia is working on fixing it."
+            }
+        };
+
+        const lang = messages[language] || messages.es;
+        
+        if (error.includes('timeout') || error.includes('408')) return lang.timeout;
+        if (error.includes('network') || error.includes('connection')) return lang.network;
+        if (error.includes('500') || error.includes('502') || error.includes('503')) return lang.server;
+        if (error.includes('429') || error.includes('quota')) return lang.quota;
+        if (error.includes('400') || error.includes('invalid')) return lang.invalid;
+        
+        return lang.generic;
+    }
+
     async function callGenerativeAPI(prompt, buttonElement, loadingDiv, outputDiv) {
         if (buttonElement) buttonElement.disabled = true;
         if (loadingDiv) loadingDiv.style.display = 'inline-block';
         if (outputDiv) outputDiv.innerHTML = '';
 
+        // Validate prompt before sending
+        if (!prompt || typeof prompt !== 'string' || prompt.trim().length === 0) {
+            console.error("Invalid prompt provided");
+            if (outputDiv) outputDiv.innerHTML = `<p class='text-red-700'>${createUserFriendlyErrorMessage('invalid', currentLanguage)}</p>`;
+            if (buttonElement) buttonElement.disabled = false;
+            if (loadingDiv) loadingDiv.style.display = 'none';
+            if (outputDiv) outputDiv.style.display = 'block';
+            return;
+        }
+
         const payload = {
-            prompt: prompt
+            prompt: prompt.trim()
         };
 
         try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 45000); // 45 second timeout
+
             const response = await fetch(apiUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(payload)
+                body: JSON.stringify(payload),
+                signal: controller.signal
             });
+
+            clearTimeout(timeoutId);
 
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({
@@ -351,15 +399,31 @@ The objective is to analyze a summary of data from 16 influencers to identify th
                         message: "Respuesta de error no es JSON o está vacía."
                     }
                 }));
+                
                 console.error("API Error desde el backend:", response.status, errorData);
-                if (outputDiv) outputDiv.innerHTML = `<p class='text-red-700'>Error de API: ${response.statusText}. ${errorData.error?.message || 'Error desconocido del backend.'}</p>`;
+                
+                const userMessage = createUserFriendlyErrorMessage(
+                    `${response.status} ${errorData.error?.message || response.statusText}`, 
+                    currentLanguage
+                );
+                
+                if (outputDiv) {
+                    outputDiv.innerHTML = `
+                        <div class='bg-red-900 bg-opacity-20 border border-red-700 rounded-lg p-4 mb-4'>
+                            <p class='text-red-300 font-medium'>${userMessage}</p>
+                            <details class='mt-2'>
+                                <summary class='text-red-400 text-sm cursor-pointer hover:text-red-300'>Detalles técnicos</summary>
+                                <p class='text-red-500 text-xs mt-1'>Error ${response.status}: ${errorData.error?.message || 'Error desconocido'}</p>
+                            </details>
+                        </div>
+                    `;
+                }
                 return;
             }
 
             const result = await response.json();
 
             if (result.choices && result.choices.length > 0 && result.choices[0].message && result.choices[0].message.content) {
-
                 const aiResponseText = result.choices[0].message.content;
 
                 if (typeof showdown !== 'undefined') {
@@ -367,7 +431,8 @@ The objective is to analyze a summary of data from 16 influencers to identify th
                         simplifiedAutoLink: true,
                         simpleLineBreaks: true,
                         strikethrough: true,
-                        tables: true
+                        tables: true,
+                        tasklists: true
                     });
                     const htmlOutput = converter.makeHtml(aiResponseText);
                     // Sanitize HTML to prevent XSS attacks
@@ -380,18 +445,39 @@ The objective is to analyze a summary of data from 16 influencers to identify th
 
             } else {
                 console.error("Estructura de respuesta de API inesperada:", result);
-                if (outputDiv) outputDiv.innerHTML = "<p class='text-red-700'>No se pudo obtener una respuesta válida de la IA.</p>";
+                if (outputDiv) outputDiv.innerHTML = `<p class='text-red-700'>${createUserFriendlyErrorMessage('invalid', currentLanguage)}</p>`;
             }
 
         } catch (error) {
             console.error("Error en el Fetch:", error);
-            if (outputDiv) outputDiv.innerHTML = "<p class='text-red-700'>Error al contactar el servicio de IA. Revisa la consola y el estado de tu backend.</p>";
+            
+            let userMessage;
+            if (error.name === 'AbortError') {
+                userMessage = createUserFriendlyErrorMessage('timeout', currentLanguage);
+            } else if (error.message.includes('fetch')) {
+                userMessage = createUserFriendlyErrorMessage('network', currentLanguage);
+            } else {
+                userMessage = createUserFriendlyErrorMessage('generic', currentLanguage);
+            }
+            
+            if (outputDiv) {
+                outputDiv.innerHTML = `
+                    <div class='bg-red-900 bg-opacity-20 border border-red-700 rounded-lg p-4 mb-4'>
+                        <p class='text-red-300 font-medium'>${userMessage}</p>
+                        <details class='mt-2'>
+                            <summary class='text-red-400 text-sm cursor-pointer hover:text-red-300'>Detalles técnicos</summary>
+                            <p class='text-red-500 text-xs mt-1'>${error.message}</p>
+                        </details>
+                    </div>
+                `;
+            }
         } finally {
             if (buttonElement) buttonElement.disabled = false;
             if (loadingDiv) loadingDiv.style.display = 'none';
             if (outputDiv) outputDiv.style.display = 'block';
         }
     }
+
 
     function showSection(targetId) {
         contentSections.forEach(section => {

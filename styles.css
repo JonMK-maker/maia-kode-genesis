@@ -1033,3 +1033,131 @@ tbody { background-color: var(--secondary-dark); color: var(--secondary-text); }
     outline: 2px solid var(--accent-gold);
     outline-offset: 2px;
 }
+
+/* ============== ENHANCED FORM STYLES ============== */
+/* Contact form enhancements */
+.contact-form input:focus,
+.contact-form textarea:focus {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(88, 166, 255, 0.15);
+}
+
+.contact-form label {
+    transition: color 0.2s ease;
+}
+
+.contact-form input:focus + label,
+.contact-form textarea:focus + label {
+    color: var(--accent-blue);
+}
+
+/* ============== IMPROVED LOADING STATES ============== */
+.loading-spinner {
+    position: relative;
+}
+
+.loading-spinner::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid var(--border-color);
+    border-top: 2px solid var(--accent-gold);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* ============== ENHANCED BUTTON INTERACTIONS ============== */
+.voltage-button {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.voltage-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(88, 166, 255, 0.25);
+}
+
+.voltage-button:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 15px rgba(88, 166, 255, 0.2);
+}
+
+.voltage-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* ============== ACCESSIBILITY IMPROVEMENTS ============== */
+@media (prefers-reduced-motion: reduce) {
+    .influencer-card,
+    .influencer-checkbox-custom,
+    .voltage-button,
+    .decorative-btn,
+    input,
+    textarea {
+        transition: none !important;
+        animation: none !important;
+    }
+    
+    .checkmarkPop {
+        animation: none !important;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .influencer-checkbox-custom {
+        border-width: 3px;
+    }
+    
+    .influencer-checkbox:checked + .influencer-checkbox-custom {
+        background-color: var(--primary-text);
+        border-color: var(--primary-text);
+    }
+    
+    .influencer-checkbox:checked + .influencer-checkbox-custom::after {
+        color: var(--primary-dark);
+    }
+}
+
+/* ============== RESPONSIVE IMPROVEMENTS ============== */
+@media (max-width: 768px) {
+    .influencer-checkbox-label {
+        top: -6px;
+        right: -6px;
+    }
+    
+    .influencer-checkbox-custom {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .influencer-checkbox:checked + .influencer-checkbox-custom::after {
+        font-size: 12px;
+    }
+}
+
+/* ============== ERROR MESSAGE STYLING ============== */
+.error-message {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(185, 28, 28, 0.1));
+    border-left: 4px solid var(--accent-gold);
+    animation: errorSlideIn 0.3s ease-out;
+}
+
+@keyframes errorSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
