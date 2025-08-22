@@ -307,10 +307,9 @@
     </footer>
 
     <!-- Scroll to Top Button -->
-    <button id="scrollToTopBtn" class="scroll-to-top-btn" aria-label="Scroll to top" title="Scroll to top">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
-        </svg>
+    <button id="scrollToTopBtn" class="scroll-to-top-btn" aria-label="Volver arriba" title="Volver arriba">
+        <span class="lang-es">Volver arriba</span>
+        <span class="lang-en hidden">Back to Top</span>
     </button>
 
     <script defer src="app.js"></script>
@@ -375,6 +374,14 @@
                 // Update currentLanguage in app.js and refresh influencer profiles
                 if (window.updateAppLanguage) {
                     window.updateAppLanguage(lang);
+                }
+
+                // Update scroll-to-top button attributes
+                const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+                if (scrollToTopBtn) {
+                    const scrollToTopText = lang === 'es' ? 'Volver arriba' : 'Back to Top';
+                    scrollToTopBtn.setAttribute('aria-label', scrollToTopText);
+                    scrollToTopBtn.setAttribute('title', scrollToTopText);
                 }
             }
 
