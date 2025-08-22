@@ -104,6 +104,12 @@
                     </button>
                 </div>
                 <div class="decorative-btn-container">
+                    <button data-target="contacto" class="decorative-btn nav-button text-sm sm:text-base px-3 py-2 sm:px-4 rounded-md text-primary-text">
+                        <span class="lang-es">Contacto</span>
+                        <span class="lang-en hidden">Contact</span>
+                    </button>
+                </div>
+                <div class="decorative-btn-container">
                     <button data-target="recursos" class="decorative-btn nav-button text-sm sm:text-base px-3 py-2 sm:px-4 rounded-md text-primary-text">
                         <span class="lang-es">Datos y Recursos</span>
                         <span class="lang-en hidden">Data & Resources</span>
@@ -254,6 +260,75 @@
                     <div id="titleSloganOutput" class="api-output" style="display: none;" aria-live="polite"></div>
                 </div>
             </div>
+        </section>
+
+        <!-- Nueva Sección "Visión Futuro" -->
+        <section class="bg-secondary-dark p-8 rounded-lg shadow-lg">
+            <div class="text-center">
+                <h3 class="text-xl font-semibold text-accent-gold mb-4 opacity-70">
+                    <span class="lang-es">Visión Futuro</span>
+                    <span class="lang-en hidden">Future Vision</span>
+                </h3>
+                <p class="text-secondary-text opacity-60 italic">
+                    <span class="lang-es">Próximamente... Las opiniones y aportes de quienes ayudan a dar vida a Maia Kode</span>
+                    <span class="lang-en hidden">Coming soon... The opinions and contributions of those who help bring Maia Kode to life</span>
+                </p>
+            </div>
+        </section>
+
+        <section id="contacto" class="content-section bg-secondary-dark p-6 rounded-lg shadow-lg">
+            <h2 class="text-2xl font-bold text-accent-gold mb-4">
+                <span class="lang-es">¿Tienes una idea? ¡Conversemos!</span>
+                <span class="lang-en hidden">Have an idea? Let's talk!</span>
+            </h2>
+            <p class="mb-6 text-secondary-text leading-relaxed">
+                <span class="lang-es">Maia está en constante evolución y las mejores ideas nacen del intercambio. Si tienes sugerencias, reflexiones o simplemente quieres compartir tu perspectiva sobre este proyecto, me encantaría conocer tu punto de vista.</span>
+                <span class="lang-en hidden">Maia is constantly evolving and the best ideas are born from exchange. If you have suggestions, reflections, or simply want to share your perspective on this project, I'd love to hear your point of view.</span>
+            </p>
+            
+            <!-- Netlify Forms Contact Form -->
+            <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="space-y-6">
+                <!-- Hidden bot field for spam protection -->
+                <input type="hidden" name="bot-field" />
+                <input type="hidden" name="form-name" value="contact" />
+                
+                <div>
+                    <label for="name" class="block text-sm font-medium text-accent-gold mb-2">
+                        <span class="lang-es">¿Cómo te llamas?</span>
+                        <span class="lang-en hidden">What's your name?</span>
+                    </label>
+                    <input type="text" id="name" name="name" required 
+                           class="w-full px-4 py-3 bg-tertiary-dark border border-border-color rounded-lg text-primary-text placeholder-tertiary-text focus:outline-none focus:ring-2 focus:ring-accent-blue focus:border-transparent transition-all duration-200"
+                           placeholder="Tu nombre / Your name">
+                </div>
+                
+                <div>
+                    <label for="email" class="block text-sm font-medium text-accent-gold mb-2">
+                        <span class="lang-es">Tu email</span>
+                        <span class="lang-en hidden">Your email</span>
+                    </label>
+                    <input type="email" id="email" name="email" required 
+                           class="w-full px-4 py-3 bg-tertiary-dark border border-border-color rounded-lg text-primary-text placeholder-tertiary-text focus:outline-none focus:ring-2 focus:ring-accent-blue focus:border-transparent transition-all duration-200"
+                           placeholder="tu@email.com">
+                </div>
+                
+                <div>
+                    <label for="message" class="block text-sm font-medium text-accent-gold mb-2">
+                        <span class="lang-es">Cuéntame tu idea o reflexión</span>
+                        <span class="lang-en hidden">Tell me your idea or reflection</span>
+                    </label>
+                    <textarea id="message" name="message" rows="5" required 
+                              class="w-full px-4 py-3 bg-tertiary-dark border border-border-color rounded-lg text-primary-text placeholder-tertiary-text focus:outline-none focus:ring-2 focus:ring-accent-blue focus:border-transparent transition-all duration-200 resize-vertical"
+                              placeholder="Comparte tu idea, sugerencia o reflexión..."></textarea>
+                </div>
+                
+                <div class="ai-btn-voltage">
+                    <button type="submit" class="voltage-button bg-accent-blue hover:bg-accent-blue-hover text-primary-dark font-semibold py-3 px-6 rounded-lg transition-all duration-200 w-full sm:w-auto">
+                        <span class="lang-es">¡Iniciemos esta conversación!</span>
+                        <span class="lang-en hidden">Let's start this conversation!</span>
+                    </button>
+                </div>
+            </form>
         </section>
         
         <section id="recursos" class="content-section bg-secondary-dark p-6 rounded-lg shadow-lg">

@@ -669,14 +669,25 @@ El objetivo es deconstruir la descripción estética de un influencer en 3 conce
         selectorElement.innerHTML = '';
         filteredInfluencers.forEach(influencer => {
             const card = document.createElement('div');
-            card.className = 'influencer-card p-4 rounded-lg shadow';
+            card.className = 'influencer-card p-4 rounded-lg shadow relative';
             card.setAttribute('role', 'button');
             card.setAttribute('tabindex', '0');
             card.setAttribute('aria-label', `Seleccionar influencer ${influencer.name.split('(')[0].trim()}`);
             card.setAttribute('data-influencer-id', influencer.id);
             const platformNames = influencer.platforms.map(p => p.name).slice(0, 2).join(', ');
-            card.innerHTML = `<h4 class="font-semibold text-center">${influencer.name.split('(')[0].trim()}</h4>
-                                    <p class="text-xs text-center mt-1">${platformNames}</p>`;
+            card.innerHTML = `
+                <div class="relative">
+                    <!-- Checkbox en esquina superior derecha -->
+                    <div class="absolute top-0 right-0 -mt-2 -mr-2">
+                        <label class="influencer-checkbox-label" for="checkbox_${influencer.id}">
+                            <input type="checkbox" id="checkbox_${influencer.id}" class="influencer-checkbox" data-influencer-id="${influencer.id}" data-influencer-name="${influencer.name.split('(')[0].trim()}">
+                            <span class="influencer-checkbox-custom"></span>
+                        </label>
+                    </div>
+                    <h4 class="font-semibold text-center">${influencer.name.split('(')[0].trim()}</h4>
+                    <p class="text-xs text-center mt-1">${platformNames}</p>
+                </div>
+            `;
             
             const selectInfluencer = () => {
                 const previouslySelected = selectorElement.querySelector('.selected');
@@ -698,7 +709,22 @@ El objetivo es deconstruir la descripción estética de un influencer en 3 conce
                 }
             };
             
-            card.addEventListener('click', selectInfluencer);
+            card.addEventListener('click', (e) => {
+                // Prevent card selection if checkbox was clicked
+                if (e.target.closest('.influencer-checkbox-label')) {
+                    return;
+                }
+                selectInfluencer();
+            });
+            
+            // Add event listener for checkbox to prevent propagation
+            const checkbox = card.querySelector('.influencer-checkbox');
+            if (checkbox) {
+                checkbox.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                });
+            }
+            
             card.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
@@ -834,8 +860,37 @@ El objetivo es deconstruir la descripción estética de un influencer en 3 conce
     });
 
     if (generateIdealAIProfileButton) generateIdealAIProfileButton.addEventListener('click', (e) => {
+        // Get selected influencers from checkboxes
+        const selectedCheckboxes = document.querySelectorAll('.influencer-checkbox:checked');
+        const selectedInfluencers = Array.from(selectedCheckboxes).map(checkbox => {
+            return {
+                id: checkbox.dataset.influencerId,
+                name: checkbox.dataset.influencerName
+            };
+        });
+
+        let prompt;
         const template = promptTemplates[currentLanguage].idealProfile;
-        const prompt = template.template.replace('{{conclusion}}', template.conclusion);
+        
+        if (selectedInfluencers.length > 0) {
+            // Custom prompt with selected influencers
+            const selectedNames = selectedInfluencers.map(inf => inf.name).join(', ');
+            const selectedInfluencerData = selectedInfluencers.map(selected => {
+                const fullInfluencer = influencers.find(inf => inf.id === selected.id);
+                return fullInfluencer ? `${fullInfluencer.name}: ${fullInfluencer.description.personality.substring(0, 100)}...` : selected.name;
+            }).join(' | ');
+            
+            prompt = template.template.replace('{{conclusion}}', 
+                `${template.conclusion} 
+                
+                **ENFOQUE PERSONALIZADO**: Prioriza especialmente los rasgos de estos influencers seleccionados: ${selectedNames}.
+                
+                Datos específicos de los seleccionados: ${selectedInfluencerData}`);
+        } else {
+            // Show Maia's tip in console and use general analysis
+            console.log('💡 Maia dice: "Selecciona algunos perfiles de influencers que te inspiren más para crear un análisis personalizado, ¡o continúa con el análisis general de todos!"');
+            prompt = template.template.replace('{{conclusion}}', template.conclusion);
+        }
         
         callGenerativeAPI(prompt, e.target, document.getElementById('idealAIProfileLoading'), document.getElementById('idealAIProfileOutput')).then(() => {
             document.getElementById('generateTitleSloganButton').disabled = false;
