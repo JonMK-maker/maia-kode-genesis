@@ -11,6 +11,7 @@
     --tertiary-text: #89929B;      /* Gris muted - Texto menos importante */
     --accent-gold: #FFC777;        /* Dorado vibrante y elegante */
     --accent-gold-hover: #E0A84C;  /* Dorado para hover */
+    --accent-yellow: #FFD600;      /* Amarillo específico para botones CTA */
     --accent-blue: #58A6FF;        /* Azul eléctrico (GitHub) */
     --accent-blue-hover: #388BFD;  /* Azul para hover */
     --border-color: #30363D;       /* Color de borde sutil */
@@ -722,6 +723,9 @@ tbody { background-color: var(--secondary-dark); color: var(--secondary-text); }
         word-wrap: break-word;
         white-space: normal;
         line-height: 1.3;
+        color: var(--accent-yellow);
+        border-color: var(--accent-yellow);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2), 0 0 8px rgba(255, 214, 0, 0.3);
     }
     
     /* Navigation mobile responsiveness */
@@ -881,8 +885,8 @@ tbody { background-color: var(--secondary-dark); color: var(--secondary-text); }
 /* Style consistency for CTA buttons within decorative containers */
 .decorative-btn-container .decorative-btn.cta-button-secondary {
     background: linear-gradient(45deg, #E441A5, #58A6FF);
-    color: white;
-    border: 2px solid white;
+    color: var(--accent-yellow);
+    border: 2px solid var(--accent-yellow);
     border-radius: 0.8em;
     padding: 16px 32px;
     font-weight: 700;
@@ -894,15 +898,17 @@ tbody { background-color: var(--secondary-dark); color: var(--secondary-text); }
     justify-content: center;
     text-align: center;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2), 0 0 10px rgba(255, 214, 0, 0.3);
+    overflow: hidden;
 }
 
 .decorative-btn-container .decorative-btn.cta-button-secondary:hover {
     background: linear-gradient(45deg, #FF50C8, #70B6FF);
-    color: white;
+    color: var(--accent-yellow);
+    border-color: var(--accent-yellow);
     text-decoration: none;
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(228, 65, 165, 0.4);
+    box-shadow: 0 6px 20px rgba(228, 65, 165, 0.4), 0 0 20px rgba(255, 214, 0, 0.6);
 }
 
 /* Maintain specific styling for active navigation buttons */
