@@ -21,24 +21,34 @@
     <link rel="stylesheet" href="styles.css">
     <style>
         .lang-button {
-            width: 40px;
-            height: 40px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.2s, border-color 0.2s;
+            transition: background-color 0.2s, border-color 0.2s, transform 0.1s;
             border: 2px solid transparent;
+            -webkit-tap-highlight-color: rgba(255, 199, 119, 0.3);
         }
         .lang-button:hover {
             border-color: #FFC777; /* accent-gold */
+            transform: scale(1.05);
+        }
+        .lang-button:active {
+            transform: scale(0.95);
+            background-color: rgba(255, 199, 119, 0.2);
         }
         .active-lang {
             background-color: #FFC777; /* accent-gold */
             color: #0D1117; /* primary-dark */
             border-color: #FFC777; /* accent-gold */
+        }
+        .active-lang:hover {
+            transform: scale(1.05);
+            background-color: #E0A84C; /* accent-gold-hover */
         }
     </style>
 </head>
@@ -296,6 +306,13 @@
         </div>
     </footer>
 
+    <!-- Scroll to Top Button -->
+    <button id="scrollToTopBtn" class="scroll-to-top-btn" aria-label="Scroll to top" title="Scroll to top">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
+        </svg>
+    </button>
+
     <script defer src="app.js"></script>
 
     <script>
@@ -303,6 +320,29 @@
             const langButtons = document.querySelectorAll('.lang-button');
             const langElements = document.querySelectorAll('[data-lang-es], [data-lang-en]');
             const body = document.body;
+            const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+
+            // Scroll to top functionality
+            function handleScroll() {
+                if (window.pageYOffset > 300) {
+                    scrollToTopBtn.classList.add('show');
+                } else {
+                    scrollToTopBtn.classList.remove('show');
+                }
+            }
+
+            function scrollToTop() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            }
+
+            // Add scroll event listener
+            window.addEventListener('scroll', handleScroll);
+            
+            // Add click event listener to scroll to top button
+            scrollToTopBtn.addEventListener('click', scrollToTop);
 
             // Function to update the displayed language and active state
             function updateLang(lang) {
@@ -331,6 +371,11 @@
                         btn.classList.add('bg-tertiary-dark', 'text-tertiary-text');
                     }
                 });
+
+                // Update currentLanguage in app.js and refresh influencer profiles
+                if (window.updateAppLanguage) {
+                    window.updateAppLanguage(lang);
+                }
             }
 
             // Handle language selection

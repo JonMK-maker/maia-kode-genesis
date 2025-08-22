@@ -3,6 +3,39 @@
 document.addEventListener('DOMContentLoaded', async () => {
 
     let influencers = [];
+    let currentLanguage = 'es'; // Track current language
+
+    // Translation system for influencer profiles
+    const profileTranslations = {
+        es: {
+            mainPlatforms: "Plataformas Principales:",
+            personality: "Personalidad:",
+            aesthetics: "Estética:",
+            contentType: "Tipo de Contenido:",
+            topLevelReason: "Razón \"Top-Level\":",
+            suggestStrategies: "✨ Sugerir Estrategias",
+            generateQuestions: "✨ Generar Preguntas",
+            analyzeAesthetics: "✨ Analizar Estética",
+            audioSummaryTitle: "Generar resumen clave",
+            audioSummaryLabel: "Generar resumen de audio para",
+            loadingSummary: "Cargando resumen",
+            clickForSummary: "Clic 🔊 para resumen."
+        },
+        en: {
+            mainPlatforms: "Main Platforms:",
+            personality: "Personality:",
+            aesthetics: "Aesthetics:",
+            contentType: "Content Type:",
+            topLevelReason: "Top-Level Reason:",
+            suggestStrategies: "✨ Suggest Strategies",
+            generateQuestions: "✨ Generate Questions",
+            analyzeAesthetics: "✨ Analyze Aesthetics",
+            audioSummaryTitle: "Generate key summary",
+            audioSummaryLabel: "Generate audio summary for",
+            loadingSummary: "Loading summary",
+            clickForSummary: "Click 🔊 for summary."
+        }
+    };
 
     const platformSVGIcons = {
         "YouTube": `<svg class="w-5 h-5" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 490 490" xml:space="preserve"><g><g><path style="fill:#FF0000;" d="M480,180v130c0,55.195-44.805,100-100,100H110c-55.195,0-100-44.805-100-100V180 c0-55.199,44.805-100,100-100h270C435.195,80,480,124.801,480,180z"/></g><g><polygon style="fill:#FFFFFF;" points="320,245 200,295 200,195"/></g></g></svg>`,
@@ -212,6 +245,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function displayInfluencerDetail(influencer, detailElement) {
+        const t = profileTranslations[currentLanguage]; // Get translations for current language
+        
         const platformHTML = influencer.platforms.map(platformObj => {
             let finalUrl = platformObj.url;
             const isActualLink = finalUrl && finalUrl !== "#" && (finalUrl.startsWith('http://') || finalUrl.startsWith('https://'));
@@ -239,28 +274,28 @@ document.addEventListener('DOMContentLoaded', async () => {
             </div>
             <div class="flex items-center justify-center mb-1">
                 <h3 class="text-xl font-bold text-accent-gold">${influencer.name}</h3>
-                <button id="audioSummaryTrigger_${influencer.id}" class="audio-summary-trigger text-accent-blue hover:text-accent-blue-hover ml-2 p-1 rounded" title="Generar resumen clave" aria-expanded="false" aria-controls="audioSummaryTextContainer_${influencer.id}" aria-label="Generar resumen de audio para ${influencer.name}">🔊<div id="audioSummaryLoading_${influencer.id}" class="loading-spinner" style="display: none; width:16px; height:16px; border-width:2px;" role="status" aria-label="Cargando resumen"></div></button>
+                <button id="audioSummaryTrigger_${influencer.id}" class="audio-summary-trigger text-accent-blue hover:text-accent-blue-hover ml-2 p-1 rounded" title="${t.audioSummaryTitle}" aria-expanded="false" aria-controls="audioSummaryTextContainer_${influencer.id}" aria-label="${t.audioSummaryLabel} ${influencer.name}">🔊<div id="audioSummaryLoading_${influencer.id}" class="loading-spinner" style="display: none; width:16px; height:16px; border-width:2px;" role="status" aria-label="${t.loadingSummary}"></div></button>
             </div>
-              <div id="audioSummaryTextContainer_${influencer.id}" class="audio-summary-text-container bg-tertiary-dark border-border-color text-secondary-text" style="display:none;" aria-live="polite">Clic 🔊 para resumen.</div>
+              <div id="audioSummaryTextContainer_${influencer.id}" class="audio-summary-text-container bg-tertiary-dark border-border-color text-secondary-text" style="display:none;" aria-live="polite">${t.clickForSummary}</div>
             <div class="audio-player-container"><audio id="audioPlayer_${influencer.id}" controls style="display:none;"></audio></div>
             <div class="space-y-3 text-secondary-text mb-6 mt-4">
-                  <div><strong class="text-accent-gold block mb-1">Plataformas Principales:</strong> <div class="flex flex-wrap items-center">${platformHTML}</div></div>
-                <div><strong class="text-accent-gold block mb-1">Personalidad:</strong> <p class="leading-relaxed">${influencer.description.personality}</p></div>
-                <div><strong class="text-accent-gold block mb-1">Estética:</strong> <p class="leading-relaxed">${influencer.description.esthetics}</p></div>
-                <div><strong class="text-accent-gold block mb-1">Tipo de Contenido:</strong> <p class="leading-relaxed">${influencer.contentType}</p></div>
-                <div><strong class="text-accent-gold block mb-1">Razón "Top-Level":</strong> <p class="leading-relaxed">${influencer.topLevelReason}</p></div>
+                  <div><strong class="text-accent-gold block mb-1">${t.mainPlatforms}</strong> <div class="flex flex-wrap items-center">${platformHTML}</div></div>
+                <div><strong class="text-accent-gold block mb-1">${t.personality}</strong> <p class="leading-relaxed">${influencer.description.personality}</p></div>
+                <div><strong class="text-accent-gold block mb-1">${t.aesthetics}</strong> <p class="leading-relaxed">${influencer.description.esthetics}</p></div>
+                <div><strong class="text-accent-gold block mb-1">${t.contentType}</strong> <p class="leading-relaxed">${influencer.contentType}</p></div>
+                <div><strong class="text-accent-gold block mb-1">${t.topLevelReason}</strong> <p class="leading-relaxed">${influencer.topLevelReason}</p></div>
             </div>
               <div class="mt-6 space-y-4">
                   <div>
-                      <button id="contentStrategiesBtn_${influencer.id}" class="api-button bg-accent-blue hover:bg-accent-blue-hover text-primary-dark disabled:bg-disabled-bg w-full sm:w-auto">✨ Sugerir Estrategias <div id="contentStrategiesLoading_${influencer.id}" class="loading-spinner" style="display: none;"></div></button>
+                      <button id="contentStrategiesBtn_${influencer.id}" class="api-button bg-accent-blue hover:bg-accent-blue-hover text-primary-dark disabled:bg-disabled-bg w-full sm:w-auto">${t.suggestStrategies} <div id="contentStrategiesLoading_${influencer.id}" class="loading-spinner" style="display: none;"></div></button>
                       <div id="contentStrategiesOutput_${influencer.id}" class="api-output bg-tertiary-dark border-border-color" style="display: none;" aria-live="polite"></div>
                   </div>
                   <div>
-                      <button id="communityQuestionsBtn_${influencer.id}" class="api-button bg-accent-blue hover:bg-accent-blue-hover text-primary-dark disabled:bg-disabled-bg w-full sm:w-auto">✨ Generar Preguntas <div id="communityQuestionsLoading_${influencer.id}" class="loading-spinner" style="display: none;"></div></button>
+                      <button id="communityQuestionsBtn_${influencer.id}" class="api-button bg-accent-blue hover:bg-accent-blue-hover text-primary-dark disabled:bg-disabled-bg w-full sm:w-auto">${t.generateQuestions} <div id="communityQuestionsLoading_${influencer.id}" class="loading-spinner" style="display: none;"></div></button>
                       <div id="communityQuestionsOutput_${influencer.id}" class="api-output bg-tertiary-dark border-border-color" style="display: none;" aria-live="polite"></div>
                   </div>
                   <div>
-                      <button id="aestheticAnalysisBtn_${influencer.id}" class="api-button bg-accent-blue hover:bg-accent-blue-hover text-primary-dark disabled:bg-disabled-bg w-full sm:w-auto">✨ Analizar Estética <div id="aestheticAnalysisLoading_${influencer.id}" class="loading-spinner" style="display: none;"></div></button>
+                      <button id="aestheticAnalysisBtn_${influencer.id}" class="api-button bg-accent-blue hover:bg-accent-blue-hover text-primary-dark disabled:bg-disabled-bg w-full sm:w-auto">${t.analyzeAesthetics} <div id="aestheticAnalysisLoading_${influencer.id}" class="loading-spinner" style="display: none;"></div></button>
                       <div id="aestheticAnalysisOutput_${influencer.id}" class="api-output bg-tertiary-dark border-border-color" style="display: none;" aria-live="polite"></div>
                   </div>
               </div>
@@ -389,6 +424,7 @@ El objetivo es deconstruir la descripción estética de un influencer en 3 conce
             card.setAttribute('role', 'button');
             card.setAttribute('tabindex', '0');
             card.setAttribute('aria-label', `Seleccionar influencer ${influencer.name.split('(')[0].trim()}`);
+            card.setAttribute('data-influencer-id', influencer.id);
             const platformNames = influencer.platforms.map(p => p.name).slice(0, 2).join(', ');
             card.innerHTML = `<h4 class="font-semibold text-center">${influencer.name.split('(')[0].trim()}</h4>
                                     <p class="text-xs text-center mt-1">${platformNames}</p>`;
@@ -599,6 +635,31 @@ El objetivo es deconstruir la descripción estética de un influencer en 3 conce
     `;
         callGenerativeAPI(prompt, e.target, document.getElementById('titleSloganLoading'), document.getElementById('titleSloganOutput'));
     });
+
+    // Global function to update language from index.html
+    window.updateAppLanguage = function(lang) {
+        currentLanguage = lang;
+        
+        // Find currently selected influencers and refresh their details
+        const selectedHispana = document.querySelector('#influencerSelectorHispanas .selected');
+        const selectedInglesa = document.querySelector('#influencerSelectorInglesas .selected');
+        
+        if (selectedHispana) {
+            const influencerId = selectedHispana.dataset.influencerId;
+            const influencer = influencers.find(inf => inf.id == influencerId);
+            if (influencer) {
+                displayInfluencerDetail(influencer, influencerDetailHispanas);
+            }
+        }
+        
+        if (selectedInglesa) {
+            const influencerId = selectedInglesa.dataset.influencerId;
+            const influencer = influencers.find(inf => inf.id == influencerId);
+            if (influencer) {
+                displayInfluencerDetail(influencer, influencerDetailInglesas);
+            }
+        }
+    };
 
     initializeApp();
 
