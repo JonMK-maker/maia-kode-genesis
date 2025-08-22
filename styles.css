@@ -466,3 +466,13 @@ tbody { background-color: var(--secondary-dark); color: var(--secondary-text); }
         box-sizing: border-box;
     }
 }
+
+/* Custom styles for Jon's photo in La Visión section */
+.border-white {
+    border-color: #ffffff !important;
+}
+
+.border-4 {
+    border-width: 4px !important;
+    border-style: solid !important;
+}
