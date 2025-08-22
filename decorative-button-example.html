@@ -43,25 +43,39 @@
             </div>
             
             <!-- Botones de idioma -->
-            <div class="decorative-btn-container">
-                <button class="decorative-btn lang-button bg-tertiary-dark text-tertiary-text">
+            <div class="decorative-btn-container-circle">
+                <button class="decorative-btn-circle lang-button bg-tertiary-dark text-tertiary-text">
                     ES
                 </button>
             </div>
             
-            <div class="decorative-btn-container">
-                <button class="decorative-btn lang-button bg-tertiary-dark text-tertiary-text">
+            <div class="decorative-btn-container-circle">
+                <button class="decorative-btn-circle lang-button bg-tertiary-dark text-tertiary-text">
                     EN
                 </button>
             </div>
         </div>
         
         <h4>Estructura HTML requerida:</h4>
-        <pre><code>&lt;div class="decorative-btn-container"&gt;
+        <pre><code>&lt;!-- Para botones rectangulares (navegación) --&gt;
+&lt;div class="decorative-btn-container"&gt;
     &lt;button class="decorative-btn [clases-adicionales]"&gt;
         Texto del botón
     &lt;/button&gt;
+&lt;/div&gt;
+
+&lt;!-- Para botones circulares (idioma) --&gt;
+&lt;div class="decorative-btn-container-circle"&gt;
+    &lt;button class="decorative-btn-circle [clases-adicionales]"&gt;
+        ES
+    &lt;/button&gt;
 &lt;/div&gt;</code></pre>
+        
+        <h4>Especificaciones de Border-Radius:</h4>
+        <ul>
+            <li><strong>Botones rectangulares:</strong> <code>border-radius: 0.8em</code></li>
+            <li><strong>Botones circulares:</strong> <code>border-radius: 50%</code></li>
+        </ul>
     </div>
 
     <div class="example-section">

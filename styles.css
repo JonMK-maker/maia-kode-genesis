@@ -660,7 +660,7 @@ tbody { background-color: var(--secondary-dark); color: var(--secondary-text); }
     padding: 2px;
     background: linear-gradient(45deg, #58A6FF, #E441A5, #58A6FF);
     background-size: 200% 200%;
-    border-radius: 8px;
+    border-radius: 0.8em;
     transition: all 0.3s ease;
     animation: gradientShift 3s ease infinite;
 }
@@ -712,7 +712,7 @@ tbody { background-color: var(--secondary-dark); color: var(--secondary-text); }
     background-color: var(--tertiary-dark);
     color: var(--primary-text);
     border: none;
-    border-radius: 6px;
+    border-radius: 0.8em;
     padding: inherit;
     font-weight: inherit;
     font-size: inherit;
