@@ -782,6 +782,8 @@ tbody { background-color: var(--secondary-dark); color: var(--secondary-text); }
     border-radius: 0.8em;
     transition: all 0.3s ease;
     animation: gradientShift 3s ease infinite;
+    overflow: hidden;
+    background-clip: padding-box;
 }
 
 /* ============== CIRCULAR DECORATIVE BUTTON EFFECTS ============== */
@@ -796,6 +798,8 @@ tbody { background-color: var(--secondary-dark); color: var(--secondary-text); }
     border-radius: 50%;
     transition: all 0.3s ease;
     animation: gradientShift 3s ease infinite;
+    overflow: hidden;
+    background-clip: padding-box;
 }
 
 @keyframes gradientShift {
