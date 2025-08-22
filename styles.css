@@ -404,6 +404,176 @@ tbody { background-color: var(--secondary-dark); color: var(--secondary-text); }
     color: inherit;
 }
 
+/* AI Button Voltage Effect - Inspired by Uiverse.io */
+.ai-btn-voltage {
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+    cursor: pointer;
+    border-radius: 12px;
+}
+
+.ai-btn-voltage::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        45deg,
+        transparent 30%,
+        var(--accent-blue) 50%,
+        transparent 70%
+    );
+    opacity: 0;
+    transform: translateX(-100%);
+    transition: all 0.6s ease;
+    z-index: 1;
+}
+
+.ai-btn-voltage:hover::before {
+    opacity: 0.3;
+    transform: translateX(100%);
+}
+
+.ai-btn-voltage::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        var(--accent-gold),
+        transparent
+    );
+    opacity: 0;
+    transform: translateY(-100%);
+    transition: all 0.8s ease;
+    z-index: 1;
+}
+
+.ai-btn-voltage:hover::after {
+    opacity: 0.2;
+    transform: translateY(100%);
+}
+
+.ai-btn-voltage .voltage-button {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: var(--accent-blue);
+    color: var(--primary-dark);
+    font-size: 14px;
+    font-weight: 600;
+    padding: 12px 20px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    line-height: 1.2;
+    white-space: nowrap;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 
+        0 0 20px rgba(88, 166, 255, 0.3),
+        inset 0 0 20px rgba(88, 166, 255, 0.1);
+    text-decoration: none;
+}
+
+.ai-btn-voltage:hover .voltage-button {
+    background: var(--accent-blue-hover);
+    box-shadow: 
+        0 0 30px rgba(88, 166, 255, 0.5),
+        0 0 60px rgba(255, 199, 119, 0.3),
+        inset 0 0 30px rgba(88, 166, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.ai-btn-voltage .voltage-button:disabled {
+    background: var(--disabled-bg);
+    color: var(--disabled-text);
+    box-shadow: none;
+    cursor: not-allowed;
+}
+
+.ai-btn-voltage:has(.voltage-button:disabled)::before,
+.ai-btn-voltage:has(.voltage-button:disabled)::after {
+    display: none;
+}
+
+.ai-btn-voltage:has(.voltage-button:disabled):hover .voltage-button {
+    transform: none;
+}
+
+/* Secondary voltage effect for CTA buttons */
+.ai-btn-voltage.secondary::before {
+    background: linear-gradient(
+        45deg,
+        transparent 30%,
+        var(--accent-gold) 50%,
+        transparent 70%
+    );
+}
+
+.ai-btn-voltage.secondary::after {
+    background: linear-gradient(
+        90deg,
+        transparent,
+        var(--accent-blue),
+        transparent
+    );
+}
+
+.ai-btn-voltage.secondary .voltage-button {
+    background: transparent;
+    color: var(--accent-gold);
+    border: 2px solid var(--accent-gold);
+    box-shadow: 
+        0 0 20px rgba(255, 199, 119, 0.3),
+        inset 0 0 20px rgba(255, 199, 119, 0.1);
+}
+
+.ai-btn-voltage.secondary:hover .voltage-button {
+    background: rgba(255, 199, 119, 0.1);
+    color: var(--accent-gold-hover);
+    box-shadow: 
+        0 0 30px rgba(255, 199, 119, 0.5),
+        0 0 60px rgba(88, 166, 255, 0.3),
+        inset 0 0 30px rgba(255, 199, 119, 0.2);
+}
+
+/* Handle existing CTA button styles within voltage wrapper */
+.ai-btn-voltage .voltage-button.cta-button {
+    font-size: 18px;
+    padding: 16px 32px;
+    min-height: 56px;
+    line-height: 1.4;
+}
+
+.ai-btn-voltage .voltage-button.cta-button-secondary {
+    background: transparent;
+    color: var(--accent-gold);
+    border: 2px solid var(--accent-gold);
+    font-weight: 600;
+    padding: 12px 32px;
+    border-radius: 9999px;
+}
+
+/* Ensure responsive design is maintained */
+@media (max-width: 640px) {
+    .ai-btn-voltage .voltage-button.w-full {
+        width: 100%;
+    }
+}
+
 /* Scroll to Top Button */
 .scroll-to-top-btn {
     position: fixed;

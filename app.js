@@ -530,15 +530,21 @@ The objective is to analyze a summary of data from 16 influencers to identify th
             </div>
               <div class="mt-6 space-y-4">
                   <div>
-                      <button id="contentStrategiesBtn_${influencer.id}" class="api-button bg-accent-blue hover:bg-accent-blue-hover text-primary-dark disabled:bg-disabled-bg w-full sm:w-auto">${t.suggestStrategies} <div id="contentStrategiesLoading_${influencer.id}" class="loading-spinner" style="display: none;"></div></button>
+                      <div class="ai-btn-voltage">
+                          <button id="contentStrategiesBtn_${influencer.id}" class="voltage-button api-button bg-accent-blue hover:bg-accent-blue-hover text-primary-dark disabled:bg-disabled-bg w-full sm:w-auto">${t.suggestStrategies} <div id="contentStrategiesLoading_${influencer.id}" class="loading-spinner" style="display: none;"></div></button>
+                      </div>
                       <div id="contentStrategiesOutput_${influencer.id}" class="api-output bg-tertiary-dark border-border-color" style="display: none;" aria-live="polite"></div>
                   </div>
                   <div>
-                      <button id="communityQuestionsBtn_${influencer.id}" class="api-button bg-accent-blue hover:bg-accent-blue-hover text-primary-dark disabled:bg-disabled-bg w-full sm:w-auto">${t.generateQuestions} <div id="communityQuestionsLoading_${influencer.id}" class="loading-spinner" style="display: none;"></div></button>
+                      <div class="ai-btn-voltage">
+                          <button id="communityQuestionsBtn_${influencer.id}" class="voltage-button api-button bg-accent-blue hover:bg-accent-blue-hover text-primary-dark disabled:bg-disabled-bg w-full sm:w-auto">${t.generateQuestions} <div id="communityQuestionsLoading_${influencer.id}" class="loading-spinner" style="display: none;"></div></button>
+                      </div>
                       <div id="communityQuestionsOutput_${influencer.id}" class="api-output bg-tertiary-dark border-border-color" style="display: none;" aria-live="polite"></div>
                   </div>
                   <div>
-                      <button id="aestheticAnalysisBtn_${influencer.id}" class="api-button bg-accent-blue hover:bg-accent-blue-hover text-primary-dark disabled:bg-disabled-bg w-full sm:w-auto">${t.analyzeAesthetics} <div id="aestheticAnalysisLoading_${influencer.id}" class="loading-spinner" style="display: none;"></div></button>
+                      <div class="ai-btn-voltage">
+                          <button id="aestheticAnalysisBtn_${influencer.id}" class="voltage-button api-button bg-accent-blue hover:bg-accent-blue-hover text-primary-dark disabled:bg-disabled-bg w-full sm:w-auto">${t.analyzeAesthetics} <div id="aestheticAnalysisLoading_${influencer.id}" class="loading-spinner" style="display: none;"></div></button>
+                      </div>
                       <div id="aestheticAnalysisOutput_${influencer.id}" class="api-output bg-tertiary-dark border-border-color" style="display: none;" aria-live="polite"></div>
                   </div>
               </div>
