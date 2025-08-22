@@ -81,6 +81,27 @@ El objetivo es generar 3 nombres alternativos y 3 eslóganes creativos para la I
 3.  **Justificar:** Elige tu eslogan favorito y explica su potencial en una frase.
 4.  **Formatear:** Usa encabezados de nivel 3 (###) para "Nombres Alternativos" y "Eslóganes Propuestos".
 `
+            },
+            summarizePatterns: {
+                template: `
+### Metodología MAPAX+ ###
+
+**M - Meta Clara:**
+El objetivo es analizar un resumen de datos de 16 influencers para identificar los 3 patrones estratégicos más relevantes y su implicación para una nueva IA educativa, Maia Kode. Una respuesta exitosa debe ofrecer insights estratégicos, no solo un resumen de datos.
+
+**A - Adaptación:**
+- **Rol:** Eres un analista de mercado y estratega de marca.
+- **Tono:** Analítico, estratégico y conclusivo.
+- **Estilo:** Informe ejecutivo.
+- **Extensión:** 3 patrones, cada uno con su implicación.
+
+**P - Pasos Estructurados:**
+1.  **Analizar Datos:** A continuación se presentan los datos de 16 influencers:
+    {{tableDataSummary}}
+2.  **Identificar Patrones:** Extrae las 3 tendencias más significativas en personalidad, estética o contenido.
+3.  **Deducir Implicaciones:** Para cada patrón, explica cómo Maia Kode podría aplicar ese aprendizaje en su estrategia.
+4.  **Formatear:** Usa un encabezado de nivel 3 (###) para cada patrón y negrita para "Implicación para Maia".
+`
             }
         },
         en: {
@@ -124,6 +145,27 @@ The objective is to generate 3 alternative names and 3 creative slogans for Maia
 2.  **Generate Options:** Create 3 alternative names and 3 slogans that encapsulate the essence of the manifesto.
 3.  **Justify:** Choose your favorite slogan and explain its potential in one sentence.
 4.  **Format:** Use level 3 headings (###) for "Alternative Names" and "Proposed Slogans".
+`
+            },
+            summarizePatterns: {
+                template: `
+### MAPAX+ Methodology ###
+
+**M - Clear Goal:**
+The objective is to analyze a summary of data from 16 influencers to identify the 3 most relevant strategic patterns and their implications for a new educational AI, Maia Kode. A successful response should offer strategic insights, not just a data summary.
+
+**A - Adaptation:**
+- **Role:** You are a market analyst and brand strategist.
+- **Tone:** Analytical, strategic and conclusive.
+- **Style:** Executive report.
+- **Length:** 3 patterns, each with its implication.
+
+**P - Structured Steps:**
+1.  **Analyze Data:** The following data from 16 influencers is presented:
+    {{tableDataSummary}}
+2.  **Identify Patterns:** Extract the 3 most significant trends in personality, aesthetics or content.
+3.  **Deduce Implications:** For each pattern, explain how Maia Kode could apply that learning in her strategy.
+4.  **Format:** Use a level 3 heading (###) for each pattern and bold for "Implication for Maia".
 `
             }
         }
@@ -778,25 +820,10 @@ El objetivo es deconstruir la descripción estética de un influencer en 3 conce
             return;
         }
         const tableDataSummary = influencers.map(inf => `${inf.name}(${inf.language}):P-${inf.description.personality.substring(0,50)} E-${inf.description.esthetics.substring(0,50)} C-${inf.contentType.substring(0,50)}`).join("||");
-        const prompt = `
-    ### Metodología MAPAX+ ###
-
-    **M - Meta Clara:**
-    El objetivo es analizar un resumen de datos de 16 influencers para identificar los 3 patrones estratégicos más relevantes y su implicación para una nueva IA educativa, Maia Kode. Una respuesta exitosa debe ofrecer insights estratégicos, no solo un resumen de datos.
-
-    **A - Adaptación:**
-    - **Rol:** Eres un analista de mercado y estratega de marca.
-    - **Tono:** Analítico, estratégico y conclusivo.
-    - **Estilo:** Informe ejecutivo.
-    - **Extensión:** 3 patrones, cada uno con su implicación.
-
-    **P - Pasos Estructurados:**
-    1.  **Analizar Datos:** A continuación se presentan los datos de 16 influencers:
-        ${tableDataSummary}
-    2.  **Identificar Patrones:** Extrae las 3 tendencias más significativas en personalidad, estética o contenido.
-    3.  **Deducir Implicaciones:** Para cada patrón, explica cómo Maia Kode podría aplicar ese aprendizaje en su estrategia.
-    4.  **Formatear:** Usa un encabezado de nivel 3 (###) para cada patrón y negrita para "Implicación para Maia".
-    `;
+        
+        const template = promptTemplates[currentLanguage].summarizePatterns;
+        const prompt = template.template.replace('{{tableDataSummary}}', tableDataSummary);
+        
         callGenerativeAPI(prompt, e.target, document.getElementById('summarizePatternsLoading'), document.getElementById('summarizePatternsOutput'));
     });
 
