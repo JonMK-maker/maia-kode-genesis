@@ -37,6 +37,98 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     };
 
+    // Prompt templates for AI generation in both languages
+    const promptTemplates = {
+        es: {
+            idealProfile: {
+                conclusion: "El estudio de estos referentes nos ha permitido definir un arquetipo de IA que no solo educa, sino que también inspira. Un perfil geek-didáctico, con un toque humano y una voz auténtica que resuena con una comunidad que busca el crecimiento.",
+                template: `
+### Metodología MAPAX+ ###
+
+**M - Meta Clara:**
+El objetivo es traducir una conclusión estratégica en un manifiesto de personalidad fundacional para la IA "Maia Kode". La respuesta será exitosa si crea un perfil de marca claro, inspirador y práctico que pueda guiar la creación de todo el contenido futuro.
+
+**A - Adaptación:**
+- **Rol:** Eres un Arquitecto de Personalidad de IA, experto en branding y storytelling.
+- **Tono:** Inspirador, fundacional y claro.
+- **Estilo:** Manifiesto de marca.
+- **Extensión:** Un perfil organizado en 5 secciones clave.
+
+**P - Pasos Estructurados:**
+1.  **Internalizar Conclusión:** La conclusión del análisis previo es: "{{conclusion}}".
+2.  **Construir Manifiesto:** A partir de esa conclusión, desarrolla la personalidad de Maia Kode.
+3.  **Formatear:** Estructura la respuesta en Markdown con los siguientes 5 encabezados en negrita: **Arquetipo Principal**, **Voz y Tono**, **Misión**, **Pilares de Contenido**, y **Promesa a la Comunidad**.
+`
+            },
+            titleSlogan: {
+                errorMessage: "Por favor, genera primero el 'Perfil de IA Ideal' para que la IA tenga contexto.",
+                template: `
+### Metodología MAPAX+ ###
+
+**M - Meta Clara:**
+El objetivo es generar 3 nombres alternativos y 3 eslóganes creativos para la IA Maia Kode, basándose estrictamente en su manifiesto de personalidad. Una respuesta exitosa ofrecerá opciones de branding relevantes y justificadas.
+
+**A - Adaptación:**
+- **Rol:** Eres un experto en Naming y Copywriter creativo para marcas tecnológicas.
+- **Tono:** Creativo y estratégico.
+- **Estilo:** Propuesta de branding / Brainstorming.
+- **Extensión:** 3 nombres, 3 eslóganes, y una breve justificación.
+
+**P - Pasos Estructurados:**
+1.  **Analizar Manifiesto:** Lee el siguiente manifiesto de personalidad de Maia Kode:
+    "{{manifest}}"
+2.  **Generar Opciones:** Crea 3 nombres alternativos y 3 eslóganes que encapsulen la esencia del manifiesto.
+3.  **Justificar:** Elige tu eslogan favorito y explica su potencial en una frase.
+4.  **Formatear:** Usa encabezados de nivel 3 (###) para "Nombres Alternativos" y "Eslóganes Propuestos".
+`
+            }
+        },
+        en: {
+            idealProfile: {
+                conclusion: "The study of these 16 references has allowed us to define an AI archetype that not only educates but also inspires. A didactic-geek profile, with a human touch and an authentic voice that resonates with a community seeking growth.",
+                template: `
+### MAPAX+ Methodology ###
+
+**M - Clear Goal:**
+The objective is to translate a strategic conclusion into a foundational personality manifesto for the AI "Maia Kode". The response will be successful if it creates a clear, inspiring, and practical brand profile that can guide the creation of all future content.
+
+**A - Adaptation:**
+- **Role:** You are an AI Personality Architect, expert in branding and storytelling.
+- **Tone:** Inspiring, foundational, and clear.
+- **Style:** Brand manifesto.
+- **Length:** A profile organized into 5 key sections.
+
+**P - Structured Steps:**
+1.  **Internalize Conclusion:** The conclusion from the previous analysis is: "{{conclusion}}".
+2.  **Build Manifesto:** Based on that conclusion, develop Maia Kode's personality.
+3.  **Format:** Structure the response in Markdown with the following 5 bold headings: **Main Archetype**, **Voice and Tone**, **Mission**, **Content Pillars**, and **Community Promise**.
+`
+            },
+            titleSlogan: {
+                errorMessage: "Please generate the 'Ideal AI Profile' first so the AI has context.",
+                template: `
+### MAPAX+ Methodology ###
+
+**M - Clear Goal:**
+The objective is to generate 3 alternative names and 3 creative slogans for Maia Kode AI, based strictly on her personality manifesto. A successful response will offer relevant and justified branding options.
+
+**A - Adaptation:**
+- **Role:** You are an expert in Naming and Creative Copywriting for technology brands.
+- **Tone:** Creative and strategic.
+- **Style:** Branding proposal / Brainstorming.
+- **Length:** 3 names, 3 slogans, and a brief justification.
+
+**P - Structured Steps:**
+1.  **Analyze Manifesto:** Read the following Maia Kode personality manifesto:
+    "{{manifest}}"
+2.  **Generate Options:** Create 3 alternative names and 3 slogans that encapsulate the essence of the manifesto.
+3.  **Justify:** Choose your favorite slogan and explain its potential in one sentence.
+4.  **Format:** Use level 3 headings (###) for "Alternative Names" and "Proposed Slogans".
+`
+            }
+        }
+    };
+
     // English translations for influencer profile content
     const influencerContentTranslations = {
         emily_calandrelli: {
@@ -69,7 +161,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             contentType: "Educational content about software development, tech careers, and industry insights.",
             topLevelReason: "Offers an internal and honest view of the tech industry. Great for those pursuing tech careers."
         },
-        estefannie_explains_it_all: {
+        estefannie_explains: {
             personality: "Software engineer and maker. Energetic, creative, and passionate about technology and DIY projects.",
             esthetics: "Her aesthetic is colorful, fun and definitely 'geek-chic'. Vibrant, creative presentation style.",
             contentType: "Educational content about electronics, programming, 3D printing, and maker projects.",
@@ -86,6 +178,55 @@ document.addEventListener('DOMContentLoaded', async () => {
             esthetics: "Her aesthetic is functional and adventurous 'geek-chic'. Workshop and engineering focused.",
             contentType: "Educational content about engineering, manufacturing, entrepreneurship, and large-scale projects.",
             topLevelReason: "Her ambition and the scale of her projects are incredibly inspiring. Shows engineering at its most innovative."
+        },
+        // Spanish influencers with English translations
+        alba_moreno: {
+            personality: "Clearly a 'passionate geek'. Her enthusiasm for physics is contagious. Strong communication skills, making complex concepts simple and fun. Very close and authentic.",
+            esthetics: "Fits the 'geek-chic' with a distinctive personal style. Colorful, youthful, fun, and very authentic. Attractive but not sexualized.",
+            contentType: "Highly didactic, explaining physics concepts with creative and accessible examples. Appeals to a young audience, especially women interested in science.",
+            topLevelReason: "Massive impact on a young audience, especially girls who see her as a role model in science. Her authenticity and charisma are exceptional."
+        },
+        veronica_sierra: {
+            personality: "Engineer with a clear passion for technology. Professional yet accessible. Her expertise is evident and she explains complex topics clearly.",
+            esthetics: "Professional and modern, aligns with functional 'geek-chic'. Clean presentation, focused on the content rather than appearance.",
+            contentType: "Didactic content about technology, software, gadgets, and programming. Focuses on practical applications and professional development.",
+            topLevelReason: "She is a female reference in the Spanish-speaking tech sector. Her content is highly valuable for professionals and students."
+        },
+        teresa_arnandis: {
+            personality: "PhD in Biochemistry and Biomedicine, clearly a 'passionate geek'. Combats misinformation with scientific rigor. Dedicated and very knowledgeable.",
+            esthetics: "Professional and accessible. Her style is 'geek-chic' with a focus on scientific credibility. Clean and educational presentation.",
+            contentType: "Highly didactic content focused on scientific communication and fighting misinformation. Biology, health, and scientific method.",
+            topLevelReason: "Her work combating misinformation with scientific rigor is crucial. She is an important voice for science communication in Spanish."
+        },
+        nazareth_castellanos: {
+            personality: "Neuroscientist with a deep passion for the mind-body connection. Thoughtful, scientific, and contemplative. Expert in her field.",
+            esthetics: "Although her main presence isn't as 'visual', her content is of high intellectual quality. Academic and professional presentation.",
+            contentType: "Extremely didactic, focused on neuroscience, mindfulness, meditation, and the mind-body connection. Scientific and accessible.",
+            topLevelReason: "She is one of the most respected scientific communicators in Spanish neuroscience. Her depth of knowledge is exceptional."
+        },
+        jennifer_samaniego: {
+            personality: "Educational Innovation Analyst, clearly a 'passionate geek' focused on the intersection of technology and education. Visionary and practical.",
+            esthetics: "Professional and academic. Her 'geek-chic' manifests in her focus on innovation and future technologies in education.",
+            contentType: "Didactic content focused on applying emerging technologies in education. EdTech, artificial intelligence, and educational innovation.",
+            topLevelReason: "She is a key figure in educational innovation in Latin America. Her vision of the future of education is very valuable."
+        },
+        rocio_vidal: {
+            personality: "Technology professional with expertise in innovation and digital transformation. Professional, analytical, and strategic.",
+            esthetics: "Professional and modern style. Clean presentation focused on business and technology applications.",
+            contentType: "Content about digital transformation, technology trends, and innovation in business contexts.",
+            topLevelReason: "Important voice in digital transformation in the Spanish-speaking business world."
+        },
+        sandra_ortonobes: {
+            personality: "Science communicator focused on archaeology and history. Passionate about making the past accessible to modern audiences.",
+            esthetics: "Educational and engaging presentation style. Balances academic rigor with accessibility.",
+            contentType: "Educational content about archaeology, history, and cultural heritage. Makes ancient civilizations relevant to modern audiences.",
+            topLevelReason: "Excellent at bringing historical and archaeological knowledge to general audiences in an engaging way."
+        },
+        marisol_hb: {
+            personality: "Creative content creator with a focus on lifestyle and personal development. Inspiring and motivational approach.",
+            esthetics: "Modern, aesthetic presentation with focus on visual appeal and lifestyle content.",
+            contentType: "Lifestyle content, personal development, and creative inspiration. Appeals to young audiences seeking motivation.",
+            topLevelReason: "Strong influence among young Spanish-speaking audiences, particularly in personal development and lifestyle."
         }
     };
 
@@ -595,19 +736,39 @@ El objetivo es deconstruir la descripción estética de un influencer en 3 conce
         });
     }
 
+    // Function to populate comparison table with translation support
+    function populateComparisonTable() {
+        if (!comparisonTableBody || !influencers || influencers.length === 0) return;
+        
+        comparisonTableBody.innerHTML = '';
+        influencers.forEach(inf => {
+            // Get translated content if available and language is English
+            const getTranslatedContent = (field) => {
+                if (currentLanguage === 'en' && influencerContentTranslations[inf.id]) {
+                    return influencerContentTranslations[inf.id][field] || inf.description[field] || inf[field];
+                }
+                return inf.description[field] || inf[field];
+            };
+            
+            const tr = comparisonTableBody.insertRow();
+            tr.innerHTML = `
+                <td class="py-2 px-3">${inf.name.split('(')[0].trim()}</td>
+                <td class="py-2 px-3">${inf.language}</td>
+                <td class="py-2 px-3">${getTranslatedContent('personality').split('.')[0]}.</td>
+                <td class="py-2 px-3">${getTranslatedContent('esthetics').split('.')[0]}.</td>
+                <td class="py-2 px-3">${getTranslatedContent('contentType').split('.')[0]}.</td>
+                <td class="py-2 px-3">${getTranslatedContent('topLevelReason').split('.')[0]}.</td>
+            `;
+        });
+    }
+
     async function initializeApp() {
         influencers = await loadInfluencerData();
         if (!Array.isArray(influencers) || influencers.length === 0) return;
         populateInfluencerSection("Español", influencerSelectorHispanas, influencerDetailHispanas);
         populateInfluencerSection("Ingles", influencerSelectorInglesas, influencerDetailInglesas);
 
-        if (comparisonTableBody) {
-            comparisonTableBody.innerHTML = '';
-            influencers.forEach(inf => {
-                const tr = comparisonTableBody.insertRow();
-                tr.innerHTML = `<td class="py-2 px-3">${inf.name.split('(')[0].trim()}</td><td class="py-2 px-3">${inf.language}</td><td class="py-2 px-3">${inf.description.personality.split('.')[0]}.</td><td class="py-2 px-3">${inf.description.esthetics.split('.')[0]}.</td><td class="py-2 px-3">${inf.contentType.split('.')[0]}.</td><td class="py-2 px-3">${inf.topLevelReason.split('.')[0]}.</td>`;
-            });
-        }
+        populateComparisonTable();
         showSection('mision');
     }
 
@@ -640,24 +801,9 @@ El objetivo es deconstruir la descripción estética de un influencer en 3 conce
     });
 
     if (generateIdealAIProfileButton) generateIdealAIProfileButton.addEventListener('click', (e) => {
-        const conclusionText = "El estudio de estos referentes nos ha permitido definir un arquetipo de IA que no solo educa, sino que también inspira. Un perfil geek-didáctico, con un toque humano y una voz auténtica que resuena con una comunidad que busca el crecimiento.";
-        const prompt = `
-    ### Metodología MAPAX+ ###
-
-    **M - Meta Clara:**
-    El objetivo es traducir una conclusión estratégica en un manifiesto de personalidad fundacional para la IA "Maia Kode". La respuesta será exitosa si crea un perfil de marca claro, inspirador y práctico que pueda guiar la creación de todo el contenido futuro.
-
-    **A - Adaptación:**
-    - **Rol:** Eres un Arquitecto de Personalidad de IA, experto en branding y storytelling.
-    - **Tono:** Inspirador, fundacional y claro.
-    - **Estilo:** Manifiesto de marca.
-    - **Extensión:** Un perfil organizado en 5 secciones clave.
-
-    **P - Pasos Estructurados:**
-    1.  **Internalizar Conclusión:** La conclusión del análisis previo es: "${conclusionText}".
-    2.  **Construir Manifiesto:** A partir de esa conclusión, desarrolla la personalidad de Maia Kode.
-    3.  **Formatear:** Estructura la respuesta en Markdown con los siguientes 5 encabezados en negrita: **Arquetipo Principal**, **Voz y Tono**, **Misión**, **Pilares de Contenido**, y **Promesa a la Comunidad**.
-    `;
+        const template = promptTemplates[currentLanguage].idealProfile;
+        const prompt = template.template.replace('{{conclusion}}', template.conclusion);
+        
         callGenerativeAPI(prompt, e.target, document.getElementById('idealAIProfileLoading'), document.getElementById('idealAIProfileOutput')).then(() => {
             document.getElementById('generateTitleSloganButton').disabled = false;
         });
@@ -669,36 +815,24 @@ El objetivo es deconstruir la descripción estética de un influencer en 3 conce
 
         if (!idealProfileText || idealProfileText.length < 10 || idealProfileText.startsWith("Error")) {
             const outputDiv = document.getElementById('titleSloganOutput');
-            outputDiv.innerHTML = "<p class='text-red-700'>Por favor, genera primero el 'Perfil de IA Ideal' para que la IA tenga contexto.</p>";
+            const template = promptTemplates[currentLanguage].titleSlogan;
+            outputDiv.innerHTML = `<p class='text-red-700'>${template.errorMessage}</p>`;
             outputDiv.style.display = 'block';
             return;
         }
 
-        const prompt = `
-    ### Metodología MAPAX+ ###
-
-    **M - Meta Clara:**
-    El objetivo es generar 3 nombres alternativos y 3 eslóganes creativos para la IA Maia Kode, basándose estrictamente en su manifiesto de personalidad. Una respuesta exitosa ofrecerá opciones de branding relevantes y justificadas.
-
-    **A - Adaptación:**
-    - **Rol:** Eres un experto en Naming y Copywriter creativo para marcas tecnológicas.
-    - **Tono:** Creativo y estratégico.
-    - **Estilo:** Propuesta de branding / Brainstorming.
-    - **Extensión:** 3 nombres, 3 eslóganes, y una breve justificación.
-
-    **P - Pasos Estructurados:**
-    1.  **Analizar Manifiesto:** Lee el siguiente manifiesto de personalidad de Maia Kode:
-        "${idealProfileText.substring(0, 500)}..."
-    2.  **Generar Opciones:** Crea 3 nombres alternativos y 3 eslóganes que encapsulen la esencia del manifiesto.
-    3.  **Justificar:** Elige tu eslogan favorito y explica su potencial en una frase.
-    4.  **Formatear:** Usa encabezados de nivel 3 (###) para "Nombres Alternativos" y "Eslóganes Propuestos".
-    `;
+        const template = promptTemplates[currentLanguage].titleSlogan;
+        const prompt = template.template.replace('{{manifest}}', idealProfileText.substring(0, 500) + "...");
+        
         callGenerativeAPI(prompt, e.target, document.getElementById('titleSloganLoading'), document.getElementById('titleSloganOutput'));
     });
 
     // Global function to update language from index.html
     window.updateAppLanguage = function(lang) {
         currentLanguage = lang;
+        
+        // Refresh comparison table with new language
+        populateComparisonTable();
         
         // Find currently selected influencers and refresh their details
         const selectedHispana = document.querySelector('#influencerSelectorHispanas .selected');

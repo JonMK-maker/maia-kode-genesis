@@ -66,6 +66,16 @@ body {
     background-color: var(--accent-blue);
     color: var(--primary-dark);
     border-radius: 12px;
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    line-height: 1.2;
+    white-space: nowrap;
 }
 .api-button:hover:not(:disabled) {
     background-color: var(--accent-blue-hover);
@@ -74,6 +84,47 @@ body {
 .api-button:disabled {
     background-color: var(--disabled-bg);
     color: var(--disabled-text);
+}
+
+/* API Output styling for better text handling */
+.api-output {
+    background-color: var(--tertiary-dark);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 12px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    line-height: 1.6;
+}
+
+.api-output h1, .api-output h2, .api-output h3, .api-output h4, .api-output h5, .api-output h6 {
+    color: var(--accent-gold);
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+}
+
+.api-output h1:first-child, .api-output h2:first-child, .api-output h3:first-child {
+    margin-top: 0;
+}
+
+.api-output p {
+    margin-bottom: 1em;
+}
+
+.api-output strong {
+    color: var(--accent-gold);
+    font-weight: 600;
+}
+
+.api-output ul, .api-output ol {
+    padding-left: 1.5em;
+    margin-bottom: 1em;
+}
+
+.api-output li {
+    margin-bottom: 0.5em;
 }
 
 /* --- SOLUCIÓN PARA TRANSICIÓN SUAVE --- */
