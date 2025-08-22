@@ -42,13 +42,16 @@
             background-color: rgba(255, 199, 119, 0.2);
         }
         .active-lang {
-            background-color: #FFC777; /* accent-gold */
-            color: #0D1117; /* primary-dark */
-            border-color: #FFC777; /* accent-gold */
+            background-color: var(--tertiary-dark); /* dark background consistent with other buttons */
+            color: #FFC777; /* accent-gold text */
+            border-color: #FFC777; /* accent-gold border */
+            box-shadow: 0 0 8px rgba(255, 199, 119, 0.4); /* gold glow effect */
         }
         .active-lang:hover {
             transform: scale(1.05);
-            background-color: #E0A84C; /* accent-gold-hover */
+            background-color: var(--secondary-dark); /* slightly lighter dark background */
+            color: #E0A84C; /* accent-gold-hover text */
+            box-shadow: 0 0 12px rgba(255, 199, 119, 0.6); /* enhanced glow on hover */
         }
     </style>
 </head>
@@ -129,7 +132,7 @@
             </div>
             <div class="text-center mt-8">
                 <div class="ai-btn-voltage secondary">
-                    <a href="https://aprendehabilidadesdigitales.com" target="_blank" class="voltage-button cta-button">
+                    <a href="https://aprendehabilidadesdigitales.com" target="_blank" class="voltage-button cta-button-secondary">
                         <span class="lang-es">Conoce más sobre el proyecto principal</span>
                         <span class="lang-en hidden">Learn more about the main project</span>
                     </a>
@@ -162,8 +165,8 @@
                 </div>
             </div>
             <div class="text-center mt-8">
-                <div class="decorative-btn-container">
-                    <a href="https://aprendehabilidadesdigitales.com" target="_blank" class="decorative-btn cta-button-secondary border border-accent-gold text-accent-gold font-semibold py-3 px-8 rounded-md transition-colors hover:bg-accent-gold-hover hover:text-primary-dark">
+                <div class="ai-btn-voltage secondary">
+                    <a href="https://aprendehabilidadesdigitales.com" target="_blank" class="voltage-button cta-button-secondary">
                         <span class="lang-es">Conoce más sobre mi trabajo</span>
                         <span class="lang-en hidden">Learn more about my work</span>
                     </a>
