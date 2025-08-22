@@ -37,6 +37,58 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     };
 
+    // English translations for influencer profile content
+    const influencerContentTranslations = {
+        emily_calandrelli: {
+            personality: "Engineer (MIT), science communicator and TV presenter (Emily's Wonder Lab on Netflix). Enthusiastic, charismatic and excellent at explaining STEM concepts to children and adults. Empathetic and very accessible.",
+            esthetics: "Professional, colorful and friendly. Her 'geek-chic' is vibrant and educational, ideal for young audiences and families. Not sexualized.",
+            contentType: "Educational TV shows about science, science demonstrations, children's books, talks and social media content that makes science fun and accessible, especially space and engineering.",
+            topLevelReason: "Great reach and recognition, especially among families and educators. Her ability to inspire curiosity about STEM in young people is exceptional. Very good communicator."
+        },
+        cleo_abram: {
+            personality: "Technology journalist and video producer. Curious, analytical and excellent communicator. Empathetic when addressing the impact of technology on society. Clear and didactic.",
+            esthetics: "Very high quality video production, with a modern, clean and attractive visual style. Sophisticated and professional geek-chic.",
+            contentType: "Deep and accessible explanations about complex technologies like AI, nuclear energy, and the future of technology. Expert interviews. Very visual and well-researched format.",
+            topLevelReason: "Stands out for the cinematic quality of her explanations and her ability to make very technical topics understandable. Promotes a nuanced understanding of technology."
+        },
+        kathy_pham: {
+            personality: "Software engineer and educator. Friendly and accessible approach to teaching programming concepts.",
+            esthetics: "Friendly and accessible style. Clean, educational presentation focused on learning.",
+            contentType: "Programming tutorials (Python, JavaScript, etc.). Educational content focused on beginners and skill development.",
+            topLevelReason: "Excellent for programming beginners. Clear, methodical teaching approach that makes coding accessible."
+        },
+        simone_giertz: {
+            personality: "The 'Queen of Useless Robots'. Creative, humorous, and innovative approach to engineering projects.",
+            esthetics: "Her aesthetic is 'geek-chic' in a very personal and functional way. Workshop-focused, maker aesthetic.",
+            contentType: "Educational content about invention, engineering and problem solving through creative, often humorous projects.",
+            topLevelReason: "Unique in her niche. Inspires creativity and shows that engineering can be fun and experimental."
+        },
+        mayuko_inoue: {
+            personality: "Software engineer (ex-Netflix, ex-Patreon) who shares her experience. Honest, relatable, and professional.",
+            esthetics: "Her style is minimalist and professional 'geek-chic'. Clean, modern presentation.",
+            contentType: "Educational content about software development, tech careers, and industry insights.",
+            topLevelReason: "Offers an internal and honest view of the tech industry. Great for those pursuing tech careers."
+        },
+        estefannie_explains_it_all: {
+            personality: "Software engineer and maker. Energetic, creative, and passionate about technology and DIY projects.",
+            esthetics: "Her aesthetic is colorful, fun and definitely 'geek-chic'. Vibrant, creative presentation style.",
+            contentType: "Educational content about electronics, programming, 3D printing, and maker projects.",
+            topLevelReason: "Her energy and creativity are very contagious. Makes complex tech topics fun and accessible."
+        },
+        dianna_cowern: {
+            personality: "Science communicator (physics). Professional and accessible approach to science education.",
+            esthetics: "Professional and accessible. Clean, educational presentation focused on scientific accuracy.",
+            contentType: "High-quality educational content about physics concepts and scientific phenomena.",
+            topLevelReason: "One of the most recognized science communicators on YouTube. Excellent at making physics accessible."
+        },
+        xyla_foxlin: {
+            personality: "Mechatronics engineer, entrepreneur and maker. Ambitious, innovative, and inspiring.",
+            esthetics: "Her aesthetic is functional and adventurous 'geek-chic'. Workshop and engineering focused.",
+            contentType: "Educational content about engineering, manufacturing, entrepreneurship, and large-scale projects.",
+            topLevelReason: "Her ambition and the scale of her projects are incredibly inspiring. Shows engineering at its most innovative."
+        }
+    };
+
     const platformSVGIcons = {
         "YouTube": `<svg class="w-5 h-5" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 490 490" xml:space="preserve"><g><g><path style="fill:#FF0000;" d="M480,180v130c0,55.195-44.805,100-100,100H110c-55.195,0-100-44.805-100-100V180 c0-55.199,44.805-100,100-100h270C435.195,80,480,124.801,480,180z"/></g><g><polygon style="fill:#FFFFFF;" points="320,245 200,295 200,195"/></g></g></svg>`,
         "X (Twitter)": `<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 512 512"><g><rect fill="#000000" width="512" height="512" x="0" y="0" ry="105.09948" rx="105.16711" /><path d="m 339.20866,125.98402 h 44.11006 l -96.36741,110.14194 113.36867,149.87853 h -88.76683 l -69.52535,-90.90068 -79.55277,90.90068 h -44.1367 L 221.41293,268.19503 112.65788,125.98402 h 91.02037 l 62.8448,83.08653 z m -15.4812,233.61817 h 24.4419 L 190.39724,150.99939 H 164.1685 Z" fill="#ffffff" /></g></svg>`,
@@ -247,6 +299,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     function displayInfluencerDetail(influencer, detailElement) {
         const t = profileTranslations[currentLanguage]; // Get translations for current language
         
+        // Get translated content if available and language is English
+        const getTranslatedContent = (field) => {
+            if (currentLanguage === 'en' && influencerContentTranslations[influencer.id]) {
+                return influencerContentTranslations[influencer.id][field] || influencer.description[field] || influencer[field];
+            }
+            return influencer.description[field] || influencer[field];
+        };
+        
         const platformHTML = influencer.platforms.map(platformObj => {
             let finalUrl = platformObj.url;
             const isActualLink = finalUrl && finalUrl !== "#" && (finalUrl.startsWith('http://') || finalUrl.startsWith('https://'));
@@ -280,10 +340,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             <div class="audio-player-container"><audio id="audioPlayer_${influencer.id}" controls style="display:none;"></audio></div>
             <div class="space-y-3 text-secondary-text mb-6 mt-4">
                   <div><strong class="text-accent-gold block mb-1">${t.mainPlatforms}</strong> <div class="flex flex-wrap items-center">${platformHTML}</div></div>
-                <div><strong class="text-accent-gold block mb-1">${t.personality}</strong> <p class="leading-relaxed">${influencer.description.personality}</p></div>
-                <div><strong class="text-accent-gold block mb-1">${t.aesthetics}</strong> <p class="leading-relaxed">${influencer.description.esthetics}</p></div>
-                <div><strong class="text-accent-gold block mb-1">${t.contentType}</strong> <p class="leading-relaxed">${influencer.contentType}</p></div>
-                <div><strong class="text-accent-gold block mb-1">${t.topLevelReason}</strong> <p class="leading-relaxed">${influencer.topLevelReason}</p></div>
+                <div><strong class="text-accent-gold block mb-1">${t.personality}</strong> <p class="leading-relaxed">${getTranslatedContent('personality')}</p></div>
+                <div><strong class="text-accent-gold block mb-1">${t.aesthetics}</strong> <p class="leading-relaxed">${getTranslatedContent('esthetics')}</p></div>
+                <div><strong class="text-accent-gold block mb-1">${t.contentType}</strong> <p class="leading-relaxed">${getTranslatedContent('contentType')}</p></div>
+                <div><strong class="text-accent-gold block mb-1">${t.topLevelReason}</strong> <p class="leading-relaxed">${getTranslatedContent('topLevelReason')}</p></div>
             </div>
               <div class="mt-6 space-y-4">
                   <div>

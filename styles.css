@@ -65,6 +65,7 @@ body {
 .api-button {
     background-color: var(--accent-blue);
     color: var(--primary-dark);
+    border-radius: 12px;
 }
 .api-button:hover:not(:disabled) {
     background-color: var(--accent-blue-hover);
@@ -380,5 +381,14 @@ tbody { background-color: var(--secondary-dark); color: var(--secondary-text); }
         bottom: 16px;
         right: 16px;
         font-size: 18px;
+    }
+}
+
+/* Mobile accessibility for CTA buttons */
+@media (max-width: 768px) {
+    .cta-button {
+        min-height: 44px;
+        padding: 12px 24px;
+        font-size: 16px;
     }
 }
