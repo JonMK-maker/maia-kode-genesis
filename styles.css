@@ -933,3 +933,231 @@ tbody { background-color: var(--secondary-dark); color: var(--secondary-text); }
 .decorative-btn-container-circle .decorative-btn-circle.active:hover {
     color: var(--accent-gold-hover);
 }
+
+/* ============== CHECKBOX STYLES FOR INFLUENCER CARDS ============== */
+
+/* Hide the default checkbox */
+.influencer-checkbox {
+    display: none;
+}
+
+/* Custom checkbox container */
+.influencer-checkbox-label {
+    position: relative;
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+/* Custom checkbox appearance */
+.influencer-checkbox-custom {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--accent-blue);
+    border-radius: 50%;
+    background-color: transparent;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Hover state */
+.influencer-checkbox-label:hover .influencer-checkbox-custom {
+    border-color: var(--accent-gold);
+    box-shadow: 0 0 8px rgba(255, 199, 119, 0.3);
+    transform: scale(1.1);
+}
+
+/* Checked state */
+.influencer-checkbox:checked + .influencer-checkbox-custom {
+    background-color: var(--accent-blue);
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 10px rgba(88, 166, 255, 0.4);
+}
+
+/* Checkmark icon when checked */
+.influencer-checkbox:checked + .influencer-checkbox-custom::after {
+    content: '✓';
+    color: var(--accent-gold);
+    font-size: 14px;
+    font-weight: bold;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: checkmarkPop 0.3s ease-out;
+}
+
+@keyframes checkmarkPop {
+    0% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0;
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.2);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+}
+
+/* Enhanced influencer card styles for checkbox integration */
+.influencer-card {
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.influencer-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+/* Prevent checkbox clicks from triggering card selection */
+.influencer-checkbox-label {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    z-index: 20;
+}
+
+/* Focus states for accessibility */
+.influencer-checkbox:focus + .influencer-checkbox-custom {
+    outline: 2px solid var(--accent-gold);
+    outline-offset: 2px;
+}
+
+/* ============== ENHANCED FORM STYLES ============== */
+/* Contact form enhancements */
+.contact-form input:focus,
+.contact-form textarea:focus {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(88, 166, 255, 0.15);
+}
+
+.contact-form label {
+    transition: color 0.2s ease;
+}
+
+.contact-form input:focus + label,
+.contact-form textarea:focus + label {
+    color: var(--accent-blue);
+}
+
+/* ============== IMPROVED LOADING STATES ============== */
+.loading-spinner {
+    position: relative;
+}
+
+.loading-spinner::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid var(--border-color);
+    border-top: 2px solid var(--accent-gold);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* ============== ENHANCED BUTTON INTERACTIONS ============== */
+.voltage-button {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.voltage-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(88, 166, 255, 0.25);
+}
+
+.voltage-button:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 15px rgba(88, 166, 255, 0.2);
+}
+
+.voltage-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* ============== ACCESSIBILITY IMPROVEMENTS ============== */
+@media (prefers-reduced-motion: reduce) {
+    .influencer-card,
+    .influencer-checkbox-custom,
+    .voltage-button,
+    .decorative-btn,
+    input,
+    textarea {
+        transition: none !important;
+        animation: none !important;
+    }
+    
+    .checkmarkPop {
+        animation: none !important;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .influencer-checkbox-custom {
+        border-width: 3px;
+    }
+    
+    .influencer-checkbox:checked + .influencer-checkbox-custom {
+        background-color: var(--primary-text);
+        border-color: var(--primary-text);
+    }
+    
+    .influencer-checkbox:checked + .influencer-checkbox-custom::after {
+        color: var(--primary-dark);
+    }
+}
+
+/* ============== RESPONSIVE IMPROVEMENTS ============== */
+@media (max-width: 768px) {
+    .influencer-checkbox-label {
+        top: -6px;
+        right: -6px;
+    }
+    
+    .influencer-checkbox-custom {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .influencer-checkbox:checked + .influencer-checkbox-custom::after {
+        font-size: 12px;
+    }
+}
+
+/* ============== ERROR MESSAGE STYLING ============== */
+.error-message {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(185, 28, 28, 0.1));
+    border-left: 4px solid var(--accent-gold);
+    animation: errorSlideIn 0.3s ease-out;
+}
+
+@keyframes errorSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
