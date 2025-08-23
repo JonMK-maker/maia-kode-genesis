@@ -791,37 +791,48 @@ tbody { background-color: var(--secondary-dark); color: var(--secondary-text); }
         column-gap: 0.375rem;
     }
     
-    /* ============== MOBILE INFLUENCER TABS ============== */
-    .mobile-influencer-tabs {
+    /* ============== MOBILE INFLUENCER ACCORDION ============== */
+    .mobile-influencer-accordion {
         display: block;
     }
     
-    .mobile-tab-button {
+    .accordion-section {
+        background-color: var(--tertiary-dark);
+        border-color: var(--border-color);
+    }
+    
+    .accordion-header {
         background-color: var(--tertiary-dark);
         color: var(--secondary-text);
         border: none;
         cursor: pointer;
+        transition: background-color 0.2s ease;
     }
     
-    .mobile-tab-button.active {
-        color: var(--accent-gold);
-        border-bottom-color: var(--accent-gold);
+    .accordion-header:hover {
         background-color: var(--secondary-dark);
     }
     
-    .mobile-tab-button:hover {
-        background-color: var(--secondary-dark);
-        color: var(--primary-text);
+    .accordion-header.active .accordion-icon {
+        transform: rotate(180deg);
     }
     
-    /* Mobile tab content - show only active tab on mobile */
-    .mobile-tab-content {
-        display: none;
-        width: 100%;
-    }
-    
-    .mobile-tab-content.active {
+    .accordion-content {
         display: block;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-out;
+        padding: 0 1.5rem;
+    }
+    
+    .accordion-content.expanded {
+        max-height: 2000px; /* Large enough to accommodate content */
+        padding: 1.5rem;
+        transition: max-height 0.3s ease-in;
+    }
+    
+    .accordion-icon {
+        transition: transform 0.2s ease;
     }
     
     /* Grid override for mobile - single column layout */

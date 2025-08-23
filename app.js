@@ -904,35 +904,42 @@ El objetivo es deconstruir la descripción estética de un influencer en 3 conce
     }
 
     // Function to initialize mobile tabs functionality
-    function initializeMobileTabs() {
-        const tabButtons = document.querySelectorAll('.mobile-tab-button');
-        const tabContents = document.querySelectorAll('.mobile-tab-content');
+    function initializeMobileAccordion() {
+        const accordionHeaders = document.querySelectorAll('.accordion-header');
         
-        // Set initial state - show Spanish tab by default
-        function setActiveTab(activeTabName) {
-            tabButtons.forEach(button => {
-                button.classList.remove('active');
-                if (button.id === `tab-${activeTabName}`) {
-                    button.classList.add('active');
-                }
-            });
+        // Function to toggle accordion section
+        function toggleAccordion(accordionId) {
+            const header = document.getElementById(`accordion-${accordionId}`);
+            const content = document.querySelector(`[data-accordion="${accordionId}"]`);
+            const icon = header.querySelector('.accordion-icon');
             
-            tabContents.forEach(content => {
-                content.classList.remove('active');
-                if (content.dataset.tab === activeTabName) {
-                    content.classList.add('active');
-                }
-            });
+            if (content.classList.contains('expanded')) {
+                // Collapse
+                content.classList.remove('expanded');
+                header.classList.remove('active');
+                content.style.maxHeight = '0';
+            } else {
+                // Expand
+                content.classList.add('expanded');
+                header.classList.add('active');
+                content.style.maxHeight = content.scrollHeight + 'px';
+            }
         }
         
-        // Set Spanish as default active tab
-        setActiveTab('spanish');
+        // Set initial state - expand Spanish accordion by default
+        const spanishContent = document.querySelector('[data-accordion="spanish"]');
+        const spanishHeader = document.getElementById('accordion-spanish');
+        if (spanishContent && spanishHeader) {
+            spanishContent.classList.add('expanded');
+            spanishHeader.classList.add('active');
+            spanishContent.style.maxHeight = spanishContent.scrollHeight + 'px';
+        }
         
-        // Add click handlers for tab buttons
-        tabButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const tabName = button.id.replace('tab-', '');
-                setActiveTab(tabName);
+        // Add click handlers for accordion headers
+        accordionHeaders.forEach(header => {
+            header.addEventListener('click', () => {
+                const accordionId = header.id.replace('accordion-', '');
+                toggleAccordion(accordionId);
             });
         });
     }
@@ -940,11 +947,26 @@ El objetivo es deconstruir la descripción estética de un influencer en 3 conce
     async function initializeApp() {
         influencers = await loadInfluencerData();
         if (!Array.isArray(influencers) || influencers.length === 0) return;
+        
+        // Populate mobile accordion versions
         populateInfluencerSection("Español", influencerSelectorHispanas, influencerDetailHispanas);
         populateInfluencerSection("Ingles", influencerSelectorInglesas, influencerDetailInglesas);
+        
+        // Populate desktop versions if they exist
+        const influencerSelectorHispanasDesktop = document.getElementById('influencerSelectorHispanasDesktop');
+        const influencerDetailHispanasDesktop = document.getElementById('influencerDetailHispanasDesktop');
+        const influencerSelectorInglesasDesktop = document.getElementById('influencerSelectorInglesasDesktop');
+        const influencerDetailInglesasDesktop = document.getElementById('influencerDetailInglesasDesktop');
+        
+        if (influencerSelectorHispanasDesktop && influencerDetailHispanasDesktop) {
+            populateInfluencerSection("Español", influencerSelectorHispanasDesktop, influencerDetailHispanasDesktop);
+        }
+        if (influencerSelectorInglesasDesktop && influencerDetailInglesasDesktop) {
+            populateInfluencerSection("Ingles", influencerSelectorInglesasDesktop, influencerDetailInglesasDesktop);
+        }
 
-        // Initialize mobile tabs functionality
-        initializeMobileTabs();
+        // Initialize mobile accordion functionality
+        initializeMobileAccordion();
 
         // Initialize new influencer selector
         initializeInfluencerSelector();

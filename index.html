@@ -189,28 +189,62 @@
                 <span class="lang-es">Para definir los pilares de Maia, estudiamos a las mentes más brillantes de la divulgación. Haz clic en cada perfil para ver un análisis detallado de los rasgos que inspiraron su futura personalidad, estética y contenido.</span>
                 <span class="lang-en hidden">To define Maia's pillars, we studied the brightest minds in communication. Click on each profile to see a detailed analysis of the traits that inspired her future personality, aesthetics, and content.</span>
             </p>
-<!-- Mobile Tab Navigation (hidden on desktop) -->
-            <div class="mobile-influencer-tabs md:hidden mb-6">
-                <div class="flex border-b border-border-color">
-                    <button id="tab-spanish" class="mobile-tab-button flex-1 py-3 px-4 text-center font-medium transition-colors duration-200 border-b-2 border-transparent active">
-                        <span class="lang-es">Modelos Hispanos</span>
-                        <span class="lang-en hidden">Hispanic Models</span>
+<!-- Mobile Accordion Navigation (hidden on desktop) -->
+            <div class="mobile-influencer-accordion md:hidden mb-6">
+                <!-- Hispanic Models Accordion Section -->
+                <div class="accordion-section border border-border-color rounded-lg mb-4">
+                    <button id="accordion-spanish" class="accordion-header w-full flex items-center justify-between p-4 bg-tertiary-dark hover:bg-secondary-dark transition-colors duration-200 rounded-lg">
+                        <h3 class="text-lg font-bold text-accent-gold">
+                            <span class="lang-es">Modelos Hispanos</span>
+                            <span class="lang-en hidden">Hispanic Models</span>
+                        </h3>
+                        <svg class="accordion-icon w-5 h-5 text-accent-gold transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
                     </button>
-                    <button id="tab-english" class="mobile-tab-button flex-1 py-3 px-4 text-center font-medium transition-colors duration-200 border-b-2 border-transparent">
-                        <span class="lang-es">Modelos Ingleses</span>
-                        <span class="lang-en hidden">English-speaking Models</span>
+                    <div id="hispanas-container" class="accordion-content bg-tertiary-dark p-6 rounded-b-lg" data-accordion="spanish">
+                        <div class="grid grid-cols-1 gap-4 mb-6" id="influencerSelectorHispanas"></div>
+                        <div id="influencerDetailHispanas" class="p-4 border border-border-color rounded-lg bg-secondary-dark min-h-[200px]">
+                            <p class="text-center text-tertiary-text">
+                                <span class="lang-es">Selecciona un modelo para ver sus detalles.</span>
+                                <span class="lang-en hidden">Select a model to see their details.</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- English Models Accordion Section -->
+                <div class="accordion-section border border-border-color rounded-lg mb-4">
+                    <button id="accordion-english" class="accordion-header w-full flex items-center justify-between p-4 bg-tertiary-dark hover:bg-secondary-dark transition-colors duration-200 rounded-lg">
+                        <h3 class="text-lg font-bold text-accent-gold">
+                            <span class="lang-es">Modelos Ingleses</span>
+                            <span class="lang-en hidden">English-speaking Models</span>
+                        </h3>
+                        <svg class="accordion-icon w-5 h-5 text-accent-gold transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
                     </button>
+                    <div id="inglesas-container" class="accordion-content bg-tertiary-dark p-6 rounded-b-lg hidden" data-accordion="english">
+                        <div class="grid grid-cols-1 gap-4 mb-6" id="influencerSelectorInglesas"></div>
+                        <div id="influencerDetailInglesas" class="p-4 border border-border-color rounded-lg bg-secondary-dark min-h-[200px]">
+                            <p class="text-center text-tertiary-text">
+                                <span class="lang-es">Selecciona un modelo para ver sus detalles.</span>
+                                <span class="lang-en hidden">Select a model to see their details.</span>
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div id="hispanas-container" class="bg-tertiary-dark p-6 rounded-lg shadow-inner mobile-tab-content flex flex-col" data-tab="spanish">
+            <!-- Desktop Grid Layout (hidden on mobile) -->
+            <div class="hidden md:grid md:grid-cols-2 gap-6">
+                <div class="bg-tertiary-dark p-6 rounded-lg shadow-inner flex flex-col">
                     <h3 class="text-xl font-bold text-accent-gold mb-4 text-center">
                         <span class="lang-es">Modelos Hispanos</span>
                         <span class="lang-en hidden">Hispanic Models</span>
                     </h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8 flex-grow" id="influencerSelectorHispanas"></div>
-                    <div id="influencerDetailHispanas" class="mt-auto p-4 border border-border-color rounded-lg bg-secondary-dark min-h-[200px]">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8 flex-grow" id="influencerSelectorHispanasDesktop"></div>
+                    <div id="influencerDetailHispanasDesktop" class="mt-auto p-4 border border-border-color rounded-lg bg-secondary-dark min-h-[200px]">
                         <p class="text-center text-tertiary-text">
                             <span class="lang-es">Selecciona un modelo para ver sus detalles.</span>
                             <span class="lang-en hidden">Select a model to see their details.</span>
@@ -218,13 +252,13 @@
                     </div>
                 </div>
 
-                <div id="inglesas-container" class="bg-tertiary-dark p-6 rounded-lg shadow-inner mobile-tab-content flex flex-col" data-tab="english">
+                <div class="bg-tertiary-dark p-6 rounded-lg shadow-inner flex flex-col">
                     <h3 class="text-xl font-bold text-accent-gold mb-4 text-center">
                         <span class="lang-es">Modelos Ingleses</span>
                         <span class="lang-en hidden">English-speaking Models</span>
                     </h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8 flex-grow" id="influencerSelectorInglesas"></div>
-                    <div id="influencerDetailInglesas" class="mt-auto p-4 border border-border-color rounded-lg bg-secondary-dark min-h-[200px]">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8 flex-grow" id="influencerSelectorInglesasDesktop"></div>
+                    <div id="influencerDetailInglesasDesktop" class="mt-auto p-4 border border-border-color rounded-lg bg-secondary-dark min-h-[200px]">
                         <p class="text-center text-tertiary-text">
                             <span class="lang-es">Selecciona un modelo para ver sus detalles.</span>
                             <span class="lang-en hidden">Select a model to see their details.</span>
