@@ -401,6 +401,17 @@
                 <span class="lang-en hidden">Explore the key data of each influencer. Use the button for the AI to identify patterns and apply them to Maia Kode's profile.</span>
             </p>
 
+            <div class="mb-8">
+                <div class="ai-btn-voltage">
+                    <button id="summarizePatternsButton" class="voltage-button api-button bg-accent-blue hover:bg-accent-blue-hover text-primary-dark disabled:bg-disabled-bg">
+                        <span class="lang-es">✨ Resumir Patrones Clave</span>
+                        <span class="lang-en hidden">✨ Summarize Key Patterns</span>
+                    </button>
+                </div>
+                <div id="summarizePatternsLoading" class="loading-spinner" style="display: none;"></div>
+                <div id="summarizePatternsOutput" class="api-output" style="display: none;" aria-live="polite"></div>
+            </div>
+
             <h3 class="text-xl font-semibold text-accent-gold mb-4">
                 <span class="lang-es">Popularidad de Plataformas</span>
                 <span class="lang-en hidden">Platform Popularity</span>
@@ -444,17 +455,6 @@
                     </thead>
                     <tbody class="bg-secondary-dark divide-y divide-border-color text-sm text-secondary-text" id="comparisonTableBody"></tbody>
                 </table>
-            </div>
-            
-            <div class="mt-8">
-                <div class="ai-btn-voltage">
-                    <button id="summarizePatternsButton" class="voltage-button api-button bg-accent-blue hover:bg-accent-blue-hover text-primary-dark disabled:bg-disabled-bg">
-                        <span class="lang-es">✨ Resumir Patrones Clave</span>
-                        <span class="lang-en hidden">✨ Summarize Key Patterns</span>
-                    </button>
-                </div>
-                <div id="summarizePatternsLoading" class="loading-spinner" style="display: none;"></div>
-                <div id="summarizePatternsOutput" class="api-output" style="display: none;" aria-live="polite"></div>
             </div>
         </section>
     </main>
