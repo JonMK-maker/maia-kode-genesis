@@ -120,7 +120,7 @@ exports.handler = async (event) => {
         }
 
         // Create request configuration
-        const requestBody = createOpenAIRequestBody(validatedPrompt);
+        requestBody = createOpenAIRequestBody(validatedPrompt);
         const requestConfig = {
             timeout: REQUEST_TIMEOUT,
             headers: {
