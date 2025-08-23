@@ -299,7 +299,9 @@
                     </label>
                     <input type="text" id="name" name="name" required 
                            class="w-full px-4 py-3 bg-tertiary-dark border border-border-color rounded-lg text-primary-text placeholder-tertiary-text focus:outline-none focus:ring-2 focus:ring-accent-blue focus:border-transparent transition-all duration-200"
-                           placeholder="Tu nombre / Your name">
+                           data-placeholder-es="Tu nombre" 
+                           data-placeholder-en="Your name"
+                           placeholder="Tu nombre">
                 </div>
                 
                 <div>
@@ -309,6 +311,8 @@
                     </label>
                     <input type="email" id="email" name="email" required 
                            class="w-full px-4 py-3 bg-tertiary-dark border border-border-color rounded-lg text-primary-text placeholder-tertiary-text focus:outline-none focus:ring-2 focus:ring-accent-blue focus:border-transparent transition-all duration-200"
+                           data-placeholder-es="tu@email.com" 
+                           data-placeholder-en="your@email.com"
                            placeholder="tu@email.com">
                 </div>
                 
@@ -319,6 +323,8 @@
                     </label>
                     <textarea id="message" name="message" rows="5" required 
                               class="w-full px-4 py-3 bg-tertiary-dark border border-border-color rounded-lg text-primary-text placeholder-tertiary-text focus:outline-none focus:ring-2 focus:ring-accent-blue focus:border-transparent transition-all duration-200 resize-vertical"
+                              data-placeholder-es="Comparte tu idea, sugerencia o reflexión..."
+                              data-placeholder-en="Share your idea, suggestion or reflection..."
                               placeholder="Comparte tu idea, sugerencia o reflexión..."></textarea>
                 </div>
                 
@@ -491,6 +497,14 @@
                     scrollToTopBtn.setAttribute('aria-label', scrollToTopText);
                     scrollToTopBtn.setAttribute('title', scrollToTopText);
                 }
+
+                // Update form placeholders based on selected language
+                document.querySelectorAll('[data-placeholder-es][data-placeholder-en]').forEach(el => {
+                    const placeholder = el.getAttribute(`data-placeholder-${lang}`);
+                    if (placeholder) {
+                        el.setAttribute('placeholder', placeholder);
+                    }
+                });
             }
 
             // Handle language selection
