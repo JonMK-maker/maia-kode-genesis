@@ -716,8 +716,8 @@ tbody { background-color: var(--secondary-dark); color: var(--secondary-text); }
         outline-color: var(--accent-yellow);
         outline-offset: -4px; /* Move outline further inward to contain within gradient border */
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2), 0 0 8px rgba(255, 214, 0, 0.3);
-        /* Ensure solid background to prevent gradient bleeding */
-        background: var(--tertiary-dark) !important;
+        /* Keep the gradient background from desktop version */
+        background: linear-gradient(45deg, #E441A5, #58A6FF) !important;
         /* Ensure button properly fills container with gradient border */
         margin: 0;
         position: relative;
