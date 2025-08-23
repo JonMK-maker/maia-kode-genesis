@@ -714,7 +714,14 @@ tbody { background-color: var(--secondary-dark); color: var(--secondary-text); }
     .decorative-btn-container .decorative-btn.cta-button-secondary {
         color: var(--accent-yellow);
         outline-color: var(--accent-yellow);
+        outline-offset: -4px; /* Move outline further inward to contain within gradient border */
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2), 0 0 8px rgba(255, 214, 0, 0.3);
+        /* Ensure solid background to prevent gradient bleeding */
+        background: var(--tertiary-dark) !important;
+        /* Ensure button properly fills container with gradient border */
+        margin: 0;
+        position: relative;
+        z-index: 1;
     }
     
     .ai-btn-voltage .voltage-button.cta-button,
@@ -747,7 +754,17 @@ tbody { background-color: var(--secondary-dark); color: var(--secondary-text); }
     .decorative-btn-container .voltage-button.cta-button-secondary {
         border: none !important;
         outline: 2px solid var(--accent-yellow);
-        outline-offset: -2px;
+        outline-offset: -4px; /* Move outline further inward to prevent overflow beyond gradient border */
+    }
+    
+    /* Additional fix for decorative container gradient bleeding on mobile */
+    .decorative-btn-container {
+        /* Reduce padding slightly to minimize gradient bleeding */
+        padding: 1.5px;
+        /* Ensure proper containment */
+        overflow: hidden;
+        /* Ensure gradient border stays within bounds */
+        box-sizing: border-box;
     }
     
     nav .decorative-btn-container,
