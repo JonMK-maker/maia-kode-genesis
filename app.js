@@ -1008,6 +1008,9 @@ El objetivo es deconstruir la descripción estética de un influencer en 3 conce
         // Refresh comparison table with new language
         populateComparisonTable();
         
+        // Reset AI-generated content and button states
+        resetAIContent();
+        
         // Find currently selected influencers and refresh their details
         const selectedHispana = document.querySelector('#influencerSelectorHispanas .selected');
         const selectedInglesa = document.querySelector('#influencerSelectorInglesas .selected');
@@ -1028,6 +1031,60 @@ El objetivo es deconstruir la descripción estética de un influencer en 3 conce
             }
         }
     };
+
+    // Function to reset AI-generated content when language changes
+    function resetAIContent() {
+        // Reset AI output containers
+        const aiOutputContainers = [
+            'idealAIProfileOutput',
+            'titleSloganOutput', 
+            'summarizePatternsOutput'
+        ];
+        
+        aiOutputContainers.forEach(containerId => {
+            const container = document.getElementById(containerId);
+            if (container) {
+                container.innerHTML = '';
+                container.style.display = 'none';
+            }
+        });
+        
+        // Reset loading spinners
+        const loadingContainers = [
+            'idealAIProfileLoading',
+            'titleSloganLoading',
+            'summarizePatternsLoading'
+        ];
+        
+        loadingContainers.forEach(containerId => {
+            const container = document.getElementById(containerId);
+            if (container) {
+                container.style.display = 'none';
+            }
+        });
+        
+        // Reset button states - enable disabled buttons
+        const aiButtons = [
+            'generateIdealAIProfileButton',
+            'generateTitleSloganButton',
+            'summarizePatternsButton'
+        ];
+        
+        aiButtons.forEach(buttonId => {
+            const button = document.getElementById(buttonId);
+            if (button) {
+                button.disabled = false;
+                button.classList.remove('disabled:bg-disabled-bg');
+            }
+        });
+        
+        // Special handling for titleSlogan button which depends on ideal profile
+        const titleSloganButton = document.getElementById('generateTitleSloganButton');
+        const idealProfileOutput = document.getElementById('idealAIProfileOutput');
+        if (titleSloganButton && idealProfileOutput && idealProfileOutput.innerHTML.trim() === '') {
+            titleSloganButton.disabled = true;
+        }
+    }
 
     initializeApp();
 
