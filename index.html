@@ -189,10 +189,23 @@
                 <span class="lang-es">Para definir los pilares de Maia, estudiamos a las mentes más brillantes de la divulgación. Haz clic en cada perfil para ver un análisis detallado de los rasgos que inspiraron su futura personalidad, estética y contenido.</span>
                 <span class="lang-en hidden">To define Maia's pillars, we studied the brightest minds in communication. Click on each profile to see a detailed analysis of the traits that inspired her future personality, aesthetics, and content.</span>
             </p>
+<!-- Mobile Tab Navigation (hidden on desktop) -->
+            <div class="mobile-influencer-tabs md:hidden mb-6">
+                <div class="flex border-b border-border-color">
+                    <button id="tab-spanish" class="mobile-tab-button flex-1 py-3 px-4 text-center font-medium transition-colors duration-200 border-b-2 border-transparent active">
+                        <span class="lang-es">Modelos Hispanos</span>
+                        <span class="lang-en hidden">Hispanic Models</span>
+                    </button>
+                    <button id="tab-english" class="mobile-tab-button flex-1 py-3 px-4 text-center font-medium transition-colors duration-200 border-b-2 border-transparent">
+                        <span class="lang-es">Modelos Ingleses</span>
+                        <span class="lang-en hidden">English-speaking Models</span>
+                    </button>
+                </div>
+            </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:items-stretch">
-                <div id="hispanas-container" class="bg-tertiary-dark p-6 rounded-lg shadow-inner flex flex-col">
-                    <h3 class="text-xl font-bold text-accent-gold mb-4 text-center">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div id="hispanas-container" class="bg-tertiary-dark p-6 rounded-lg shadow-inner mobile-tab-content" data-tab="spanish">
+                    <h3 class="text-xl font-bold text-accent-gold mb-4">
                         <span class="lang-es">Modelos Hispanos</span>
                         <span class="lang-en hidden">Hispanic Models</span>
                     </h3>
@@ -204,8 +217,9 @@
                         </p>
                     </div>
                 </div>
-                <div id="inglesas-container" class="bg-tertiary-dark p-6 rounded-lg shadow-inner flex flex-col">
-                    <h3 class="text-xl font-bold text-accent-gold mb-4 text-center">
+
+                <div id="inglesas-container" class="bg-tertiary-dark p-6 rounded-lg shadow-inner mobile-tab-content" data-tab="english">
+                    <h3 class="text-xl font-bold text-accent-gold mb-4">
                         <span class="lang-es">Modelos Ingleses</span>
                         <span class="lang-en hidden">English-speaking Models</span>
                     </h3>

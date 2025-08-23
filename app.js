@@ -903,11 +903,48 @@ El objetivo es deconstruir la descripción estética de un influencer en 3 conce
         });
     }
 
+    // Function to initialize mobile tabs functionality
+    function initializeMobileTabs() {
+        const tabButtons = document.querySelectorAll('.mobile-tab-button');
+        const tabContents = document.querySelectorAll('.mobile-tab-content');
+        
+        // Set initial state - show Spanish tab by default
+        function setActiveTab(activeTabName) {
+            tabButtons.forEach(button => {
+                button.classList.remove('active');
+                if (button.id === `tab-${activeTabName}`) {
+                    button.classList.add('active');
+                }
+            });
+            
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+                if (content.dataset.tab === activeTabName) {
+                    content.classList.add('active');
+                }
+            });
+        }
+        
+        // Set Spanish as default active tab
+        setActiveTab('spanish');
+        
+        // Add click handlers for tab buttons
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const tabName = button.id.replace('tab-', '');
+                setActiveTab(tabName);
+            });
+        });
+    }
+
     async function initializeApp() {
         influencers = await loadInfluencerData();
         if (!Array.isArray(influencers) || influencers.length === 0) return;
         populateInfluencerSection("Español", influencerSelectorHispanas, influencerDetailHispanas);
         populateInfluencerSection("Ingles", influencerSelectorInglesas, influencerDetailInglesas);
+
+        // Initialize mobile tabs functionality
+        initializeMobileTabs();
 
         // Initialize new influencer selector
         initializeInfluencerSelector();
