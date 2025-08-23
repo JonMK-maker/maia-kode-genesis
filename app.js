@@ -763,13 +763,6 @@ El objetivo es deconstruir la descripción estética de un influencer en 3 conce
             const platformNames = influencer.platforms.map(p => p.name).slice(0, 2).join(', ');
             card.innerHTML = `
                 <div class="relative">
-                    <!-- Checkbox en esquina superior derecha -->
-                    <div class="absolute top-0 right-0 -mt-2 -mr-2">
-                        <label class="influencer-checkbox-label" for="checkbox_${influencer.id}">
-                            <input type="checkbox" id="checkbox_${influencer.id}" class="influencer-checkbox" data-influencer-id="${influencer.id}" data-influencer-name="${influencer.name.split('(')[0].trim()}">
-                            <span class="influencer-checkbox-custom"></span>
-                        </label>
-                    </div>
                     <h4 class="font-semibold text-center">${influencer.name.split('(')[0].trim()}</h4>
                     <p class="text-xs text-center mt-1">${platformNames}</p>
                 </div>
@@ -796,20 +789,8 @@ El objetivo es deconstruir la descripción estética de un influencer en 3 conce
             };
             
             card.addEventListener('click', (e) => {
-                // Prevent card selection if checkbox was clicked
-                if (e.target.closest('.influencer-checkbox-label')) {
-                    return;
-                }
                 selectInfluencer();
             });
-            
-            // Add event listener for checkbox to prevent propagation
-            const checkbox = card.querySelector('.influencer-checkbox');
-            if (checkbox) {
-                checkbox.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                });
-            }
             
             card.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
@@ -928,8 +909,98 @@ El objetivo es deconstruir la descripción estética de un influencer en 3 conce
         populateInfluencerSection("Español", influencerSelectorHispanas, influencerDetailHispanas);
         populateInfluencerSection("Ingles", influencerSelectorInglesas, influencerDetailInglesas);
 
+        // Initialize new influencer selector
+        initializeInfluencerSelector();
+
         populateComparisonTable();
         showSection('mision');
+    }
+
+    // Function to populate the new influencer checkbox list in Conclusions section
+    function populateInfluencerCheckboxList() {
+        const checkboxListContainer = document.getElementById('influencerCheckboxList');
+        if (!checkboxListContainer) return;
+
+        checkboxListContainer.innerHTML = '';
+        
+        influencers.forEach(influencer => {
+            const checkboxItem = document.createElement('div');
+            checkboxItem.className = 'flex items-center space-x-3 p-3 bg-secondary-dark rounded-lg border border-border-color hover:border-accent-blue transition-colors';
+            
+            const influencerName = influencer.name.split('(')[0].trim();
+            const platformNames = influencer.platforms.map(p => p.name).slice(0, 2).join(', ');
+            
+            checkboxItem.innerHTML = `
+                <input type="checkbox" 
+                       id="new_checkbox_${influencer.id}" 
+                       class="influencer-checkbox new-influencer-checkbox" 
+                       data-influencer-id="${influencer.id}" 
+                       data-influencer-name="${influencerName}"
+                       onchange="updateSelectedCount()">
+                <label for="new_checkbox_${influencer.id}" class="flex-1 cursor-pointer">
+                    <div class="font-medium text-primary-text">${influencerName}</div>
+                    <div class="text-xs text-tertiary-text">${platformNames}</div>
+                </label>
+            `;
+            
+            checkboxListContainer.appendChild(checkboxItem);
+        });
+        
+        updateSelectedCount();
+    }
+
+    // Function to update the selected count
+    function updateSelectedCount() {
+        const selectedCheckboxes = document.querySelectorAll('.new-influencer-checkbox:checked');
+        const countElement = document.getElementById('selectedCount');
+        if (countElement) {
+            countElement.textContent = selectedCheckboxes.length;
+        }
+    }
+
+    // Function to initialize the influencer selector interface
+    function initializeInfluencerSelector() {
+        populateInfluencerCheckboxList();
+
+        // Handle radio button changes
+        const radioButtons = document.querySelectorAll('input[name="analysisType"]');
+        const specificSelection = document.getElementById('specificInfluencerSelection');
+        
+        radioButtons.forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                if (e.target.value === 'specific') {
+                    specificSelection.classList.remove('hidden');
+                } else {
+                    specificSelection.classList.add('hidden');
+                }
+            });
+        });
+
+        // Handle select all button
+        const selectAllButton = document.getElementById('selectAllInfluencers');
+        if (selectAllButton) {
+            selectAllButton.addEventListener('click', () => {
+                const checkboxes = document.querySelectorAll('.new-influencer-checkbox');
+                const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+                
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = !allChecked;
+                });
+                
+                updateSelectedCount();
+                
+                // Update button text
+                const selectAllText = selectAllButton.querySelector('.lang-es');
+                const selectAllTextEn = selectAllButton.querySelector('.lang-en');
+                if (allChecked) {
+                    selectAllText.textContent = 'Seleccionar todos';
+                    selectAllTextEn.textContent = 'Select all';
+                } else {
+                    selectAllText.textContent = 'Deseleccionar todos';
+                    selectAllTextEn.textContent = 'Deselect all';
+                }
+            });
+        }
     }
 
     if (summarizePatternsButton) summarizePatternsButton.addEventListener('click', (e) => {
@@ -946,19 +1017,27 @@ El objetivo es deconstruir la descripción estética de un influencer en 3 conce
     });
 
     if (generateIdealAIProfileButton) generateIdealAIProfileButton.addEventListener('click', (e) => {
-        // Get selected influencers from checkboxes
-        const selectedCheckboxes = document.querySelectorAll('.influencer-checkbox:checked');
-        const selectedInfluencers = Array.from(selectedCheckboxes).map(checkbox => {
-            return {
-                id: checkbox.dataset.influencerId,
-                name: checkbox.dataset.influencerName
-            };
-        });
+        // Check analysis type (all or specific)
+        const analysisTypeAll = document.querySelector('input[name="analysisType"][value="all"]');
+        const useAllInfluencers = analysisTypeAll && analysisTypeAll.checked;
+        
+        let selectedInfluencers = [];
+        
+        if (!useAllInfluencers) {
+            // Get selected influencers from new checkboxes
+            const selectedCheckboxes = document.querySelectorAll('.new-influencer-checkbox:checked');
+            selectedInfluencers = Array.from(selectedCheckboxes).map(checkbox => {
+                return {
+                    id: checkbox.dataset.influencerId,
+                    name: checkbox.dataset.influencerName
+                };
+            });
+        }
 
         let prompt;
         const template = promptTemplates[currentLanguage].idealProfile;
         
-        if (selectedInfluencers.length > 0) {
+        if (!useAllInfluencers && selectedInfluencers.length > 0) {
             // Custom prompt with selected influencers
             const selectedNames = selectedInfluencers.map(inf => inf.name).join(', ');
             const selectedInfluencerData = selectedInfluencers.map(selected => {
@@ -973,8 +1052,10 @@ El objetivo es deconstruir la descripción estética de un influencer en 3 conce
                 
                 Datos específicos de los seleccionados: ${selectedInfluencerData}`);
         } else {
-            // Show Maia's tip in console and use general analysis
-            console.log('💡 Maia dice: "Selecciona algunos perfiles de influencers que te inspiren más para crear un análisis personalizado, ¡o continúa con el análisis general de todos!"');
+            // Use general analysis (all influencers or none selected)
+            if (!useAllInfluencers && selectedInfluencers.length === 0) {
+                console.log('💡 Maia dice: "No has seleccionado ningún influencer específico. Usando el análisis general de todos los influencers."');
+            }
             prompt = template.template.replace('{{conclusion}}', template.conclusion);
         }
         
@@ -1011,6 +1092,11 @@ El objetivo es deconstruir la descripción estética de un influencer en 3 conce
         // Reset AI-generated content and button states
         resetAIContent();
         
+        // Refresh influencer checkbox list for new language
+        if (influencers.length > 0) {
+            populateInfluencerCheckboxList();
+        }
+        
         // Find currently selected influencers and refresh their details
         const selectedHispana = document.querySelector('#influencerSelectorHispanas .selected');
         const selectedInglesa = document.querySelector('#influencerSelectorInglesas .selected');
@@ -1031,6 +1117,9 @@ El objetivo es deconstruir la descripción estética de un influencer en 3 conce
             }
         }
     };
+
+    // Make updateSelectedCount available globally
+    window.updateSelectedCount = updateSelectedCount;
 
     // Function to reset AI-generated content when language changes
     function resetAIContent() {

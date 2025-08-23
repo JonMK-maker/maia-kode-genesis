@@ -949,82 +949,99 @@ tbody { background-color: var(--secondary-dark); color: var(--secondary-text); }
     color: var(--accent-gold-hover);
 }
 
-/* ============== CHECKBOX STYLES FOR INFLUENCER CARDS ============== */
+/* ============== INFLUENCER SELECTOR INTERFACE ============== */
 
-/* Hide the default checkbox */
-.influencer-checkbox {
-    display: none;
+/* Influencer selector container */
+.influencer-selector-container {
+    background-color: var(--tertiary-dark);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 2rem 0;
 }
 
-/* Custom checkbox container */
-.influencer-checkbox-label {
-    position: relative;
-    display: inline-block;
-    width: 24px;
-    height: 24px;
-    cursor: pointer;
-    z-index: 10;
+/* Radio button styles for analysis type selection */
+.influencer-selector-container input[type="radio"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--accent-blue);
+    margin-right: 0.75rem;
 }
 
-/* Custom checkbox appearance */
-.influencer-checkbox-custom {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 24px;
-    height: 24px;
-    border: 2px solid var(--accent-blue);
-    border-radius: 50%;
-    background-color: transparent;
-    transition: all 0.3s ease;
+.influencer-selector-container label {
     display: flex;
     align-items: center;
-    justify-content: center;
+    cursor: pointer;
+    transition: color 0.2s ease;
 }
 
-/* Hover state */
-.influencer-checkbox-label:hover .influencer-checkbox-custom {
-    border-color: var(--accent-gold);
-    box-shadow: 0 0 8px rgba(255, 199, 119, 0.3);
-    transform: scale(1.1);
-}
-
-/* Checked state */
-.influencer-checkbox:checked + .influencer-checkbox-custom {
-    background-color: var(--accent-blue);
-    border-color: var(--accent-blue);
-    box-shadow: 0 0 10px rgba(88, 166, 255, 0.4);
-}
-
-/* Checkmark icon when checked */
-.influencer-checkbox:checked + .influencer-checkbox-custom::after {
-    content: '✓';
+.influencer-selector-container label:hover {
     color: var(--accent-gold);
-    font-size: 14px;
-    font-weight: bold;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    animation: checkmarkPop 0.3s ease-out;
 }
 
-@keyframes checkmarkPop {
-    0% {
-        transform: translate(-50%, -50%) scale(0);
-        opacity: 0;
-    }
-    50% {
-        transform: translate(-50%, -50%) scale(1.2);
-        opacity: 1;
-    }
-    100% {
-        transform: translate(-50%, -50%) scale(1);
-        opacity: 1;
-    }
+/* Checkbox list for specific influencer selection */
+.influencer-checkbox-item {
+    background-color: var(--secondary-dark);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0.75rem;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
 }
 
-/* Enhanced influencer card styles for checkbox integration */
+.influencer-checkbox-item:hover {
+    border-color: var(--accent-blue);
+    background-color: rgba(88, 166, 255, 0.1);
+}
+
+.influencer-checkbox-item input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--accent-blue);
+    border-radius: 4px;
+}
+
+.influencer-checkbox-item label {
+    flex: 1;
+    cursor: pointer;
+    margin: 0;
+}
+
+.influencer-checkbox-item .influencer-name {
+    font-weight: 500;
+    color: var(--primary-text);
+    margin-bottom: 0.25rem;
+}
+
+.influencer-checkbox-item .influencer-platforms {
+    font-size: 0.75rem;
+    color: var(--tertiary-text);
+}
+
+/* Selected count styling */
+.selected-count {
+    color: var(--accent-gold);
+    font-weight: 600;
+}
+
+/* Select all button */
+.select-all-btn {
+    color: var(--accent-blue);
+    text-decoration: underline;
+    font-size: 0.875rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.select-all-btn:hover {
+    color: var(--accent-blue-hover);
+}
+
+/* Enhanced influencer card styles (without checkbox integration) */
 .influencer-card {
     transition: all 0.3s ease;
     position: relative;
@@ -1033,20 +1050,6 @@ tbody { background-color: var(--secondary-dark); color: var(--secondary-text); }
 .influencer-card:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-}
-
-/* Prevent checkbox clicks from triggering card selection */
-.influencer-checkbox-label {
-    position: absolute;
-    top: -8px;
-    right: -8px;
-    z-index: 20;
-}
-
-/* Focus states for accessibility */
-.influencer-checkbox:focus + .influencer-checkbox-custom {
-    outline: 2px solid var(--accent-gold);
-    outline-offset: 2px;
 }
 
 /* ============== ENHANCED FORM STYLES ============== */
@@ -1112,7 +1115,6 @@ tbody { background-color: var(--secondary-dark); color: var(--secondary-text); }
 /* ============== ACCESSIBILITY IMPROVEMENTS ============== */
 @media (prefers-reduced-motion: reduce) {
     .influencer-card,
-    .influencer-checkbox-custom,
     .voltage-button,
     .decorative-btn,
     input,
@@ -1120,42 +1122,22 @@ tbody { background-color: var(--secondary-dark); color: var(--secondary-text); }
         transition: none !important;
         animation: none !important;
     }
-    
-    .checkmarkPop {
-        animation: none !important;
-    }
-}
-
-/* High contrast mode support */
-@media (prefers-contrast: high) {
-    .influencer-checkbox-custom {
-        border-width: 3px;
-    }
-    
-    .influencer-checkbox:checked + .influencer-checkbox-custom {
-        background-color: var(--primary-text);
-        border-color: var(--primary-text);
-    }
-    
-    .influencer-checkbox:checked + .influencer-checkbox-custom::after {
-        color: var(--primary-dark);
-    }
 }
 
 /* ============== RESPONSIVE IMPROVEMENTS ============== */
 @media (max-width: 768px) {
-    .influencer-checkbox-label {
-        top: -6px;
-        right: -6px;
+    .influencer-selector-container {
+        padding: 1rem;
     }
     
-    .influencer-checkbox-custom {
-        width: 20px;
-        height: 20px;
+    .influencer-checkbox-item {
+        padding: 0.5rem;
+        gap: 0.5rem;
     }
     
-    .influencer-checkbox:checked + .influencer-checkbox-custom::after {
-        font-size: 12px;
+    .influencer-checkbox-item input[type="checkbox"] {
+        width: 16px;
+        height: 16px;
     }
 }
 
