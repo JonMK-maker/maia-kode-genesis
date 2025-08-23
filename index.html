@@ -230,6 +230,60 @@
                 <span class="lang-en hidden">The study of these 16 references has allowed us to define an AI archetype that not only educates but also inspires. A didactic-geek profile, with a human touch and an authentic voice that resonates with a community seeking growth. Here you can use the AI to synthesize these findings.</span>
             </p>
 
+            <!-- Influencer Selection Interface -->
+            <div class="mt-8 mb-8 p-6 bg-tertiary-dark rounded-lg border border-border-color">
+                <h3 class="text-xl font-semibold text-accent-gold mb-4">
+                    <span class="lang-es">Personaliza tu análisis:</span>
+                    <span class="lang-en hidden">Customize your analysis:</span>
+                </h3>
+                
+                <!-- Radio Button Options -->
+                <div class="mb-6">
+                    <div class="space-y-3">
+                        <label class="flex items-center cursor-pointer">
+                            <input type="radio" name="analysisType" value="all" class="mr-3 text-accent-blue focus:ring-accent-blue" checked>
+                            <span class="text-primary-text">
+                                <span class="lang-es">Usar todos los influencers (análisis general)</span>
+                                <span class="lang-en hidden">Use all influencers (general analysis)</span>
+                            </span>
+                        </label>
+                        <label class="flex items-center cursor-pointer">
+                            <input type="radio" name="analysisType" value="specific" class="mr-3 text-accent-blue focus:ring-accent-blue">
+                            <span class="text-primary-text">
+                                <span class="lang-es">Seleccionar influencers específicos</span>
+                                <span class="lang-en hidden">Select specific influencers</span>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Specific Influencer Selection (hidden by default) -->
+                <div id="specificInfluencerSelection" class="hidden">
+                    <div class="mb-4">
+                        <p class="text-secondary-text mb-3">
+                            <span class="lang-es">Selecciona los influencers que quieres incluir en el análisis:</span>
+                            <span class="lang-en hidden">Select the influencers you want to include in the analysis:</span>
+                        </p>
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="text-accent-gold font-medium">
+                                <span id="selectedCount">0</span>
+                                <span class="lang-es">influencers seleccionados</span>
+                                <span class="lang-en hidden">influencers selected</span>
+                            </span>
+                            <button id="selectAllInfluencers" type="button" class="text-accent-blue hover:text-accent-blue-hover underline text-sm">
+                                <span class="lang-es">Seleccionar todos</span>
+                                <span class="lang-en hidden">Select all</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Influencer List with Checkboxes -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="influencerCheckboxList">
+                        <!-- This will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
             <div class="mt-8 space-y-6">
                 <div>
                     <h3 class="text-xl font-semibold text-accent-gold mb-2">
