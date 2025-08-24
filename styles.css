@@ -831,6 +831,42 @@ tbody { background-color: var(--secondary-dark); color: var(--secondary-text); }
         max-height: 80vh; /* Limit to 80% of viewport height to ensure scrollability */
         padding: 1.5rem;
         transition: max-height 0.3s ease-in;
+        /* Enhanced scroll indicators */
+        scrollbar-width: thin;
+        scrollbar-color: var(--accent-gold) var(--tertiary-dark);
+    }
+    
+    /* Webkit scrollbar styling for better visibility */
+    .accordion-content.expanded::-webkit-scrollbar {
+        width: 8px;
+    }
+    
+    .accordion-content.expanded::-webkit-scrollbar-track {
+        background: var(--tertiary-dark);
+        border-radius: 4px;
+    }
+    
+    .accordion-content.expanded::-webkit-scrollbar-thumb {
+        background: var(--accent-gold);
+        border-radius: 4px;
+        border: 2px solid var(--tertiary-dark);
+    }
+    
+    .accordion-content.expanded::-webkit-scrollbar-thumb:hover {
+        background: var(--accent-gold-hover);
+    }
+    
+    /* Visual indicator for more content below */
+    .accordion-content.expanded::after {
+        content: "";
+        position: sticky;
+        bottom: 0;
+        display: block;
+        height: 20px;
+        background: linear-gradient(transparent, var(--tertiary-dark));
+        pointer-events: none;
+        margin-top: -20px;
+        z-index: 1;
     }
     
     .accordion-icon {
