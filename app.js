@@ -823,18 +823,20 @@ El objetivo es deconstruir la descripción estética de un influencer en 3 conce
                             }
                         }
                         
-                        // Wait for accordion to expand, then scroll
+                        // Wait for accordion to expand, then scroll within the accordion container
                         setTimeout(() => {
-                            const navElement = document.querySelector('nav.sticky');
-                            let navHeight = navElement ? navElement.offsetHeight : 0;
-                            
                             // Target the descriptive content section instead of the top of detailElement
                             const profileContentElement = document.getElementById(`profile-content-${influencer.id}`);
                             const targetElement = profileContentElement || detailElement;
                             
-                            const offsetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - navHeight - 20;
-                            window.scrollTo({
-                                top: offsetPosition,
+                            // Calculate position relative to the accordion container, not the window
+                            const accordionRect = accordionContent.getBoundingClientRect();
+                            const targetRect = targetElement.getBoundingClientRect();
+                            const relativePosition = targetRect.top - accordionRect.top + accordionContent.scrollTop - 20;
+                            
+                            // Scroll within the accordion container
+                            accordionContent.scrollTo({
+                                top: relativePosition,
                                 behavior: 'smooth'
                             });
                         }, 50);
