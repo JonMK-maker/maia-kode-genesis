@@ -807,7 +807,7 @@ El objetivo es deconstruir la descripción estética de un influencer en 3 conce
                 card.setAttribute('aria-selected', 'true');
                 if (detailElement) {
                     // Check if the detail element is inside a mobile accordion
-                    const accordionContent = detailElement.closest('.accordion-content');
+                    const accordionContent = detailElement.closest('#hispanas-container, #inglesas-container');
                     const isMobileAccordion = accordionContent && window.innerWidth <= 768;
                     
                     if (isMobileAccordion) {
@@ -1000,15 +1000,6 @@ El objetivo es deconstruir la descripción estética de un influencer en 3 conce
         
         // Make updateAccordionHeight available globally for when AI content is added
         window.updateAccordionHeight = updateAccordionHeight;
-        
-        // Set initial state - expand Spanish accordion by default
-        const spanishContent = document.querySelector('[data-accordion="spanish"]');
-        const spanishHeader = document.getElementById('accordion-spanish');
-        if (spanishContent && spanishHeader) {
-            spanishContent.classList.add('expanded');
-            spanishHeader.classList.add('active');
-            // Don't set inline maxHeight, let CSS handle it
-        }
         
         // Add click handlers for accordion headers
         accordionHeaders.forEach(header => {
