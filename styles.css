@@ -826,7 +826,9 @@ tbody { background-color: var(--secondary-dark); color: var(--secondary-text); }
     }
     
     .accordion-content.expanded {
-        max-height: 2000px; /* Large enough to accommodate content */
+        max-height: none; /* Allow content to expand as needed */
+        overflow-y: auto; /* Allow scrolling within accordion when content is very long */
+        max-height: 80vh; /* Limit to 80% of viewport height to ensure scrollability */
         padding: 1.5rem;
         transition: max-height 0.3s ease-in;
     }

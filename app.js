@@ -437,7 +437,22 @@ The objective is to analyze a summary of data from 16 influencers to identify th
                     const htmlOutput = converter.makeHtml(aiResponseText);
                     // Sanitize HTML to prevent XSS attacks
                     const sanitizedHTML = typeof DOMPurify !== 'undefined' ? DOMPurify.sanitize(htmlOutput) : htmlOutput;
-                    if (outputDiv) outputDiv.innerHTML = sanitizedHTML;
+                    if (outputDiv) {
+                        outputDiv.innerHTML = sanitizedHTML;
+                        
+                        // Update accordion height on mobile if content is within an accordion
+                        if (window.innerWidth <= 768) {
+                            // Check if the outputDiv is within a mobile accordion
+                            const accordionContent = outputDiv.closest('[data-accordion]');
+                            if (accordionContent) {
+                                const accordionId = accordionContent.getAttribute('data-accordion');
+                                if (window.updateAccordionHeight) {
+                                    // Use setTimeout to ensure content is fully rendered
+                                    setTimeout(() => window.updateAccordionHeight(accordionId), 100);
+                                }
+                            }
+                        }
+                    }
                 } else {
                     console.error("Showdown no está definido.");
                     if (outputDiv) outputDiv.textContent = aiResponseText;
@@ -474,7 +489,20 @@ The objective is to analyze a summary of data from 16 influencers to identify th
         } finally {
             if (buttonElement) buttonElement.disabled = false;
             if (loadingDiv) loadingDiv.style.display = 'none';
-            if (outputDiv) outputDiv.style.display = 'block';
+            if (outputDiv) {
+                outputDiv.style.display = 'block';
+                
+                // Update accordion height on mobile if content is within an accordion
+                if (window.innerWidth <= 768) {
+                    const accordionContent = outputDiv.closest('[data-accordion]');
+                    if (accordionContent) {
+                        const accordionId = accordionContent.getAttribute('data-accordion');
+                        if (window.updateAccordionHeight) {
+                            setTimeout(() => window.updateAccordionHeight(accordionId), 100);
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -922,9 +950,26 @@ El objetivo es deconstruir la descripción estética de un influencer en 3 conce
                 // Expand
                 content.classList.add('expanded');
                 header.classList.add('active');
-                content.style.maxHeight = content.scrollHeight + 'px';
+                // Remove inline max-height to let CSS handle it
+                content.style.maxHeight = '';
             }
         }
+        
+        // Function to update accordion height when content changes
+        function updateAccordionHeight(accordionId) {
+            const content = document.querySelector(`[data-accordion="${accordionId}"]`);
+            if (content && content.classList.contains('expanded')) {
+                // Force a recalculation by removing and re-adding the expanded class
+                content.classList.remove('expanded');
+                // Use setTimeout to ensure the removal is processed
+                setTimeout(() => {
+                    content.classList.add('expanded');
+                }, 10);
+            }
+        }
+        
+        // Make updateAccordionHeight available globally for when AI content is added
+        window.updateAccordionHeight = updateAccordionHeight;
         
         // Set initial state - expand Spanish accordion by default
         const spanishContent = document.querySelector('[data-accordion="spanish"]');
@@ -932,7 +977,7 @@ El objetivo es deconstruir la descripción estética de un influencer en 3 conce
         if (spanishContent && spanishHeader) {
             spanishContent.classList.add('expanded');
             spanishHeader.classList.add('active');
-            spanishContent.style.maxHeight = spanishContent.scrollHeight + 'px';
+            // Don't set inline maxHeight, let CSS handle it
         }
         
         // Add click handlers for accordion headers
