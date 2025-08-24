@@ -635,7 +635,7 @@ The objective is to analyze a summary of data from 16 influencers to identify th
             </div>
               <div id="audioSummaryTextContainer_${influencer.id}" class="audio-summary-text-container bg-tertiary-dark border-border-color text-secondary-text" style="display:none;" aria-live="polite">${t.clickForSummary}</div>
             <div class="audio-player-container"><audio id="audioPlayer_${influencer.id}" controls style="display:none;"></audio></div>
-            <div class="space-y-3 text-secondary-text mb-6 mt-4">
+            <div id="profile-content-${influencer.id}" class="space-y-3 text-secondary-text mb-6 mt-4">
                   <div><strong class="text-accent-gold block mb-1">${t.mainPlatforms}</strong> <div class="flex flex-wrap items-center">${platformHTML}</div></div>
                 <div><strong class="text-accent-gold block mb-1">${t.personality}</strong> <p class="leading-relaxed">${getTranslatedContent('personality')}</p></div>
                 <div><strong class="text-accent-gold block mb-1">${t.aesthetics}</strong> <p class="leading-relaxed">${getTranslatedContent('esthetics')}</p></div>
@@ -827,7 +827,12 @@ El objetivo es deconstruir la descripción estética de un influencer en 3 conce
                         setTimeout(() => {
                             const navElement = document.querySelector('nav.sticky');
                             let navHeight = navElement ? navElement.offsetHeight : 0;
-                            const offsetPosition = detailElement.getBoundingClientRect().top + window.pageYOffset - navHeight - 20;
+                            
+                            // Target the descriptive content section instead of the top of detailElement
+                            const profileContentElement = document.getElementById(`profile-content-${influencer.id}`);
+                            const targetElement = profileContentElement || detailElement;
+                            
+                            const offsetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - navHeight - 20;
                             window.scrollTo({
                                 top: offsetPosition,
                                 behavior: 'smooth'
