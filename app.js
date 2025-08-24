@@ -806,13 +806,43 @@ El objetivo es deconstruir la descripción estética de un influencer en 3 conce
                 card.classList.add('selected');
                 card.setAttribute('aria-selected', 'true');
                 if (detailElement) {
-                    const navElement = document.querySelector('nav.sticky');
-                    let navHeight = navElement ? navElement.offsetHeight : 0;
-                    const offsetPosition = detailElement.getBoundingClientRect().top + window.pageYOffset - navHeight - 20;
-                    window.scrollTo({
-                        top: offsetPosition,
-                        behavior: 'smooth'
-                    });
+                    // Check if the detail element is inside a mobile accordion
+                    const accordionContent = detailElement.closest('.accordion-content');
+                    const isMobileAccordion = accordionContent && window.innerWidth <= 768;
+                    
+                    if (isMobileAccordion) {
+                        // For mobile accordions, ensure the accordion is expanded first
+                        if (!accordionContent.classList.contains('expanded')) {
+                            const accordionId = accordionContent.getAttribute('data-accordion');
+                            const accordionHeader = document.getElementById(`accordion-${accordionId}`);
+                            if (accordionHeader) {
+                                // Expand the accordion
+                                accordionContent.classList.add('expanded');
+                                accordionHeader.classList.add('active');
+                                accordionContent.style.maxHeight = '';
+                            }
+                        }
+                        
+                        // Wait for accordion to expand, then scroll
+                        setTimeout(() => {
+                            const navElement = document.querySelector('nav.sticky');
+                            let navHeight = navElement ? navElement.offsetHeight : 0;
+                            const offsetPosition = detailElement.getBoundingClientRect().top + window.pageYOffset - navHeight - 20;
+                            window.scrollTo({
+                                top: offsetPosition,
+                                behavior: 'smooth'
+                            });
+                        }, 50);
+                    } else {
+                        // Desktop behavior (original code)
+                        const navElement = document.querySelector('nav.sticky');
+                        let navHeight = navElement ? navElement.offsetHeight : 0;
+                        const offsetPosition = detailElement.getBoundingClientRect().top + window.pageYOffset - navHeight - 20;
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: 'smooth'
+                        });
+                    }
                 }
             };
             
